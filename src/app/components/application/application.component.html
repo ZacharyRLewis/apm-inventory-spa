@@ -1,0 +1,55 @@
+<div class="win-body">
+  <div class="apm-modal-body">
+    <div>
+      <div class="win-h2 apm-modal-title" *ngIf="!passedApplication">Add New Application</div>
+      <div class="win-h2 apm-modal-title" *ngIf="passedApplication">Update Application</div>
+      <button aria-label="Close" class="close apm-modal-close" (click)="closeModal()" type="button">
+        <i aria-hidden="true" class="pi pi-times"></i>
+      </button>
+    </div>
+    <form ngForm="newApplicationForm">
+      <div class="apm-form-body">
+        <div class="apm-form-group">
+          <label class="win-label apm-label" for="applicationMnemonic">Mnemonic</label>
+          <div class="apm-input-group">
+            <input type="text" class="apm-input" id="applicationMnemonic" name="mnemonic" [(ngModel)]="model.mnemonic">
+          </div>
+        </div>
+        <div class="apm-form-group">
+          <label class="win-label apm-label" for="applicationName">Name</label>
+          <div class="apm-input-group">
+            <input type="text" class="apm-input" id="applicationName" name="name" [(ngModel)]="model.name">
+          </div>
+        </div>
+        <div class="apm-form-group">
+          <label class="win-label apm-label" for="applicationDescription">Description</label>
+          <div class="apm-input-group">
+            <input type="text" class="apm-input" id="applicationDescription" name="description" [(ngModel)]="model.description">
+          </div>
+        </div>
+        <div class="apm-form-group">
+          <label class="win-label apm-label" for="applicationType">Type</label>
+          <div class="apm-input-group">
+            <input type="text" class="apm-input" id="applicationType" name="type" [(ngModel)]="model.applicationType.name">
+          </div>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<div class="action-buttons">
+  <div class="container action-buttons-container">
+    <div class="left" *ngIf="passedApplication">
+      <button type="button" class="action-button win-button win-button-secondary" (click)="deleteApplication()">
+        <span>Delete Application</span>
+      </button>
+    </div>
+    <div class="right">
+      <button type="button" class="action-button win-button win-button-primary" (click)="saveApplication()">
+        <span>Save Application</span>
+      </button>
+    </div>
+  </div>
+</div>

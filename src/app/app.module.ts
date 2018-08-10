@@ -1,16 +1,32 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-
-import { AppComponent } from './app.component';
+import {CommonModule} from '@angular/common';
+import {HttpClientModule} from '@angular/common/http';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {TableModule} from 'primeng/table';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {ComponentsModule} from './components/components.module';
+import {ApplicationService, ModalService} from './services';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
-    BrowserModule
+    AppRoutingModule,
+    BrowserModule,
+    CommonModule,
+    ComponentsModule,
+    HttpClientModule
   ],
-  providers: [],
+  exports: [
+    CommonModule,
+    ComponentsModule,
+    HttpClientModule,
+    TableModule
+  ],
+  providers: [ApplicationService, ModalService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

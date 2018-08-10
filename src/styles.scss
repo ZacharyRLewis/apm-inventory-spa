@@ -1,0 +1,103 @@
+@import "assets/scss/variables";
+@import url("https://cdn.winwholesale.com/styles.css");
+
+body {
+  margin: 20px 0 0 0;
+}
+
+body.apm-modal-open {
+  overflow: hidden;
+}
+
+.page-title-wrapper .page-title {
+  display: inline-block !important;
+}
+
+.page-title-wrapper .button-wrapper {
+  float: right;
+  font-size: 24px;
+}
+
+.add-button {
+  border: 1px solid $win-blue;
+  color: $win-blue;
+  background: #fff;
+  border-radius: 25px;
+  min-width: 150px;
+  font-size: 0.7em;
+  padding: 4px 12px
+}
+
+.add-button .pi {
+  font-size: 22px;
+  vertical-align: bottom;
+}
+
+.apm-modal-title {
+  width: 75%;
+  float: left;
+  margin-bottom: 1em;
+}
+
+.apm-modal-close {
+  font-size: 2.4em !important;
+  border: none;
+  background-color: transparent;
+  color: $win-blue !important;
+  float: right;
+  padding: 0;
+}
+
+.apm-modal-body {
+  padding: 15px;
+}
+
+.action-buttons {
+  position: fixed;
+  bottom: 0;
+  height: 80px;
+  width: $modal-body-width;
+  left: 0;
+  right: 0;
+  margin: auto;
+
+  .action-buttons-container {
+    border-top: solid 1px #ccc;
+    padding: 15px 0;
+    margin-left: -8px;
+    margin-right: 8px;
+  }
+
+  .action-button {
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+  }
+}
+
+.apm-form-body {
+  display: grid;
+  width: 99%;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 50px;
+
+  .apm-label {
+    display: inline-block;
+    margin-bottom: 5px;
+  }
+
+  .apm-form-group {
+    height: 34px;
+  }
+
+  .apm-input {
+    width: 90%;
+    padding: 6px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  }
+}
+
+
