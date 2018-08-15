@@ -2,14 +2,13 @@ import {HttpClient, HttpResponse} from '@angular/common/http';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {TestBed, inject} from '@angular/core/testing';
 import {Application, WinResponse} from '../../model';
+import {TestDomain} from '../../model/test-domain';
 import {ApplicationService} from './application.service';
 
 describe('ApplicationService', () => {
   let http: HttpClient;
   let httpTester: HttpTestingController;
   let applicationService: ApplicationService;
-
-  const application: Application = new Application('123', 'Test', 'test', 'Test', null, [], []);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -31,7 +30,7 @@ describe('ApplicationService', () => {
   }));
 
   describe('#findAll()', () => {
-    const expected: WinResponse<Application[]> = {meta: null, data: [application]};
+    const expected: WinResponse<Application[]> = {meta: null, data: [TestDomain.APPLICATION]};
     const noResults: WinResponse<Application[]> = {meta: null, data: []};
 
     it('should return expected applications', () => {
@@ -76,6 +75,7 @@ describe('ApplicationService', () => {
   });
 
   describe('#findOne()', () => {
+    const application: Application = TestDomain.APPLICATION;
     const expected: WinResponse<Application> = {meta: null, data: application};
 
     it('should find one application and return it', () => {
@@ -108,6 +108,7 @@ describe('ApplicationService', () => {
   });
 
   describe('#create()', () => {
+    const application: Application = TestDomain.APPLICATION;
     const expected: WinResponse<Application> = {meta: null, data: application};
 
     it('should create an application and return it', () => {
@@ -126,6 +127,7 @@ describe('ApplicationService', () => {
   });
 
   describe('#update()', () => {
+    const application: Application = TestDomain.APPLICATION;
     const expected: WinResponse<Application> = {meta: null, data: application};
 
     it('should update an application and return it', () => {
@@ -157,6 +159,7 @@ describe('ApplicationService', () => {
   });
 
   describe('#delete()', () => {
+    const application: Application = TestDomain.APPLICATION;
     const expected: WinResponse<Application> = {meta: null, data: null};
 
     it('should delete an application', () => {

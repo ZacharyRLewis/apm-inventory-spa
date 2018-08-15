@@ -11,7 +11,7 @@ import {ApplicationComponent} from '../application/application.component';
 })
 export class InventoryComponent {
 
-  public applications: Application[];
+  public applications: Application[] = [];
 
   @ViewChild('applicationComponent')
   applicationComponent: ApplicationComponent;

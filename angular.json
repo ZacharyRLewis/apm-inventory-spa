@@ -81,6 +81,12 @@
             "assets": [
               "src/favicon.ico",
               "src/assets"
+            ],
+            "codeCoverageExclude": [
+              "src/*.ts",
+              "src/app/*.ts",
+              "src/**/index.ts",
+              "src/app/model/*.ts"
             ]
           }
         },
