@@ -16,6 +16,7 @@ export class ApplicationComponent {
 
   model: Application = new Application();
   passedApplication: Application;
+  applicationTypes: ApplicationType[] = [];
 
   constructor(private applicationService: ApplicationService, private modalService: ModalService) {
     this.setDefaultValues();

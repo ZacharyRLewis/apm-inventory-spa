@@ -6,7 +6,7 @@ import {TableModule} from 'primeng/table';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {ComponentsModule} from './components/components.module';
-import {ApplicationService, ModalService} from './services';
+import {ApplicationService, ApplicationTypeService, ModalService} from './services';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,7 @@ import {ApplicationService, ModalService} from './services';
     HttpClientModule,
     TableModule
   ],
-  providers: [ApplicationService, ModalService],
+  providers: [ApplicationService, ApplicationTypeService, ModalService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

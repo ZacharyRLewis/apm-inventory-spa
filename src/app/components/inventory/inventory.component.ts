@@ -1,5 +1,6 @@
-import {Component, ViewChild} from '@angular/core';
-import {Application} from '../../model/index';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {Application, ApplicationType} from '../../model/index';
+import {ApplicationTypeService} from '../../services/application-type/application-type.service';
 import {ApplicationService} from '../../services/application/application.service';
 import {ModalService} from '../../services/index';
 import {ApplicationComponent} from '../application/application.component';
@@ -9,15 +10,22 @@ import {ApplicationComponent} from '../application/application.component';
   templateUrl: './inventory.component.html',
   styleUrls: ['./inventory.component.scss']
 })
-export class InventoryComponent {
+export class InventoryComponent implements OnInit  {
 
   public applications: Application[] = [];
+  public applicationTypes: ApplicationType[] = [];
+  public databaseTypes: ApplicationType[] = [];
 
   @ViewChild('applicationComponent')
   applicationComponent: ApplicationComponent;
 
-  constructor(private applicationService: ApplicationService, private modalService: ModalService) {
+  constructor(private applicationService: ApplicationService, private applicationTypeService: ApplicationTypeService,
+              private modalService: ModalService) {
     this.refreshApplications();
+  }
+
+  ngOnInit() {
+    this.loadApplicationTypes();
   }
 
   public refreshApplications(): void {
@@ -38,6 +46,7 @@ export class InventoryComponent {
   }
 
   public openModal(): void {
+    this.applicationComponent.applicationTypes = this.applicationTypes;
     this.modalService.open('application-component');
   }
 
@@ -54,5 +63,12 @@ export class InventoryComponent {
   public handleUpdate(application: Application): void {
     console.log('Application ' + application.mnemonic + ' successfully updated');
     this.refreshApplications();
+  }
+
+  loadApplicationTypes = () => {
+    this.applicationTypeService.findAll()
+      .subscribe(response => {
+        this.applicationTypes = response.data;
+      });
   }
 }

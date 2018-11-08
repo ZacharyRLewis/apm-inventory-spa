@@ -15,6 +15,7 @@ export class ApplicationService implements ServiceInterface<Application> {
   constructor(private http: HttpClient) {
     // this._url = '__APM_INVENTORY_SERVICE_URL__' + this._path;
     this.url = 'http://localhost:8181/apm' + this._path;
+    // this.url = 'http://apm-inventory-service:8181/apm' + this._path;
 
     this._options = {
       headers: new HttpHeaders({

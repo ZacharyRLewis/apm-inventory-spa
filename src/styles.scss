@@ -78,7 +78,7 @@ body.apm-modal-open {
 .apm-form-body {
   display: grid;
   width: 99%;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   grid-gap: 50px;
 
   .apm-label {
@@ -97,6 +97,12 @@ body.apm-modal-open {
     border: 1px solid #ccc;
     border-radius: 4px;
     transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  }
+
+  .apm-select {
+    width: 96%;
+    height: 28px;
+    background-color: white;
   }
 }
 
