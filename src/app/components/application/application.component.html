@@ -45,19 +45,68 @@
             <ng-template pTemplate="header">
               <tr>
                 <th style="width: 1em">Environment</th>
-                <th style="width: 1.5em">Directory</th>
+                <th style="width: 2.5em">Directory</th>
                 <th style="width: 2em">Host Server</th>
-                <th style="width: 1em">Port</th>
+                <th style="width: 0.25em">Port</th>
                 <th style="width: 2em">Context Name</th>
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-computeEnvironment>
               <tr>
-                <td>{{computeEnvironment.environment}}</td>
-                <td>{{computeEnvironment.directory}}</td>
-                <td>{{computeEnvironment.hostServer}}</td>
-                <td>{{computeEnvironment.port}}</td>
-                <td>{{computeEnvironment.contextName}}</td>
+                <td pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <select name="environment" [(ngModel)]="computeEnvironment.environment">
+                        <option *ngFor="let env of environments">
+                          {{env}}
+                        </option>
+                      </select>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{computeEnvironment.environment}}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+                <td pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <input type="text" name="directory" [(ngModel)]="computeEnvironment.directory">
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{computeEnvironment.directory}}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+                <td pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <input type="text" name="hostServer" [(ngModel)]="computeEnvironment.hostServer">
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{computeEnvironment.hostServer}}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+                <td pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <input type="text" name="port" [(ngModel)]="computeEnvironment.port">
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{computeEnvironment.port}}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+                <td pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <input type="text" name="contextName" [(ngModel)]="computeEnvironment.contextName">
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{computeEnvironment.contextName}}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
               </tr>
             </ng-template>
           </p-table>
