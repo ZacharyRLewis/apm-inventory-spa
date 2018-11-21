@@ -17,7 +17,7 @@
           <th style="width: 2em">Name</th>
           <th style="width: 2em">Description</th>
           <th style="width: 2em">Type</th>
-          <th style="width: 1.5em">Environments</th>
+          <th style="width: 1.5em">Deployments</th>
           <th style="width: 1.5em">Dependencies</th>
         </tr>
       </ng-template>
@@ -29,7 +29,7 @@
           <td>{{application.name}}</td>
           <td>{{application.description}}</td>
           <td>{{application.applicationType.name}}</td>
-          <td>{{application.computeEnvironments.length}}</td>
+          <td>{{application.deployments.length}}</td>
           <td>{{application.dependencies.length}}</td>
         </tr>
       </ng-template>

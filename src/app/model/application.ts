@@ -1,5 +1,5 @@
 import {ApplicationType} from './application-type';
-import {ComputeEnvironment} from './compute-environment';
+import {Deployment} from './deployment';
 import {Dependency} from './dependency';
 
 export class Application {
@@ -8,8 +8,9 @@ export class Application {
               public name?: string,
               public mnemonic?: string,
               public description?: string,
+              public serviceApi?: boolean,
               public applicationType?: ApplicationType,
-              public computeEnvironments?: ComputeEnvironment[],
+              public deployments?: Deployment[],
               public dependencies?: Dependency[]) {
   }
 

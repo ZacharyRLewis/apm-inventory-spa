@@ -1,0 +1,91 @@
+<div class="win-body">
+  <div class="apm-modal-body">
+    <div>
+      <div class="win-h2 apm-modal-title" *ngIf="!passedDeployment">Add New Deployment</div>
+      <div class="win-h2 apm-modal-title" *ngIf="passedDeployment">Update Deployment</div>
+      <button aria-label="Close" class="close apm-modal-close" (click)="closeModal()" type="button">
+        <i aria-hidden="true" class="pi pi-times"></i>
+      </button>
+    </div>
+    <form ngForm="newDeploymentForm">
+      <div class="apm-form-body">
+        <div class="apm-form-group">
+          <label class="win-label apm-label" for="applicationId">Application</label>
+          <div class="apm-input-group">
+            <select class="apm-input apm-select" id="applicationId" [(ngModel)]="model.applicationId" name="applicationId" #applicationId="ngModel">
+              <option *ngFor="let app of applications" value="{{app.id}}">
+                {{app.mnemonic}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="apm-form-group">
+          <label class="win-label apm-label" for="environment">Environment</label>
+          <div class="apm-input-group">
+            <select class="apm-input apm-select" id="environment" [(ngModel)]="model.environment" name="environment" #environment="ngModel">
+              <option *ngFor="let env of environments">
+                {{env}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="apm-form-group">
+          <label class="win-label apm-label" for="directory">Directory</label>
+          <div class="apm-input-group">
+            <input type="text" class="apm-input" id="directory" name="directory" [(ngModel)]="model.directory">
+          </div>
+        </div>
+        <div class="apm-form-group">
+          <label class="win-label apm-label" for="https">Is HTTPS?</label>
+          <div class="apm-input-group">
+            <select class="apm-input apm-select" id="https" [(ngModel)]="model.https" name="https" #https="ngModel">
+              <option *ngFor="let choice of ['true', 'false']" value="{{choice}}">
+                {{choice}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="apm-form-group">
+          <label class="win-label apm-label" for="hostServer">Host Server</label>
+          <div class="apm-input-group">
+            <input type="text" class="apm-input" id="hostServer" name="hostServer" [(ngModel)]="model.hostServer">
+          </div>
+        </div>
+        <div class="apm-form-group">
+          <label class="win-label apm-label" for="port">Port</label>
+          <div class="apm-input-group">
+            <input type="text" class="apm-input" id="port" name="port" [(ngModel)]="model.port">
+          </div>
+        </div>
+        <div class="apm-form-group">
+          <label class="win-label apm-label" for="contextName">Context Name</label>
+          <div class="apm-input-group">
+            <input type="text" class="apm-input" id="contextName" name="contextName" [(ngModel)]="model.contextName">
+          </div>
+        </div>
+        <div class="apm-form-group">
+          <label class="win-label apm-label" for="baseUrl">Base URL</label>
+          <div class="apm-input-group">
+            <div class="apm-input base-url" id="baseUrl">{{getDeploymentBaseUrl(model)}}</div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<div class="action-buttons">
+  <div class="container action-buttons-container">
+    <div class="left" *ngIf="passedDeployment">
+      <button type="button" class="action-button win-button win-button-secondary" (click)="deleteDeployment()">
+        <span>Delete Deployment</span>
+      </button>
+    </div>
+    <div class="right">
+      <button type="button" class="action-button win-button win-button-primary" (click)="saveDeployment()">
+        <span>Save Deployment</span>
+      </button>
+    </div>
+  </div>
+</div>

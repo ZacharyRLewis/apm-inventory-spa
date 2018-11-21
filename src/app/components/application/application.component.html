@@ -37,84 +37,52 @@
             </select>
           </div>
         </div>
+        <div class="apm-form-group">
+          <label class="win-label apm-label" for="serviceApi">Is Service/API?</label>
+          <div class="apm-input-group">
+            <select class="apm-input apm-select" id="serviceApi" [(ngModel)]="model.serviceApi" name="serviceApi" #type="ngModel">
+              <option *ngFor="let choice of ['true', 'false']" value="{{choice}}">
+                {{choice}}
+              </option>
+            </select>
+          </div>
+        </div>
       </div>
       <div class="application-child-table-div">
-        <label class="win-label apm-label">Compute Environments</label>
-        <div class="child-table">
-          <p-table [value]="model.computeEnvironments" [paginator]="false">
+        <div>
+          <label class="win-label">Deployments</label>
+        </div>
+        <div class="child-table deployments-table" *ngIf="model.deployments.length > 0; else noDeployments">
+          <p-table [value]="model.deployments" [paginator]="false" dataKey="environment">
             <ng-template pTemplate="header">
               <tr>
-                <th style="width: 1em">Environment</th>
-                <th style="width: 2.5em">Directory</th>
-                <th style="width: 2em">Host Server</th>
-                <th style="width: 0.25em">Port</th>
-                <th style="width: 2em">Context Name</th>
+                <th style="width: 100px">Environment</th>
+                <th style="width: 180px">Directory</th>
+                <th style="width: 80px">HTTPS?</th>
+                <th style="width: 160px">Host Server</th>
+                <th style="width: 60px">Port</th>
+                <th style="width: 180px">Context Name</th>
               </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-computeEnvironment>
+            <ng-template pTemplate="body" let-deployment>
               <tr>
-                <td pEditableColumn>
-                  <p-cellEditor>
-                    <ng-template pTemplate="input">
-                      <select name="environment" [(ngModel)]="computeEnvironment.environment">
-                        <option *ngFor="let env of environments">
-                          {{env}}
-                        </option>
-                      </select>
-                    </ng-template>
-                    <ng-template pTemplate="output">
-                      {{computeEnvironment.environment}}
-                    </ng-template>
-                  </p-cellEditor>
-                </td>
-                <td pEditableColumn>
-                  <p-cellEditor>
-                    <ng-template pTemplate="input">
-                      <input type="text" name="directory" [(ngModel)]="computeEnvironment.directory">
-                    </ng-template>
-                    <ng-template pTemplate="output">
-                      {{computeEnvironment.directory}}
-                    </ng-template>
-                  </p-cellEditor>
-                </td>
-                <td pEditableColumn>
-                  <p-cellEditor>
-                    <ng-template pTemplate="input">
-                      <input type="text" name="hostServer" [(ngModel)]="computeEnvironment.hostServer">
-                    </ng-template>
-                    <ng-template pTemplate="output">
-                      {{computeEnvironment.hostServer}}
-                    </ng-template>
-                  </p-cellEditor>
-                </td>
-                <td pEditableColumn>
-                  <p-cellEditor>
-                    <ng-template pTemplate="input">
-                      <input type="text" name="port" [(ngModel)]="computeEnvironment.port">
-                    </ng-template>
-                    <ng-template pTemplate="output">
-                      {{computeEnvironment.port}}
-                    </ng-template>
-                  </p-cellEditor>
-                </td>
-                <td pEditableColumn>
-                  <p-cellEditor>
-                    <ng-template pTemplate="input">
-                      <input type="text" name="contextName" [(ngModel)]="computeEnvironment.contextName">
-                    </ng-template>
-                    <ng-template pTemplate="output">
-                      {{computeEnvironment.contextName}}
-                    </ng-template>
-                  </p-cellEditor>
-                </td>
+                <td>{{deployment.environment}}</td>
+                <td>{{deployment.directory}}</td>
+                <td>{{deployment.https}}</td>
+                <td>{{deployment.hostServer}}</td>
+                <td>{{deployment.port}}</td>
+                <td>{{deployment.contextName}}</td>
               </tr>
             </ng-template>
           </p-table>
         </div>
+        <ng-template #noDeployments>
+          <div>None</div>
+        </ng-template>
       </div>
       <div class="application-child-table-div">
         <label class="win-label apm-label">Dependencies</label>
-        <div class="child-table">
+        <div class="child-table" *ngIf="model.dependencies.length > 0; else noDependencies">
           <p-table [value]="model.dependencies" [paginator]="true" [rows]="10">
             <ng-template pTemplate="header">
               <tr>
@@ -132,6 +100,9 @@
             </ng-template>
           </p-table>
         </div>
+        <ng-template #noDependencies>
+          <div>None</div>
+        </ng-template>
       </div>
     </form>
 

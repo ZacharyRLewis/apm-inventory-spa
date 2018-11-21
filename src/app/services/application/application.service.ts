@@ -6,7 +6,7 @@ import {ServiceInterface} from '../service.interface';
 
 @Injectable()
 export class ApplicationService implements ServiceInterface<Application> {
-  private _path = '/applications/';
+  private _path = '/applications';
   public url: string;
   private _options: {
     headers: HttpHeaders
@@ -15,7 +15,6 @@ export class ApplicationService implements ServiceInterface<Application> {
   constructor(private http: HttpClient) {
     // this._url = '__APM_INVENTORY_SERVICE_URL__' + this._path;
     this.url = 'http://localhost:8181/apm' + this._path;
-    // this.url = 'http://apm-inventory-service:8181/apm' + this._path;
 
     this._options = {
       headers: new HttpHeaders({
@@ -28,8 +27,20 @@ export class ApplicationService implements ServiceInterface<Application> {
     return this.http.get<WinResponse<Application[]>>(this.url, this._options);
   }
 
+  public filterAll(params: { name, value } []): Observable<WinResponse<Application[]>> {
+    let requestUrl: string = this.url;
+
+    for (let i = 0; i < params.length; i++) {
+      const separator: string = (i === 0) ? '?' : '&';
+
+      requestUrl = requestUrl + separator + params[i].name + '=' + params[i].value;
+    }
+
+    return this.http.get<WinResponse<Application[]>>(requestUrl, this._options);
+  }
+
   public findOne(id: string): Observable<WinResponse<Application>> {
-    return this.http.get<WinResponse<Application>>(this.url + id, this._options);
+    return this.http.get<WinResponse<Application>>(this.url + '/' + id, this._options);
   }
 
   public create(application: Application): Observable<WinResponse<Application>> {
@@ -37,10 +48,10 @@ export class ApplicationService implements ServiceInterface<Application> {
   }
 
   public update(application: Application): Observable<WinResponse<Application>> {
-    return this.http.put<WinResponse<Application>>(this.url + application.id, application, this._options);
+    return this.http.put<WinResponse<Application>>(this.url + '/' + application.id, application, this._options);
   }
 
   public delete(application: Application): Observable<WinResponse<Application>> {
-    return this.http.delete<WinResponse<Application>>(this.url + application.id, this._options);
+    return this.http.delete<WinResponse<Application>>(this.url + '/' + application.id, this._options);
   }
 }

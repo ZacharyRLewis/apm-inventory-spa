@@ -6,7 +6,7 @@ import {ServiceInterface} from '../service.interface';
 
 @Injectable()
 export class ApplicationTypeService implements ServiceInterface<ApplicationType> {
-  private _path = '/applicationTypes/';
+  private _path = '/applicationTypes';
   public url: string;
   private _options: {
     headers: HttpHeaders
@@ -15,7 +15,6 @@ export class ApplicationTypeService implements ServiceInterface<ApplicationType>
   constructor(private http: HttpClient) {
     // this._url = '__APM_INVENTORY_SERVICE_URL__' + this._path;
     this.url = 'http://localhost:8181/apm' + this._path;
-    // this.url = 'http://apm-inventory-service:8181/apm' + this._path;
 
     this._options = {
       headers: new HttpHeaders({
@@ -29,7 +28,7 @@ export class ApplicationTypeService implements ServiceInterface<ApplicationType>
   }
 
   public findOne(id: number): Observable<WinResponse<ApplicationType>> {
-    return this.http.get<WinResponse<ApplicationType>>(this.url + id, this._options);
+    return this.http.get<WinResponse<ApplicationType>>(this.url + '/' + id, this._options);
   }
 
   public create(applicationType: ApplicationType): Observable<WinResponse<ApplicationType>> {
@@ -37,10 +36,10 @@ export class ApplicationTypeService implements ServiceInterface<ApplicationType>
   }
 
   public update(applicationType: ApplicationType): Observable<WinResponse<ApplicationType>> {
-    return this.http.put<WinResponse<ApplicationType>>(this.url + applicationType.id, applicationType, this._options);
+    return this.http.put<WinResponse<ApplicationType>>(this.url + '/' + applicationType.id, applicationType, this._options);
   }
 
   public delete(applicationType: ApplicationType): Observable<WinResponse<ApplicationType>> {
-    return this.http.delete<WinResponse<ApplicationType>>(this.url + applicationType.id, this._options);
+    return this.http.delete<WinResponse<ApplicationType>>(this.url + '/' + applicationType.id, this._options);
   }
 }

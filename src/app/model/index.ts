@@ -1,6 +1,7 @@
 export { Application } from './application';
 export { ApplicationType } from './application-type';
-export { ComputeEnvironment } from './compute-environment';
+export { Deployment } from './deployment';
 export { Database } from './database';
 export { Dependency } from './dependency';
+export { ServiceCall } from './service-call';
 export { WinResponse } from './win-response';

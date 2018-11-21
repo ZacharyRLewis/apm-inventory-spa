@@ -1,0 +1,47 @@
+<div class="win-body">
+  <div class="page-title-wrapper">
+    <h2 class="page-title">Deployments</h2>
+    <div class="button-wrapper">
+      <button class="add-button" (click)="resetDeploymentComponent(); openModal();">
+        <i class="pi pi-plus" aria-hidden="true"></i>
+        <span>Create Deployment</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="inventory-table">
+    <p-table [value]="deployments" [paginator]="true" [rows]="10">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 30px">ID</th>
+          <th style="width: 100px">Environment</th>
+          <th style="width: 180px">Directory</th>
+          <th style="width: 80px">HTTPS?</th>
+          <th style="width: 160px">Host Server</th>
+          <th style="width: 60px">Port</th>
+          <th style="width: 180px">Context Name</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-deployment>
+        <tr>
+          <td>
+            <a (click)="setPassedDeployment(deployment); openModal();">{{deployment.id}}</a>
+          </td>
+          <td>{{deployment.environment}}</td>
+          <td>{{deployment.directory}}</td>
+          <td>{{deployment.https}}</td>
+          <td>{{deployment.hostServer}}</td>
+          <td>{{deployment.port}}</td>
+          <td>{{deployment.contextName}}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<apm-modal id="deployment-component">
+  <apm-deployment modalId="deployment-component" #deploymentComponent
+                   (createEvent)="handleCreate($event)" (deleteEvent)="handleDelete($event)" (updateEvent)="handleUpdate($event)">
+
+  </apm-deployment>
+</apm-modal>

@@ -1,13 +1,27 @@
+@import "../../../assets/scss/variables";
+
 .application-child-table-div {
   margin-top: 50px;
+
+  .add-button {
+    float: right;
+    font-size: 12px;
+    min-width: 100px;
+    margin-bottom: 5px;
+
+    .pi {
+      font-size: 16px;
+    }
+  }
 }
 
 .child-table {
   padding-top: 5px;
+
+  .pi {
+    font-size: 20px;
+    color: $win-blue;
+  }
 }
 
-.ui-editing-cell select {
-  border: none;
-  background-color: inherit;
-  font-family: "Open Sans", "Helvetica Neue", sans-serif;
-}
+

@@ -6,7 +6,7 @@ import {Observable} from 'rxjs';
 import {Application, WinResponse} from '../../model';
 import {TestDomain} from '../../model/test-domain';
 import {ApplicationService, ModalService} from '../../services';
-import {ApplicationComponent} from './application.component';
+import {DeploymentComponent} from './application.component';
 
 class MockApplicationService extends ApplicationService {
   private response: WinResponse<Application> = {meta: null, data: TestDomain.APPLICATION};
@@ -25,8 +25,8 @@ class MockApplicationService extends ApplicationService {
 }
 
 describe('ApplicationComponent', () => {
-  let component: ApplicationComponent;
-  let fixture: ComponentFixture<ApplicationComponent>;
+  let component: DeploymentComponent;
+  let fixture: ComponentFixture<DeploymentComponent>;
   let applicationService: ApplicationService;
   let modalService: ModalService;
   let application: Application;
@@ -34,13 +34,13 @@ describe('ApplicationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientModule],
-      declarations: [ApplicationComponent],
+      declarations: [DeploymentComponent],
       providers: [{provide: ApplicationService, useClass: MockApplicationService}, ModalService]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ApplicationComponent);
+    fixture = TestBed.createComponent(DeploymentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
     applicationService = TestBed.get(ApplicationService);
