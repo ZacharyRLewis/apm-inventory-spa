@@ -1,0 +1,37 @@
+<div class="win-body">
+  <div class="apm-modal-body">
+    <div>
+      <div class="win-h2 apm-modal-title" *ngIf="!passedDatabaseType">Add New Database Type</div>
+      <div class="win-h2 apm-modal-title" *ngIf="passedDatabaseType">Update Database Type</div>
+      <button aria-label="Close" class="close apm-modal-close" (click)="closeModal()" type="button">
+        <i aria-hidden="true" class="pi pi-times"></i>
+      </button>
+    </div>
+    <form ngForm="newDatabaseTypeForm">
+      <div class="apm-form-body">
+        <div class="apm-form-group">
+          <label class="win-label apm-label" for="name">Name</label>
+          <div class="apm-input-group">
+            <input type="text" class="apm-input" id="name" name="name" [(ngModel)]="model.name">
+          </div>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<div class="action-buttons">
+  <div class="container action-buttons-container">
+    <div class="left" *ngIf="passedDatabaseType">
+      <button type="button" class="action-button win-button win-button-secondary" (click)="deleteDatabaseType()">
+        <span>Delete Database Type</span>
+      </button>
+    </div>
+    <div class="right">
+      <button type="button" class="action-button win-button win-button-primary" (click)="saveDatabaseType()">
+        <span>Save Database Type</span>
+      </button>
+    </div>
+  </div>
+</div>

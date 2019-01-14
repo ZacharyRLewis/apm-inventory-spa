@@ -2,10 +2,11 @@ import {HttpClientModule} from '@angular/common/http';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {cold} from 'jasmine-marbles';
+import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {Application, WinResponse} from '../../model';
 import {TestDomain} from '../../model/test-domain';
-import {ApplicationService, ModalService} from '../../services';
+import {ApplicationService, DeploymentService, ModalService} from '../../services';
 import {ApplicationComponent} from './application.component';
 
 class MockApplicationService extends ApplicationService {
@@ -33,9 +34,9 @@ describe('ApplicationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, HttpClientModule],
+      imports: [FormsModule, HttpClientModule, TableModule],
       declarations: [ApplicationComponent],
-      providers: [{provide: ApplicationService, useClass: MockApplicationService}, ModalService]
+      providers: [{provide: ApplicationService, useClass: MockApplicationService}, DeploymentService, ModalService]
     }).compileComponents();
   }));
 

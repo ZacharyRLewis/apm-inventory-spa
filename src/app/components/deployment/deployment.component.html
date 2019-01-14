@@ -70,8 +70,37 @@
           </div>
         </div>
       </div>
+      <div class="child-table-div">
+        <div>
+          <label class="win-label">Databases</label>
+        </div>
+        <div class="child-table databases-table" *ngIf="model.databases.length > 0; else noDatabases">
+          <p-table [value]="model.databases" [paginator]="false" dataKey="environment">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 100px">Environment</th>
+                <th style="width: 180px">Host Name</th>
+                <th style="width: 160px">Name</th>
+                <th style="width: 60px">Port</th>
+                <th style="width: 180px">Type</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-database>
+              <tr>
+                <td>{{database.environment}}</td>
+                <td>{{database.hostName}}</td>
+                <td>{{database.name}}</td>
+                <td>{{database.port}}</td>
+                <td>{{database.type.name}}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        <ng-template #noDatabases>
+          <div>None</div>
+        </ng-template>
+      </div>
     </form>
-
   </div>
 </div>
 

@@ -6,41 +6,41 @@ import {cold, getTestScheduler} from 'jasmine-marbles';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {ModalComponent} from '..';
-import {Application, WinResponse} from '../../model';
+import {Deployment, WinResponse} from '../../model';
 import {TestDomain} from '../../model/test-domain';
-import {ApplicationService, ModalService} from '../../services';
-import {ApplicationComponent} from '../application/application.component';
-import {DeploymentsComponent} from './inventory.component';
+import {ApplicationService, DeploymentService, ModalService} from '../../services';
+import {DeploymentListComponent} from './deployment-list.component';
+import {DeploymentComponent} from './deployment.component';
 
-class MockApplicationService extends ApplicationService {
-  private response: WinResponse<Application[]> = {meta: null, data: [TestDomain.APPLICATION]};
+class MockDeploymentService extends DeploymentService {
+  private response: WinResponse<Deployment[]> = {meta: null, data: [TestDomain.DEPLOYMENT]};
 
-  public findAll(): Observable<WinResponse<Application[]>> {
+  public findAll(): Observable<WinResponse<Deployment[]>> {
     return cold('--x|', {x: this.response});
   }
 }
 
-describe('InventoryComponent', () => {
-  let component: DeploymentsComponent;
-  let fixture: ComponentFixture<DeploymentsComponent>;
-  let child: ApplicationComponent;
-  let applicationService: ApplicationService;
+describe('DeploymentListComponent', () => {
+  let component: DeploymentListComponent;
+  let fixture: ComponentFixture<DeploymentListComponent>;
+  let child: DeploymentComponent;
+  let deploymentService: DeploymentService;
   let modalService: ModalService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientModule, HttpClientTestingModule, TableModule],
-      declarations: [DeploymentsComponent, ApplicationComponent, ModalComponent],
-      providers: [{provide: ApplicationService, useClass: MockApplicationService}, ModalService]
+      declarations: [DeploymentListComponent, DeploymentComponent, ModalComponent],
+      providers: [{provide: DeploymentService, useClass: MockDeploymentService}, ApplicationService, ModalService]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DeploymentsComponent);
+    fixture = TestBed.createComponent(DeploymentListComponent);
     component = fixture.componentInstance;
-    child = component.applicationComponent;
+    child = component.deploymentComponent;
     fixture.detectChanges();
-    applicationService = TestBed.get(ApplicationService);
+    deploymentService = TestBed.get(DeploymentService);
     modalService = TestBed.get(ModalService);
   });
 
@@ -48,26 +48,26 @@ describe('InventoryComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should fetch application list on init', () => {
+  it('should fetch deployment list on init', () => {
     getTestScheduler().flush();
 
-    expect(component.applications.length).toEqual(1);
-    expect(component.applications).toContain(TestDomain.APPLICATION);
+    expect(component.deployments.length).toEqual(1);
+    expect(component.deployments).toContain(TestDomain.DEPLOYMENT);
   });
 
-  it('should reset application component when creating a new application', () => {
-    component.resetApplicationComponent();
+  it('should reset deployment component when creating a new deployment', () => {
+    component.resetDeploymentComponent();
 
-    expect(child.passedApplication).toBe(null);
+    expect(child.passedDeployment).toBe(null);
     expect(child.model.id).toBe(null);
   });
 
-  it('should set passed application in application component', () => {
-    const application = TestDomain.APPLICATION;
-    component.setPassedApplication(application);
+  it('should set passed deployment in deployment component', () => {
+    const deployment = TestDomain.DEPLOYMENT;
+    component.setPassedDeployment(deployment);
 
-    expect(child.passedApplication.id).toEqual(application.id);
-    expect(child.model.id).toEqual(application.id);
+    expect(child.passedDeployment.id).toEqual(deployment.id);
+    expect(child.model.id).toEqual(deployment.id);
   });
 
   it('should open modal', () => {
@@ -78,24 +78,24 @@ describe('InventoryComponent', () => {
     expect(modalService.open).toHaveBeenCalled();
   });
 
-  it('should refresh applications on create event', () => {
-    spyOn(component, 'refreshApplications').and.callThrough();
-    component.handleCreate(TestDomain.APPLICATION);
+  it('should refresh deployments on create event', () => {
+    spyOn(component, 'refreshDeployments').and.callThrough();
+    component.handleCreate(TestDomain.DEPLOYMENT);
 
-    expect(component.refreshApplications).toHaveBeenCalled();
+    expect(component.refreshDeployments).toHaveBeenCalled();
   });
 
-  it('should refresh applications on delete event', () => {
-    spyOn(component, 'refreshApplications').and.callThrough();
-    component.handleDelete(TestDomain.APPLICATION);
+  it('should refresh deployments on delete event', () => {
+    spyOn(component, 'refreshDeployments').and.callThrough();
+    component.handleDelete(TestDomain.DEPLOYMENT);
 
-    expect(component.refreshApplications).toHaveBeenCalled();
+    expect(component.refreshDeployments).toHaveBeenCalled();
   });
 
-  it('should refresh applications on update event', () => {
-    spyOn(component, 'refreshApplications').and.callThrough();
-    component.handleUpdate(TestDomain.APPLICATION);
+  it('should refresh deployments on update event', () => {
+    spyOn(component, 'refreshDeployments').and.callThrough();
+    component.handleUpdate(TestDomain.DEPLOYMENT);
 
-    expect(component.refreshApplications).toHaveBeenCalled();
+    expect(component.refreshDeployments).toHaveBeenCalled();
   });
 });

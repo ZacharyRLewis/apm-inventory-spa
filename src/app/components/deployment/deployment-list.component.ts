@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Application} from '../../model';
 import {Deployment} from '../../model/index';
 import {DeploymentService} from '../../services/deployment/deployment.service';
-import {ApplicationService, ModalService} from '../../services/index';
+import {ApplicationService, ModalService} from '../../services';
 import {DeploymentComponent} from './deployment.component';
 
 @Component({

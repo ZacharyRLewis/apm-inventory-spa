@@ -48,7 +48,7 @@
           </div>
         </div>
       </div>
-      <div class="application-child-table-div">
+      <div class="child-table-div">
         <div>
           <label class="win-label">Deployments</label>
         </div>
@@ -80,7 +80,7 @@
           <div>None</div>
         </ng-template>
       </div>
-      <div class="application-child-table-div">
+      <div class="child-table-div">
         <label class="win-label apm-label">Dependencies</label>
         <div class="child-table" *ngIf="model.dependencies.length > 0; else noDependencies">
           <p-table [value]="model.dependencies" [paginator]="true" [rows]="10">

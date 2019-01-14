@@ -1,5 +1,5 @@
 import {Component, ElementRef, Input, OnDestroy, OnInit} from '@angular/core';
-import {ModalService} from '../../services/index';
+import {ModalService} from '../../services';
 
 @Component({
   selector: 'apm-modal',

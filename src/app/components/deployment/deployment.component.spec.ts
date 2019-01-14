@@ -2,40 +2,41 @@ import {HttpClientModule} from '@angular/common/http';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {cold} from 'jasmine-marbles';
+import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
-import {Application, WinResponse} from '../../model';
+import {Deployment, WinResponse} from '../../model';
 import {TestDomain} from '../../model/test-domain';
-import {ApplicationService, ModalService} from '../../services';
-import {DeploymentComponent} from './application.component';
+import {DeploymentService, ModalService} from '../../services';
+import {DeploymentComponent} from './deployment.component';
 
-class MockApplicationService extends ApplicationService {
-  private response: WinResponse<Application> = {meta: null, data: TestDomain.APPLICATION};
+class MockDeploymentService extends DeploymentService {
+  private response: WinResponse<Deployment> = {meta: null, data: TestDomain.DEPLOYMENT};
 
-  public create(appl: Application): Observable<WinResponse<Application>> {
+  public create(deployment: Deployment): Observable<WinResponse<Deployment>> {
     return cold('--x|', {x: this.response});
   }
 
-  public update(appl: Application): Observable<WinResponse<Application>> {
+  public update(deployment: Deployment): Observable<WinResponse<Deployment>> {
     return cold('--x|', {x: this.response});
   }
 
-  public delete(appl: Application): Observable<WinResponse<Application>> {
+  public delete(deployment: Deployment): Observable<WinResponse<Deployment>> {
     return cold('--x|', {x: this.response});
   }
 }
 
-describe('ApplicationComponent', () => {
+describe('DeploymentComponent', () => {
   let component: DeploymentComponent;
   let fixture: ComponentFixture<DeploymentComponent>;
-  let applicationService: ApplicationService;
+  let deploymentService: DeploymentService;
   let modalService: ModalService;
-  let application: Application;
+  let deployment: Deployment;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, HttpClientModule],
+      imports: [FormsModule, HttpClientModule, TableModule],
       declarations: [DeploymentComponent],
-      providers: [{provide: ApplicationService, useClass: MockApplicationService}, ModalService]
+      providers: [{provide: DeploymentService, useClass: MockDeploymentService}, ModalService]
     }).compileComponents();
   }));
 
@@ -43,11 +44,11 @@ describe('ApplicationComponent', () => {
     fixture = TestBed.createComponent(DeploymentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    applicationService = TestBed.get(ApplicationService);
+    deploymentService = TestBed.get(DeploymentService);
     modalService = TestBed.get(ModalService);
     modalService.modals = [TestDomain.TEST_MODAL];
     component.modalId = 'test';
-    application = TestDomain.APPLICATION;
+    deployment = TestDomain.DEPLOYMENT;
   });
 
   it('should create', () => {
@@ -58,12 +59,15 @@ describe('ApplicationComponent', () => {
     component.setDefaultValues();
 
     expect(component.model.id).toEqual(null);
-    expect(component.model.name).toEqual('');
-    expect(component.model.mnemonic).toEqual('');
-    expect(component.model.description).toEqual('');
-    expect(component.model.applicationType.name).toEqual('');
-    expect(component.model.deployments).toEqual([]);
-    expect(component.model.dependencies).toEqual([]);
+    expect(component.model.applicationId).toEqual(null);
+    expect(component.model.environment).toEqual('');
+    expect(component.model.directory).toEqual('');
+    expect(component.model.https).toEqual(null);
+    expect(component.model.hostServer).toEqual('');
+    expect(component.model.port).toEqual('');
+    expect(component.model.contextName).toEqual('');
+    expect(component.model.databases).toEqual([]);
+    expect(component.model.services).toEqual([]);
   });
 
   it('should close modal', () => {
@@ -74,67 +78,64 @@ describe('ApplicationComponent', () => {
     expect(modalService.close).toHaveBeenCalled();
   });
 
-  it('should call update application when passedApplication exists', () => {
-    spyOn(component, 'createApplication').and.callThrough();
-    spyOn(component, 'updateApplication').and.callThrough();
+  it('should call update deployment when passedDeployment exists', () => {
+    spyOn(component, 'createDeployment').and.callThrough();
+    spyOn(component, 'updateDeployment').and.callThrough();
 
-    component.passedApplication = Object.assign({}, application);
-    component.saveApplication();
+    component.passedDeployment = Object.assign({}, deployment);
+    component.saveDeployment();
 
-    expect(component.updateApplication).toHaveBeenCalledTimes(1);
-    expect(component.createApplication).toHaveBeenCalledTimes(0);
+    expect(component.updateDeployment).toHaveBeenCalledTimes(1);
+    expect(component.createDeployment).toHaveBeenCalledTimes(0);
   });
 
-  it('should call create application when passedApplication doesnt exist', () => {
-    spyOn(component, 'createApplication').and.callThrough();
-    spyOn(component, 'updateApplication').and.callThrough();
+  it('should call create deployment when passedDeployment doesnt exist', () => {
+    spyOn(component, 'createDeployment').and.callThrough();
+    spyOn(component, 'updateDeployment').and.callThrough();
 
-    component.passedApplication = null;
-    component.saveApplication();
+    component.passedDeployment = null;
+    component.saveDeployment();
 
-    expect(component.updateApplication).toHaveBeenCalledTimes(0);
-    expect(component.createApplication).toHaveBeenCalledTimes(1);
+    expect(component.updateDeployment).toHaveBeenCalledTimes(0);
+    expect(component.createDeployment).toHaveBeenCalledTimes(1);
   });
 
-  it('should create application', () => {
-    spyOn(applicationService, 'create').and.callThrough();
+  it('should create deployment', () => {
+    spyOn(deploymentService, 'create').and.callThrough();
 
-    component.model = Object.assign({}, application);
-    component.createApplication();
+    component.model = Object.assign({}, deployment);
+    component.createDeployment();
 
-    expect(applicationService.create).toHaveBeenCalled();
+    expect(deploymentService.create).toHaveBeenCalled();
 
     component.createEvent.subscribe(created => {
       expect(created.id).toEqual('123');
-      expect(created.mnemonic).toEqual('test');
     });
   });
 
-  it('should delete application', () => {
-    spyOn(applicationService, 'delete').and.callThrough();
+  it('should delete deployment', () => {
+    spyOn(deploymentService, 'delete').and.callThrough();
 
-    component.model = Object.assign({}, application);
-    component.deleteApplication();
+    component.model = Object.assign({}, deployment);
+    component.deleteDeployment();
 
-    expect(applicationService.delete).toHaveBeenCalled();
+    expect(deploymentService.delete).toHaveBeenCalled();
 
     component.deleteEvent.subscribe(deleted => {
-      expect(deleted.id).toEqual(application.id);
-      expect(deleted.mnemonic).toEqual(application.mnemonic);
+      expect(deleted.id).toEqual(deployment.id);
     });
   });
 
-  it('should update application', () => {
-    spyOn(applicationService, 'update').and.callThrough();
+  it('should update deployment', () => {
+    spyOn(deploymentService, 'update').and.callThrough();
 
-    component.model = Object.assign({}, application);
-    component.updateApplication();
+    component.model = Object.assign({}, deployment);
+    component.updateDeployment();
 
-    expect(applicationService.update).toHaveBeenCalled();
+    expect(deploymentService.update).toHaveBeenCalled();
 
     component.updateEvent.subscribe(updated => {
-      expect(updated.id).toEqual(application.id);
-      expect(updated.mnemonic).toEqual(application.mnemonic);
+      expect(updated.id).toEqual(deployment.id);
     });
   });
 });

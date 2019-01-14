@@ -8,7 +8,7 @@ import {Observable} from 'rxjs';
 import {ModalComponent} from '..';
 import {Application, WinResponse} from '../../model';
 import {TestDomain} from '../../model/test-domain';
-import {ApplicationService, ModalService} from '../../services';
+import {ApplicationService, ApplicationTypeService, DeploymentService, ModalService} from '../../services';
 import {ApplicationComponent} from '../application/application.component';
 import {InventoryComponent} from './inventory.component';
 
@@ -31,7 +31,7 @@ describe('InventoryComponent', () => {
     TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientModule, HttpClientTestingModule, TableModule],
       declarations: [InventoryComponent, ApplicationComponent, ModalComponent],
-      providers: [{provide: ApplicationService, useClass: MockApplicationService}, ModalService]
+      providers: [{provide: ApplicationService, useClass: MockApplicationService}, ApplicationTypeService, DeploymentService, ModalService]
     }).compileComponents();
   }));
 

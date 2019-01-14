@@ -1,6 +1,6 @@
 export class DatabaseType {
 
-  constructor(public id?: number,
+  constructor(public id?: string,
               public name?: string) {
   }
 

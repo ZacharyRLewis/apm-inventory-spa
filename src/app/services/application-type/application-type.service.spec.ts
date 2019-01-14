@@ -86,7 +86,7 @@ describe('ApplicationTypeService', () => {
           }
         );
 
-      const req = httpTester.expectOne(applicationTypeService.url + applicationType.id);
+      const req = httpTester.expectOne(applicationTypeService.url + '/' + applicationType.id);
       expect(req.request.method).toEqual('GET');
 
       const expectedResponse = new HttpResponse({status: 200, statusText: 'OK', body: expected});
@@ -101,7 +101,7 @@ describe('ApplicationTypeService', () => {
           err => {
           });
 
-      const req = httpTester.expectOne(applicationTypeService.url + applicationType.id);
+      const req = httpTester.expectOne(applicationTypeService.url + '/' + applicationType.id);
 
       req.flush({}, {status: 404, statusText: 'Not Found'});
     });
@@ -137,7 +137,7 @@ describe('ApplicationTypeService', () => {
             expect(res).toEqual(expected, 'should return the updated applicationType');
           });
 
-      const req = httpTester.expectOne(applicationTypeService.url + applicationType.id);
+      const req = httpTester.expectOne(applicationTypeService.url + '/' + applicationType.id);
       expect(req.request.method).toEqual('PUT');
 
       const expectedResponse = new HttpResponse({status: 200, statusText: 'OK', body: expected});
@@ -152,7 +152,7 @@ describe('ApplicationTypeService', () => {
           err => {
           });
 
-      const req = httpTester.expectOne(applicationTypeService.url + applicationType.id);
+      const req = httpTester.expectOne(applicationTypeService.url + '/' + applicationType.id);
 
       req.flush({}, {status: 404, statusText: 'Not Found'});
     });
@@ -169,7 +169,7 @@ describe('ApplicationTypeService', () => {
             expect(res).toEqual(expected, 'should return no applicationType');
           });
 
-      const req = httpTester.expectOne(applicationTypeService.url + applicationType.id);
+      const req = httpTester.expectOne(applicationTypeService.url + '/' + applicationType.id);
       expect(req.request.method).toEqual('DELETE');
 
       const expectedResponse = new HttpResponse({status: 200, statusText: 'OK', body: expected});
@@ -184,7 +184,7 @@ describe('ApplicationTypeService', () => {
           err => {
           });
 
-      const req = httpTester.expectOne(applicationTypeService.url + applicationType.id);
+      const req = httpTester.expectOne(applicationTypeService.url + '/' + applicationType.id);
 
       req.flush({}, {status: 404, statusText: 'Not Found'});
     });

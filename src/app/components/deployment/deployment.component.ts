@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Application, Deployment} from '../../model';
-import {ApplicationService, DeploymentService, ModalService} from '../../services';
+import {DeploymentService, ModalService} from '../../services';
 
 @Component({
   selector: 'apm-deployment',
@@ -19,7 +19,7 @@ export class DeploymentComponent {
   environments: string[] = ['DEV', 'QA', 'PROD'];
   applications: Application[] = [];
 
-  constructor(private applicationService: ApplicationService, private deploymentService: DeploymentService, private modalService: ModalService) {
+  constructor(private deploymentService: DeploymentService, private modalService: ModalService) {
     this.setDefaultValues();
   }
 

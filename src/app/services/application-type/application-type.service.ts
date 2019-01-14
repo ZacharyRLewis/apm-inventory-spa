@@ -27,7 +27,7 @@ export class ApplicationTypeService implements ServiceInterface<ApplicationType>
     return this.http.get<WinResponse<ApplicationType[]>>(this.url, this._options);
   }
 
-  public findOne(id: number): Observable<WinResponse<ApplicationType>> {
+  public findOne(id: string): Observable<WinResponse<ApplicationType>> {
     return this.http.get<WinResponse<ApplicationType>>(this.url + '/' + id, this._options);
   }
 
