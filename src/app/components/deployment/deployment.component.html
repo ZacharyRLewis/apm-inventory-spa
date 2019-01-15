@@ -4,7 +4,7 @@
       <div class="win-h2 apm-modal-title" *ngIf="!passedDeployment">Add New Deployment</div>
       <div class="win-h2 apm-modal-title" *ngIf="passedDeployment">Update Deployment</div>
       <button aria-label="Close" class="close apm-modal-close" (click)="closeModal()" type="button">
-        <i aria-hidden="true" class="pi pi-times"></i>
+        <i aria-hidden="true" class="fa fa-times"></i>
       </button>
     </div>
     <form ngForm="newDeploymentForm">
@@ -30,7 +30,7 @@
           </div>
         </div>
         <div class="apm-form-group">
-          <label class="win-label apm-label" for="directory">Directory</label>
+          <label class="win-label apm-label" for="directory">Deployment Directory</label>
           <div class="apm-input-group">
             <input type="text" class="apm-input" id="directory" name="directory" [(ngModel)]="model.directory">
           </div>

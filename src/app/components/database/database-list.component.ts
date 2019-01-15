@@ -1,6 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {DatabaseType} from '../../model/database-type';
-import {Database} from '../../model/index';
+import {Database, DatabaseType} from '../../model';
 import {DatabaseTypeService} from '../../services/database-type/database-type.service';
 import {DatabaseService, ModalService} from '../../services';
 import {DatabaseComponent} from './database.component';

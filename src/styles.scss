@@ -28,9 +28,8 @@ body.apm-modal-open {
   padding: 4px 12px
 }
 
-.add-button .pi {
-  font-size: 22px;
-  vertical-align: bottom;
+.add-button span {
+  padding-left: 3px;
 }
 
 .apm-modal-title {
@@ -103,14 +102,6 @@ body.apm-modal-open {
     width: 96%;
     height: 28px;
     background-color: white;
-  }
-}
-
-.nested-table .ui-table {
-  margin-top: 25px;
-
-  tr {
-    height: 22px;
   }
 }
 

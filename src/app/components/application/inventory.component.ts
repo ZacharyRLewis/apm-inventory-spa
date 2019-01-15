@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Application, ApplicationType} from '../../model/index';
+import {Application, ApplicationType} from '../../model';
 import {ApplicationTypeService} from '../../services/application-type/application-type.service';
 import {ApplicationService} from '../../services/application/application.service';
 import {ModalService} from '../../services';

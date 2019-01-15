@@ -2,6 +2,7 @@ import {CommonModule} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
+import {ServicesModule} from '@win-angular/services';
 import {TableModule} from 'primeng/table';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -23,6 +24,7 @@ import {ApplicationService, ApplicationTypeService, DatabaseService, DatabaseTyp
     CommonModule,
     ComponentsModule,
     HttpClientModule,
+    ServicesModule,
     TableModule
   ],
   providers: [

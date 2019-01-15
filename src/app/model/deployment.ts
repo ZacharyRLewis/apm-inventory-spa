@@ -16,6 +16,9 @@ export class Deployment {
   }
 
   public static getBaseUrl(deployment: Deployment): string {
-    return (deployment.https ? 'https://' : 'http://') + deployment.hostServer + ':' + deployment.port + '/' + deployment.contextName;
+    const protocol: string = deployment.https && deployment.https === true ? 'https://' : 'http://';
+    const port: string = deployment.port ? ':' + deployment.port : '';
+
+    return protocol + deployment.hostServer + port + '/' + deployment.contextName;
   }
 }

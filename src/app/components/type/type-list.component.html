@@ -1,0 +1,79 @@
+<div class="win-body">
+  <div class="page-title-wrapper">
+    <h2 class="page-title">Application Types</h2>
+    <div class="button-wrapper">
+      <button class="add-button" (click)="resetApplicationTypeComponent(); openApplicationTypeModal();">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+        <span>Create Application Type</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="application-types-table">
+    <p-table [value]="applicationTypes" [paginator]="true" [rows]="10">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 30px">ID</th>
+          <th style="width: 80px">Name</th>
+          <th style="width: 60px">Version</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-applicationType>
+        <tr>
+          <td>
+            <a (click)="setPassedApplicationType(applicationType); openApplicationTypeModal();">{{applicationType.id}}</a>
+          </td>
+          <td>{{applicationType.name}}</td>
+          <td>{{applicationType.version}}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <div class="page-title-wrapper database-type-section">
+    <h2 class="page-title">Database Types</h2>
+    <div class="button-wrapper">
+      <button class="add-button" (click)="resetDatabaseTypeComponent(); openDatabaseTypeModal();">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+        <span>Create Database Type</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="database-types-table">
+    <p-table [value]="databaseTypes" [paginator]="true" [rows]="10">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 30px">ID</th>
+          <th style="width: 80px">Name</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-databaseType>
+        <tr>
+          <td>
+            <a (click)="setPassedDatabaseType(databaseType); openDatabaseTypeModal();">{{databaseType.id}}</a>
+          </td>
+          <td>{{databaseType.name}}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<apm-modal id="application-type-component">
+  <apm-application-type modalId="application-type-component" #applicationTypeComponent
+                        (createEvent)="handleApplicationTypeCreate($event)"
+                        (deleteEvent)="handleApplicationTypeDelete($event)"
+                        (updateEvent)="handleApplicationTypeUpdate($event)">
+
+  </apm-application-type>
+</apm-modal>
+
+<apm-modal id="database-type-component">
+  <apm-database-type modalId="database-type-component" #databaseTypeComponent
+                     (createEvent)="handleDatabaseTypeCreate($event)"
+                     (deleteEvent)="handleDatabaseTypeDelete($event)"
+                     (updateEvent)="handleDatabaseTypeUpdate($event)">
+
+  </apm-database-type>
+</apm-modal>

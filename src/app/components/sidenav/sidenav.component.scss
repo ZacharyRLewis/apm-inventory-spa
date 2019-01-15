@@ -5,3 +5,39 @@
 .side-nav-toolbar a i {
   font-size: 24px;
 }
+
+.side-nav-item {
+  position: relative;
+  display: inline-block;
+}
+
+.side-nav-item .side-nav-tooltip {
+  visibility: hidden;
+  min-width: 140px;
+  min-height: 30px;
+  background-color: rgba(87, 86, 89, 0.9);
+  color: #fff;
+  font-size: 16px;
+  text-transform: uppercase;
+  padding: 15px 0 0 10px;
+  border-radius: 5px;
+  position: absolute;
+  top: 5px;
+  margin-left: 10px;
+  z-index: 1;
+}
+
+.side-nav-tooltip-arrow {
+  visibility: hidden;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 10px solid rgba(87, 86, 89, 0.9);
+  margin-top: 16px;
+  position: absolute;
+}
+
+.side-nav-item:hover .side-nav-tooltip, .side-nav-item:hover .side-nav-tooltip-arrow {
+  visibility: visible;
+}

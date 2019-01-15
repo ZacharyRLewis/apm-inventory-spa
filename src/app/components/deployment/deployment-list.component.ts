@@ -1,9 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Application} from '../../model';
-import {Deployment} from '../../model/index';
+import {Application, Deployment} from '../../model';
+import {ApplicationService} from '../../services';
 import {DeploymentService} from '../../services/deployment/deployment.service';
-import {ApplicationService, ModalService} from '../../services';
 import {DeploymentComponent} from './deployment.component';
+import {CarouselService, ModalService} from '@win-angular/services';
 
 @Component({
   selector: 'apm-deployment-list',
@@ -18,7 +18,8 @@ export class DeploymentListComponent implements OnInit  {
   @ViewChild('deploymentComponent')
   deploymentComponent: DeploymentComponent;
 
-  constructor(private applicationService: ApplicationService, private deploymentService: DeploymentService, private modalService: ModalService) {
+  constructor(private applicationService: ApplicationService, private deploymentService: DeploymentService,
+              private modalService: ModalService, private carouselService: CarouselService) {
     this.refreshDeployments();
   }
 
@@ -45,7 +46,8 @@ export class DeploymentListComponent implements OnInit  {
 
   public openModal(): void {
     this.deploymentComponent.applications = this.applications;
-    this.modalService.open('deployment-component');
+    this.carouselService.first('deployment-component');
+    this.modalService.openModal('deployment-component');
   }
 
   public handleCreate(deployment: Deployment): void {
@@ -68,5 +70,21 @@ export class DeploymentListComponent implements OnInit  {
       .subscribe(response => {
         this.applications = response.data;
       });
+  }
+
+  public getAppMnemonic(applicationId: string): string {
+    if (!this.applications || !applicationId) {
+      return '';
+    }
+    for (const application of this.applications) {
+      if (application.id === applicationId) {
+        return application.mnemonic;
+      }
+    }
+    return null;
+  }
+
+  public getDeploymentBaseUrl(deployment: Deployment): string {
+    return Deployment.getBaseUrl(deployment);
   }
 }

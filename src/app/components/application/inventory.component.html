@@ -3,7 +3,7 @@
     <h2 class="page-title">Applications</h2>
     <div class="button-wrapper">
       <button class="add-button" (click)="resetApplicationComponent(); openModal();">
-        <i class="pi pi-plus" aria-hidden="true"></i>
+        <i class="fa fa-plus" aria-hidden="true"></i>
         <span>Create Application</span>
       </button>
     </div>
@@ -15,10 +15,8 @@
         <tr>
           <th style="width: 2em">Mnemonic</th>
           <th style="width: 2em">Name</th>
-          <th style="width: 2em">Description</th>
           <th style="width: 2em">Type</th>
           <th style="width: 1.5em">Deployments</th>
-          <th style="width: 1.5em">Dependencies</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-application>
@@ -27,10 +25,8 @@
             <a (click)="setPassedApplication(application); openModal();">{{application.mnemonic}}</a>
           </td>
           <td>{{application.name}}</td>
-          <td>{{application.description}}</td>
           <td>{{application.applicationType.name}}</td>
           <td>{{application.deployments.length}}</td>
-          <td>{{application.dependencies.length}}</td>
         </tr>
       </ng-template>
     </p-table>

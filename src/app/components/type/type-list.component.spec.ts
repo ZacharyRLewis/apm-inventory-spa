@@ -5,7 +5,7 @@ import {FormsModule} from '@angular/forms';
 import {cold, getTestScheduler} from 'jasmine-marbles';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
-import {ApplicationTypeListComponent, ModalComponent} from '..';
+import {TypeListComponent, ModalComponent} from '..';
 import {ApplicationType, WinResponse} from '../../model';
 import {TestDomain} from '../../model/test-domain';
 import {ApplicationTypeService, ModalService} from '../../services';
@@ -20,8 +20,8 @@ class MockApplicationTypeService extends ApplicationTypeService {
 }
 
 describe('ApplicationTypeListComponent', () => {
-  let component: ApplicationTypeListComponent;
-  let fixture: ComponentFixture<ApplicationTypeListComponent>;
+  let component: TypeListComponent;
+  let fixture: ComponentFixture<TypeListComponent>;
   let child: ApplicationTypeComponent;
   let applicationTypeService: ApplicationTypeService;
   let modalService: ModalService;
@@ -29,13 +29,13 @@ describe('ApplicationTypeListComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientModule, HttpClientTestingModule, TableModule],
-      declarations: [ApplicationTypeListComponent, ApplicationTypeComponent, ModalComponent],
+      declarations: [TypeListComponent, ApplicationTypeComponent, ModalComponent],
       providers: [{provide: ApplicationTypeService, useClass: MockApplicationTypeService}, ModalService]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ApplicationTypeListComponent);
+    fixture = TestBed.createComponent(TypeListComponent);
     component = fixture.componentInstance;
     child = component.applicationTypeComponent;
     fixture.detectChanges();
