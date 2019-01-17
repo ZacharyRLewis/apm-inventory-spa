@@ -2,13 +2,13 @@ import {HttpClientModule} from '@angular/common/http';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {ModalService} from '@win-angular/services';
 import {cold, getTestScheduler} from 'jasmine-marbles';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
-import {ModalComponent} from '..';
 import {Deployment, WinResponse} from '../../model';
 import {TestDomain} from '../../model/test-domain';
-import {ApplicationService, DeploymentService, ModalService} from '../../services';
+import {ApplicationService, DeploymentService} from '../../services';
 import {DeploymentListComponent} from './deployment-list.component';
 import {DeploymentComponent} from './deployment.component';
 
@@ -17,6 +17,16 @@ class MockDeploymentService extends DeploymentService {
 
   public findAll(): Observable<WinResponse<Deployment[]>> {
     return cold('--x|', {x: this.response});
+  }
+}
+
+class MockModalService extends ModalService {
+  openModal(modalId: string, hideFocus?: boolean) {
+    console.log('open modal');
+  }
+
+  closeModal(modalId: string) {
+    console.log('close modal');
   }
 }
 
@@ -30,8 +40,12 @@ describe('DeploymentListComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientModule, HttpClientTestingModule, TableModule],
-      declarations: [DeploymentListComponent, DeploymentComponent, ModalComponent],
-      providers: [{provide: DeploymentService, useClass: MockDeploymentService}, ApplicationService, ModalService]
+      declarations: [DeploymentListComponent, DeploymentComponent],
+      providers: [
+        {provide: DeploymentService, useClass: MockDeploymentService},
+        ApplicationService,
+        {provide: ModalService, useClass: MockModalService}
+      ]
     }).compileComponents();
   }));
 
@@ -71,11 +85,11 @@ describe('DeploymentListComponent', () => {
   });
 
   it('should open modal', () => {
-    spyOn(modalService, 'open').and.callThrough();
+    spyOn(modalService, 'openModal').and.callThrough();
 
     component.openModal();
 
-    expect(modalService.open).toHaveBeenCalled();
+    expect(modalService.openModal).toHaveBeenCalled();
   });
 
   it('should refresh deployments on create event', () => {

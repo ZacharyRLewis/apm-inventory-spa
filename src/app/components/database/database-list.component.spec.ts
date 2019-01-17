@@ -2,13 +2,14 @@ import {HttpClientModule} from '@angular/common/http';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {ModalService} from '@win-angular/services';
 import {cold, getTestScheduler} from 'jasmine-marbles';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
-import {DatabaseListComponent, ModalComponent} from '..';
+import {DatabaseListComponent} from '..';
 import {Database, WinResponse} from '../../model';
 import {TestDomain} from '../../model/test-domain';
-import {DatabaseService, DatabaseTypeService, ModalService} from '../../services';
+import {ApplicationService, DatabaseService, DatabaseTypeService, DeploymentService} from '../../services';
 import {DatabaseComponent} from './database.component';
 
 class MockDatabaseService extends DatabaseService {
@@ -16,6 +17,16 @@ class MockDatabaseService extends DatabaseService {
 
   public findAll(): Observable<WinResponse<Database[]>> {
     return cold('--x|', {x: this.response});
+  }
+}
+
+class MockModalService extends ModalService {
+  openModal(modalId: string, hideFocus?: boolean) {
+    console.log('open modal');
+  }
+
+  closeModal(modalId: string) {
+    console.log('close modal');
   }
 }
 
@@ -29,8 +40,12 @@ describe('DatabaseListComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientModule, HttpClientTestingModule, TableModule],
-      declarations: [DatabaseListComponent, DatabaseComponent, ModalComponent],
-      providers: [{provide: DatabaseService, useClass: MockDatabaseService}, DatabaseTypeService, ModalService]
+      declarations: [DatabaseListComponent, DatabaseComponent],
+      providers: [
+        {provide: DatabaseService, useClass: MockDatabaseService},
+        DatabaseTypeService,
+        {provide: ModalService, useClass: MockModalService}
+      ]
     }).compileComponents();
   }));
 
@@ -70,11 +85,11 @@ describe('DatabaseListComponent', () => {
   });
 
   it('should open modal', () => {
-    spyOn(modalService, 'open').and.callThrough();
+    spyOn(modalService, 'openModal').and.callThrough();
 
     component.openModal();
 
-    expect(modalService.open).toHaveBeenCalled();
+    expect(modalService.openModal).toHaveBeenCalled();
   });
 
   it('should refresh databases on create event', () => {

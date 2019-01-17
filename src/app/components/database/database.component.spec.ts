@@ -7,7 +7,7 @@ import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {Database, WinResponse} from '../../model';
 import {TestDomain} from '../../model/test-domain';
-import {DatabaseService} from '../../services';
+import {ApplicationService, DatabaseService, DeploymentService} from '../../services';
 import {DatabaseComponent} from './database.component';
 
 class MockDatabaseService extends DatabaseService {
@@ -26,6 +26,16 @@ class MockDatabaseService extends DatabaseService {
   }
 }
 
+class MockModalService extends ModalService {
+  openModal(modalId: string, hideFocus?: boolean) {
+    console.log('open modal');
+  }
+
+  closeModal(modalId: string) {
+    console.log('close modal');
+  }
+}
+
 describe('DatabaseComponent', () => {
   let component: DatabaseComponent;
   let fixture: ComponentFixture<DatabaseComponent>;
@@ -37,7 +47,10 @@ describe('DatabaseComponent', () => {
     TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientModule, TableModule],
       declarations: [DatabaseComponent],
-      providers: [{provide: DatabaseService, useClass: MockDatabaseService}, ModalService]
+      providers: [
+        {provide: DatabaseService, useClass: MockDatabaseService},
+        {provide: ModalService, useClass: MockModalService}
+      ]
     }).compileComponents();
   }));
 
@@ -47,7 +60,6 @@ describe('DatabaseComponent', () => {
     fixture.detectChanges();
     databaseService = TestBed.get(DatabaseService);
     modalService = TestBed.get(ModalService);
-    // modalService.modals = [TestDomain.TEST_MODAL];
     component.modalId = 'test';
     database = TestDomain.DATABASE;
   });

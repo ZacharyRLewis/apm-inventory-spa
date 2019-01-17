@@ -1,12 +1,13 @@
 import {HttpClientModule} from '@angular/common/http';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {ModalService} from '@win-angular/services';
 import {cold} from 'jasmine-marbles';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {Application, WinResponse} from '../../model';
 import {TestDomain} from '../../model/test-domain';
-import {ApplicationService, DeploymentService, ModalService} from '../../services';
+import {ApplicationService, DeploymentService} from '../../services';
 import {ApplicationComponent} from './application.component';
 
 class MockApplicationService extends ApplicationService {
@@ -25,6 +26,16 @@ class MockApplicationService extends ApplicationService {
   }
 }
 
+class MockModalService extends ModalService {
+  openModal(modalId: string, hideFocus?: boolean) {
+    console.log('open modal');
+  }
+
+  closeModal(modalId: string) {
+    console.log('close modal');
+  }
+}
+
 describe('ApplicationComponent', () => {
   let component: ApplicationComponent;
   let fixture: ComponentFixture<ApplicationComponent>;
@@ -36,7 +47,11 @@ describe('ApplicationComponent', () => {
     TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientModule, TableModule],
       declarations: [ApplicationComponent],
-      providers: [{provide: ApplicationService, useClass: MockApplicationService}, DeploymentService, ModalService]
+      providers: [
+        {provide: ApplicationService, useClass: MockApplicationService},
+        DeploymentService,
+        {provide: ModalService, useClass: MockModalService}
+      ]
     }).compileComponents();
   }));
 
@@ -46,7 +61,6 @@ describe('ApplicationComponent', () => {
     fixture.detectChanges();
     applicationService = TestBed.get(ApplicationService);
     modalService = TestBed.get(ModalService);
-    modalService.modals = [TestDomain.TEST_MODAL];
     component.modalId = 'test';
     application = TestDomain.APPLICATION;
   });
@@ -68,11 +82,11 @@ describe('ApplicationComponent', () => {
   });
 
   it('should close modal', () => {
-    spyOn(modalService, 'close').and.callThrough();
+    spyOn(modalService, 'closeModal').and.callThrough();
 
     component.closeModal();
 
-    expect(modalService.close).toHaveBeenCalled();
+    expect(modalService.closeModal).toHaveBeenCalled();
   });
 
   it('should call update application when passedApplication exists', () => {

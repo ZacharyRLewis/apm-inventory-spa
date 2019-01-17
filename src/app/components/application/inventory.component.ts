@@ -49,6 +49,7 @@ export class InventoryComponent implements OnInit  {
 
   public openModal(): void {
     this.applicationComponent.applicationTypes = this.applicationTypes;
+    // this.carouselService.first(this.APPLICATION_MODAL_ID);
     this.modalService.openModal(this.APPLICATION_MODAL_ID);
   }
 

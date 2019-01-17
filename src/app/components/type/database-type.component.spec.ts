@@ -1,11 +1,12 @@
 import {HttpClientModule} from '@angular/common/http';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {ModalService} from '@win-angular/services';
 import {cold} from 'jasmine-marbles';
 import {Observable} from 'rxjs';
 import {DatabaseType, WinResponse} from '../../model';
 import {TestDomain} from '../../model/test-domain';
-import {DatabaseTypeService, ModalService} from '../../services';
+import {DatabaseTypeService} from '../../services';
 import {DatabaseTypeComponent} from './database-type.component';
 
 class MockDatabaseTypeService extends DatabaseTypeService {
@@ -24,6 +25,16 @@ class MockDatabaseTypeService extends DatabaseTypeService {
   }
 }
 
+class MockModalService extends ModalService {
+  openModal(modalId: string, hideFocus?: boolean) {
+    console.log('open modal');
+  }
+
+  closeModal(modalId: string) {
+    console.log('close modal');
+  }
+}
+
 describe('DatabaseTypeComponent', () => {
   let component: DatabaseTypeComponent;
   let fixture: ComponentFixture<DatabaseTypeComponent>;
@@ -35,7 +46,7 @@ describe('DatabaseTypeComponent', () => {
     TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientModule],
       declarations: [DatabaseTypeComponent],
-      providers: [{provide: DatabaseTypeService, useClass: MockDatabaseTypeService}, ModalService]
+      providers: [{provide: DatabaseTypeService, useClass: MockDatabaseTypeService}, {provide: ModalService, useClass: MockModalService}]
     }).compileComponents();
   }));
 
@@ -45,7 +56,6 @@ describe('DatabaseTypeComponent', () => {
     fixture.detectChanges();
     databaseTypeService = TestBed.get(DatabaseTypeService);
     modalService = TestBed.get(ModalService);
-    modalService.modals = [TestDomain.TEST_MODAL];
     component.modalId = 'test';
     databaseType = TestDomain.APPLICATION_TYPE;
   });
@@ -62,11 +72,11 @@ describe('DatabaseTypeComponent', () => {
   });
 
   it('should close modal', () => {
-    spyOn(modalService, 'close').and.callThrough();
+    spyOn(modalService, 'closeModal').and.callThrough();
 
     component.closeModal();
 
-    expect(modalService.close).toHaveBeenCalled();
+    expect(modalService.closeModal).toHaveBeenCalled();
   });
 
   it('should call update databaseType when passedDatabaseType exists', () => {

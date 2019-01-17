@@ -1,11 +1,12 @@
 import {HttpClientModule} from '@angular/common/http';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {ModalService} from '@win-angular/services';
 import {cold} from 'jasmine-marbles';
 import {Observable} from 'rxjs';
 import {ApplicationType, WinResponse} from '../../model';
 import {TestDomain} from '../../model/test-domain';
-import {ApplicationTypeService, ModalService} from '../../services';
+import {ApplicationTypeService} from '../../services';
 import {ApplicationTypeComponent} from './application-type.component';
 
 class MockApplicationTypeService extends ApplicationTypeService {
@@ -24,6 +25,16 @@ class MockApplicationTypeService extends ApplicationTypeService {
   }
 }
 
+class MockModalService extends ModalService {
+  openModal(modalId: string, hideFocus?: boolean) {
+    console.log('open modal');
+  }
+
+  closeModal(modalId: string) {
+    console.log('close modal');
+  }
+}
+
 describe('ApplicationTypeComponent', () => {
   let component: ApplicationTypeComponent;
   let fixture: ComponentFixture<ApplicationTypeComponent>;
@@ -35,7 +46,7 @@ describe('ApplicationTypeComponent', () => {
     TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientModule],
       declarations: [ApplicationTypeComponent],
-      providers: [{provide: ApplicationTypeService, useClass: MockApplicationTypeService}, ModalService]
+      providers: [{provide: ApplicationTypeService, useClass: MockApplicationTypeService}, {provide: ModalService, useClass: MockModalService}]
     }).compileComponents();
   }));
 
@@ -45,7 +56,6 @@ describe('ApplicationTypeComponent', () => {
     fixture.detectChanges();
     applicationTypeService = TestBed.get(ApplicationTypeService);
     modalService = TestBed.get(ModalService);
-    modalService.modals = [TestDomain.TEST_MODAL];
     component.modalId = 'test';
     applicationType = TestDomain.APPLICATION_TYPE;
   });
@@ -63,11 +73,11 @@ describe('ApplicationTypeComponent', () => {
   });
 
   it('should close modal', () => {
-    spyOn(modalService, 'close').and.callThrough();
+    spyOn(modalService, 'closeModal').and.callThrough();
 
     component.closeModal();
 
-    expect(modalService.close).toHaveBeenCalled();
+    expect(modalService.closeModal).toHaveBeenCalled();
   });
 
   it('should call update applicationType when passedApplicationType exists', () => {

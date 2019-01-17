@@ -1,7 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {CarouselService, ModalService, ServicesModule} from '@win-angular/services';
+import {ModalService, ServicesModule} from '@win-angular/services';
 import {TableModule} from 'primeng/table';
 import {ApplicationComponent} from './application/application.component';
 import {InventoryComponent} from './application/inventory.component';
@@ -44,7 +44,6 @@ import {TypeListComponent} from './type/type-list.component';
     TypeListComponent
   ],
   providers: [
-    CarouselService,
     ModalService
   ]
 })

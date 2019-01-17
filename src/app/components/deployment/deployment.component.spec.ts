@@ -1,12 +1,13 @@
 import {HttpClientModule} from '@angular/common/http';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {ModalService} from '@win-angular/services';
 import {cold} from 'jasmine-marbles';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {Deployment, WinResponse} from '../../model';
 import {TestDomain} from '../../model/test-domain';
-import {DeploymentService, ModalService} from '../../services';
+import {ApplicationService, DeploymentService} from '../../services';
 import {DeploymentComponent} from './deployment.component';
 
 class MockDeploymentService extends DeploymentService {
@@ -25,6 +26,16 @@ class MockDeploymentService extends DeploymentService {
   }
 }
 
+class MockModalService extends ModalService {
+  openModal(modalId: string, hideFocus?: boolean) {
+    console.log('open modal');
+  }
+
+  closeModal(modalId: string) {
+    console.log('close modal');
+  }
+}
+
 describe('DeploymentComponent', () => {
   let component: DeploymentComponent;
   let fixture: ComponentFixture<DeploymentComponent>;
@@ -36,7 +47,10 @@ describe('DeploymentComponent', () => {
     TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientModule, TableModule],
       declarations: [DeploymentComponent],
-      providers: [{provide: DeploymentService, useClass: MockDeploymentService}, ModalService]
+      providers: [
+        {provide: DeploymentService, useClass: MockDeploymentService},
+        {provide: ModalService, useClass: MockModalService}
+      ]
     }).compileComponents();
   }));
 
@@ -46,7 +60,6 @@ describe('DeploymentComponent', () => {
     fixture.detectChanges();
     deploymentService = TestBed.get(DeploymentService);
     modalService = TestBed.get(ModalService);
-    modalService.modals = [TestDomain.TEST_MODAL];
     component.modalId = 'test';
     deployment = TestDomain.DEPLOYMENT;
   });
@@ -71,11 +84,11 @@ describe('DeploymentComponent', () => {
   });
 
   it('should close modal', () => {
-    spyOn(modalService, 'close').and.callThrough();
+    spyOn(modalService, 'closeModal').and.callThrough();
 
     component.closeModal();
 
-    expect(modalService.close).toHaveBeenCalled();
+    expect(modalService.closeModal).toHaveBeenCalled();
   });
 
   it('should call update deployment when passedDeployment exists', () => {

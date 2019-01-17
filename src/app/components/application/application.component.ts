@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ModalService} from '@win-angular/services';
-import {Application, ApplicationType, Deployment, ServiceCall} from '../../model';
+import {Application, ApplicationType, Deployment} from '../../model';
 import {ApplicationService, DeploymentService} from '../../services';
 
 @Component({

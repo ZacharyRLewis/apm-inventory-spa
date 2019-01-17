@@ -6,10 +6,9 @@ import {ModalService} from '@win-angular/services';
 import {cold, getTestScheduler} from 'jasmine-marbles';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
-import {ModalComponent} from '..';
 import {Application, WinResponse} from '../../model';
 import {TestDomain} from '../../model/test-domain';
-import {ApplicationService, ApplicationTypeService, DeploymentService} from '../../services';
+import {ApplicationService, ApplicationTypeService, DatabaseService, DatabaseTypeService, DeploymentService} from '../../services';
 import {ApplicationComponent} from '../application/application.component';
 import {InventoryComponent} from './inventory.component';
 
@@ -18,6 +17,16 @@ class MockApplicationService extends ApplicationService {
 
   public findAll(): Observable<WinResponse<Application[]>> {
     return cold('--x|', {x: this.response});
+  }
+}
+
+class MockModalService extends ModalService {
+  openModal(modalId: string, hideFocus?: boolean) {
+    console.log('open modal');
+  }
+
+  closeModal(modalId: string) {
+    console.log('close modal');
   }
 }
 
@@ -31,8 +40,12 @@ describe('InventoryComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientModule, HttpClientTestingModule, TableModule],
-      declarations: [InventoryComponent, ApplicationComponent, ModalComponent],
-      providers: [{provide: ApplicationService, useClass: MockApplicationService}, ApplicationTypeService, DeploymentService, ModalService]
+      declarations: [InventoryComponent, ApplicationComponent],
+      providers: [
+        {provide: ApplicationService, useClass: MockApplicationService},
+        ApplicationTypeService, DeploymentService,
+        {provide: ModalService, useClass: MockModalService}
+      ]
     }).compileComponents();
   }));
 
@@ -72,11 +85,11 @@ describe('InventoryComponent', () => {
   });
 
   it('should open modal', () => {
-    spyOn(modalService, 'open').and.callThrough();
+    spyOn(modalService, 'openModal').and.callThrough();
 
     component.openModal();
 
-    expect(modalService.open).toHaveBeenCalled();
+    expect(modalService.openModal).toHaveBeenCalled();
   });
 
   it('should refresh applications on create event', () => {

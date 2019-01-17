@@ -3,7 +3,7 @@ import {Application, Deployment} from '../../model';
 import {ApplicationService} from '../../services';
 import {DeploymentService} from '../../services/deployment/deployment.service';
 import {DeploymentComponent} from './deployment.component';
-import {CarouselService, ModalService} from '@win-angular/services';
+import {ModalService} from '@win-angular/services';
 
 @Component({
   selector: 'apm-deployment-list',
@@ -21,7 +21,7 @@ export class DeploymentListComponent implements OnInit  {
   deploymentComponent: DeploymentComponent;
 
   constructor(private applicationService: ApplicationService, private deploymentService: DeploymentService,
-              private modalService: ModalService, private carouselService: CarouselService) {
+              private modalService: ModalService) {
     this.refreshDeployments();
   }
 
@@ -48,7 +48,7 @@ export class DeploymentListComponent implements OnInit  {
 
   public openModal(): void {
     this.deploymentComponent.applications = this.applications;
-    this.carouselService.first(this.DEPLOYMENT_MODAL_ID);
+    // this.carouselService.first(this.DEPLOYMENT_MODAL_ID);
     this.modalService.openModal(this.DEPLOYMENT_MODAL_ID);
   }
 
