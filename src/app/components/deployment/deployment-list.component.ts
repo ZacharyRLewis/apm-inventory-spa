@@ -15,6 +15,8 @@ export class DeploymentListComponent implements OnInit  {
   public deployments: Deployment[] = [];
   public applications: Application[] = [];
 
+  public DEPLOYMENT_MODAL_ID = 'deployment-modal';
+
   @ViewChild('deploymentComponent')
   deploymentComponent: DeploymentComponent;
 
@@ -46,8 +48,8 @@ export class DeploymentListComponent implements OnInit  {
 
   public openModal(): void {
     this.deploymentComponent.applications = this.applications;
-    this.carouselService.first('deployment-component');
-    this.modalService.openModal('deployment-component');
+    this.carouselService.first(this.DEPLOYMENT_MODAL_ID);
+    this.modalService.openModal(this.DEPLOYMENT_MODAL_ID);
   }
 
   public handleCreate(deployment: Deployment): void {

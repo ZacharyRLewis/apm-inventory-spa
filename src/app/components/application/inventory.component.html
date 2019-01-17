@@ -33,9 +33,6 @@
   </div>
 </div>
 
-<apm-modal id="application-component">
-  <apm-application modalId="application-component" #applicationComponent
-                   (createEvent)="handleCreate($event)" (deleteEvent)="handleDelete($event)" (updateEvent)="handleUpdate($event)">
-
-  </apm-application>
-</apm-modal>
+<apm-application #applicationComponent [modalId]="APPLICATION_MODAL_ID"
+                (createEvent)="handleCreate($event)" (deleteEvent)="handleDelete($event)" (updateEvent)="handleUpdate($event)">
+</apm-application>

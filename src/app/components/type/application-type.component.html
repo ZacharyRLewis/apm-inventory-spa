@@ -1,43 +1,39 @@
-<div class="win-body">
-  <div class="apm-modal-body">
-    <div>
-      <div class="win-h2 apm-modal-title" *ngIf="!passedApplicationType">Add New Application Type</div>
-      <div class="win-h2 apm-modal-title" *ngIf="passedApplicationType">Update Application Type</div>
-      <button aria-label="Close" class="close apm-modal-close" (click)="closeModal()" type="button">
-        <i aria-hidden="true" class="fa fa-times"></i>
-      </button>
-    </div>
-    <form ngForm="newApplicationTypeForm">
-      <div class="apm-form-body">
-        <div class="apm-form-group">
-          <label class="win-label apm-label" for="name">Name</label>
-          <div class="apm-input-group">
-            <input type="text" class="apm-input" id="name" name="name" [(ngModel)]="model.name">
-          </div>
-        </div>
-        <div class="apm-form-group">
-          <label class="win-label apm-label" for="version">Version</label>
-          <div class="apm-input-group">
-            <input type="text" class="apm-input" id="version" name="version" [(ngModel)]="model.version">
-          </div>
-        </div>
+<div class="modal fade win-modal-big in" [id]="modalId">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header container">
+        <h2 class="modal-title" *ngIf="!passedDatabaseType">Add New Database Type</h2>
+        <h2 class="modal-title" *ngIf="passedDatabaseType">Update Database Type</h2>
+        <button type="button" class="close" data-dismiss="modal">
+          <span><i class="fa fa-times"></i></span>
+        </button>
       </div>
-    </form>
-
-  </div>
-</div>
-
-<div class="action-buttons">
-  <div class="container action-buttons-container">
-    <div class="left" *ngIf="passedApplicationType">
-      <button type="button" class="action-button win-button win-button-secondary" (click)="deleteApplicationType()">
-        <span>Delete Application Type</span>
-      </button>
-    </div>
-    <div class="right">
-      <button type="button" class="action-button win-button win-button-primary" (click)="saveApplicationType()">
-        <span>Save Application Type</span>
-      </button>
+      <div class="modal-body container">
+        <form ngForm="newApplicationTypeForm">
+          <div class="apm-form-body">
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="name">Name</label>
+              <div class="apm-input-group">
+                <input type="text" class="apm-input" id="name" name="name" [(ngModel)]="model.name">
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="version">Version</label>
+              <div class="apm-input-group">
+                <input type="text" class="apm-input" id="version" name="version" [(ngModel)]="model.version">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer container">
+        <button type="button" class="win-button win-button-secondary btn left" *ngIf="passedApplicationType" (click)="deleteApplicationType()">
+          <span>Delete Application Type</span>
+        </button>
+        <button type="button" class="win-button win-button-primary btn right" (click)="saveApplicationType()">
+          <span>Save Application Type</span>
+        </button>
+      </div>
     </div>
   </div>
 </div>

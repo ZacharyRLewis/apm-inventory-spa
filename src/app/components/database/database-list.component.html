@@ -37,9 +37,6 @@
   </div>
 </div>
 
-<apm-modal id="database-component">
-  <apm-database modalId="database-component" #databaseComponent
-                   (createEvent)="handleCreate($event)" (deleteEvent)="handleDelete($event)" (updateEvent)="handleUpdate($event)">
-
-  </apm-database>
-</apm-modal>
+<apm-database #databaseComponent [modalId]="DATABASE_MODAL_ID"
+              (createEvent)="handleCreate($event)" (deleteEvent)="handleDelete($event)" (updateEvent)="handleUpdate($event)">
+</apm-database>

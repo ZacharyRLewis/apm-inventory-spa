@@ -1,12 +1,13 @@
 import {HttpClientModule} from '@angular/common/http';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {ModalService} from '@win-angular/services';
 import {cold} from 'jasmine-marbles';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {Database, WinResponse} from '../../model';
 import {TestDomain} from '../../model/test-domain';
-import {DatabaseService, ModalService} from '../../services';
+import {DatabaseService} from '../../services';
 import {DatabaseComponent} from './database.component';
 
 class MockDatabaseService extends DatabaseService {
@@ -46,7 +47,7 @@ describe('DatabaseComponent', () => {
     fixture.detectChanges();
     databaseService = TestBed.get(DatabaseService);
     modalService = TestBed.get(ModalService);
-    modalService.modals = [TestDomain.TEST_MODAL];
+    // modalService.modals = [TestDomain.TEST_MODAL];
     component.modalId = 'test';
     database = TestDomain.DATABASE;
   });
@@ -67,11 +68,11 @@ describe('DatabaseComponent', () => {
   });
 
   it('should close modal', () => {
-    spyOn(modalService, 'close').and.callThrough();
+    spyOn(modalService, 'closeModal').and.callThrough();
 
     component.closeModal();
 
-    expect(modalService.close).toHaveBeenCalled();
+    expect(modalService.closeModal).toHaveBeenCalled();
   });
 
   it('should call update database when passedDatabase exists', () => {

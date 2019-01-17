@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
+import {ModalService} from '@win-angular/services';
 import {ApplicationType, DatabaseType} from '../../model';
-import {ApplicationTypeService, DatabaseTypeService, ModalService} from '../../services';
+import {ApplicationTypeService, DatabaseTypeService} from '../../services';
 import {ApplicationTypeComponent} from './application-type.component';
 import {DatabaseTypeComponent} from './database-type.component';
 
@@ -13,6 +14,9 @@ export class TypeListComponent implements OnInit {
 
   public applicationTypes: ApplicationType[] = [];
   public databaseTypes: DatabaseType[] = [];
+
+  public APPLICATION_TYPE_MODAL_ID = 'application-type-modal';
+  public DATABASE_TYPE_MODAL_ID = 'database-type-modal';
 
   @ViewChild('applicationTypeComponent')
   applicationTypeComponent: ApplicationTypeComponent;
@@ -63,8 +67,12 @@ export class TypeListComponent implements OnInit {
     this.databaseTypeComponent.model = Object.assign({}, databaseType);
   }
 
-  public openApplicationTypeModal(): void {
-    this.modalService.open('application-type-component');
+  public openModal(modalId: string): void {
+    this.modalService.openModal(modalId);
+  }
+
+  public closeModal(modalId: string): void {
+    this.modalService.closeModal(modalId);
   }
 
   public handleApplicationTypeCreate(applicationType: ApplicationType): void {
@@ -80,10 +88,6 @@ export class TypeListComponent implements OnInit {
   public handleApplicationTypeUpdate(applicationType: ApplicationType): void {
     console.log('Application Type ' + applicationType.name + ' successfully updated');
     this.refreshApplicationTypes();
-  }
-
-  public openDatabaseTypeModal(): void {
-    this.modalService.open('database-type-component');
   }
 
   public handleDatabaseTypeCreate(databaseType: DatabaseType): void {

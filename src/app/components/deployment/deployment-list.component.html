@@ -33,9 +33,6 @@
   </div>
 </div>
 
-<apm-modal id="deployment-component">
-  <apm-deployment modalId="deployment-component" #deploymentComponent
-                   (createEvent)="handleCreate($event)" (deleteEvent)="handleDelete($event)" (updateEvent)="handleUpdate($event)">
-
-  </apm-deployment>
-</apm-modal>
+<apm-deployment #deploymentComponent [modalId]="DEPLOYMENT_MODAL_ID"
+                (createEvent)="handleCreate($event)" (deleteEvent)="handleDelete($event)" (updateEvent)="handleUpdate($event)">
+</apm-deployment>

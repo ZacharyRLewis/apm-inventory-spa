@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {ModalService} from '@win-angular/services';
 import {ApplicationType} from '../../model';
-import {ApplicationTypeService, ModalService} from '../../services';
+import {ApplicationTypeService} from '../../services';
 
 @Component({
   selector: 'apm-application-type',
@@ -28,7 +29,7 @@ export class ApplicationTypeComponent {
   }
 
   public closeModal(): void {
-    this.modalService.close(this.modalId);
+    this.modalService.closeModal(this.modalId);
   }
 
   public saveApplicationType(): void {

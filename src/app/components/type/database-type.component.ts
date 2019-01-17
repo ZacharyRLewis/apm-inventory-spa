@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {ModalService} from '@win-angular/services';
 import {DatabaseType} from '../../model';
-import {DatabaseTypeService, ModalService} from '../../services';
+import {DatabaseTypeService} from '../../services';
 
 @Component({
   selector: 'apm-database-type',
@@ -27,7 +28,7 @@ export class DatabaseTypeComponent {
   }
 
   public closeModal(): void {
-    this.modalService.close(this.modalId);
+    this.modalService.closeModal(this.modalId);
   }
 
   public saveDatabaseType(): void {

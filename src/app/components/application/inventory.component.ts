@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
+import {ModalService} from '@win-angular/services';
 import {Application, ApplicationType} from '../../model';
 import {ApplicationTypeService} from '../../services/application-type/application-type.service';
 import {ApplicationService} from '../../services/application/application.service';
-import {ModalService} from '../../services';
 import {ApplicationComponent} from '../application/application.component';
 
 @Component({
@@ -15,6 +15,8 @@ export class InventoryComponent implements OnInit  {
   public applications: Application[] = [];
   public applicationTypes: ApplicationType[] = [];
   public databaseTypes: ApplicationType[] = [];
+
+  public APPLICATION_MODAL_ID = 'application-modal';
 
   @ViewChild('applicationComponent')
   applicationComponent: ApplicationComponent;
@@ -47,7 +49,7 @@ export class InventoryComponent implements OnInit  {
 
   public openModal(): void {
     this.applicationComponent.applicationTypes = this.applicationTypes;
-    this.modalService.open('application-component');
+    this.modalService.openModal(this.APPLICATION_MODAL_ID);
   }
 
   public handleCreate(application: Application): void {

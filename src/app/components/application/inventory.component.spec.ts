@@ -2,13 +2,14 @@ import {HttpClientModule} from '@angular/common/http';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {ModalService} from '@win-angular/services';
 import {cold, getTestScheduler} from 'jasmine-marbles';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {ModalComponent} from '..';
 import {Application, WinResponse} from '../../model';
 import {TestDomain} from '../../model/test-domain';
-import {ApplicationService, ApplicationTypeService, DeploymentService, ModalService} from '../../services';
+import {ApplicationService, ApplicationTypeService, DeploymentService} from '../../services';
 import {ApplicationComponent} from '../application/application.component';
 import {InventoryComponent} from './inventory.component';
 

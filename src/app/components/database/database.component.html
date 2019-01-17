@@ -1,69 +1,65 @@
-<div class="win-body">
-  <div class="apm-modal-body">
-    <div>
-      <div class="win-h2 apm-modal-title" *ngIf="!passedDatabase">Add New Database</div>
-      <div class="win-h2 apm-modal-title" *ngIf="passedDatabase">Update Database</div>
-      <button aria-label="Close" class="close apm-modal-close" (click)="closeModal()" type="button">
-        <i aria-hidden="true" class="fa fa-times"></i>
-      </button>
-    </div>
-    <form ngForm="newDatabaseForm">
-      <div class="apm-form-body">
-        <div class="apm-form-group">
-          <label class="win-label apm-label" for="environment">Environment</label>
-          <div class="apm-input-group">
-            <select class="apm-input apm-select" id="environment" [(ngModel)]="model.environment" name="environment" #environment="ngModel">
-              <option *ngFor="let env of environments">
-                {{env}}
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="apm-form-group">
-          <label class="win-label apm-label" for="name">Name</label>
-          <div class="apm-input-group">
-            <input type="text" class="apm-input" id="name" name="name" [(ngModel)]="model.name">
-          </div>
-        </div>
-        <div class="apm-form-group">
-          <label class="win-label apm-label" for="hostName">Host Name</label>
-          <div class="apm-input-group">
-            <input type="text" class="apm-input" id="hostName" name="hostName" [(ngModel)]="model.hostName">
-          </div>
-        </div>
-        <div class="apm-form-group">
-          <label class="win-label apm-label" for="port">Port</label>
-          <div class="apm-input-group">
-            <input type="text" class="apm-input" id="port" name="port" [(ngModel)]="model.port">
-          </div>
-        </div>
-        <div class="apm-form-group">
-          <label class="win-label apm-label" for="type">Type</label>
-          <div class="apm-input-group">
-            <select class="apm-input apm-select" id="type" [(ngModel)]="model.type.id" name="type" #type="ngModel">
-              <option *ngFor="let dbType of databaseTypes" value="{{dbType.id}}">
-                {{dbType.name}}
-              </option>
-            </select>
-          </div>
-        </div>
+<div class="modal fade win-modal-big in" [id]="modalId">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header container">
+        <h2 class="modal-title" *ngIf="!passedDatabase">Add New Database</h2>
+        <h2 class="modal-title" *ngIf="passedDatabase">Update Database</h2>
+        <button type="button" class="close" data-dismiss="modal">
+          <span><i class="fa fa-times"></i></span>
+        </button>
       </div>
-    </form>
-
-  </div>
-</div>
-
-<div class="action-buttons">
-  <div class="container action-buttons-container">
-    <div class="left" *ngIf="passedDatabase">
-      <button type="button" class="action-button win-button win-button-secondary" (click)="deleteDatabase()">
-        <span>Delete Database</span>
-      </button>
-    </div>
-    <div class="right">
-      <button type="button" class="action-button win-button win-button-primary" (click)="saveDatabase()">
-        <span>Save Database</span>
-      </button>
+      <div class="modal-body container">
+        <form ngForm="newDatabaseForm">
+          <div class="apm-form-body">
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="environment">Environment</label>
+              <div class="apm-input-group">
+                <select class="apm-input apm-select" id="environment" [(ngModel)]="model.environment" name="environment" #environment="ngModel">
+                  <option *ngFor="let env of environments">
+                    {{env}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="name">Name</label>
+              <div class="apm-input-group">
+                <input type="text" class="apm-input" id="name" name="name" [(ngModel)]="model.name">
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="hostName">Host Name</label>
+              <div class="apm-input-group">
+                <input type="text" class="apm-input" id="hostName" name="hostName" [(ngModel)]="model.hostName">
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="port">Port</label>
+              <div class="apm-input-group">
+                <input type="text" class="apm-input" id="port" name="port" [(ngModel)]="model.port">
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="type">Type</label>
+              <div class="apm-input-group">
+                <select class="apm-input apm-select" id="type" [(ngModel)]="model.type.id" name="type" #type="ngModel">
+                  <option *ngFor="let dbType of databaseTypes" value="{{dbType.id}}">
+                    {{dbType.name}}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer container">
+        <button type="button" class="win-button win-button-secondary btn left" *ngIf="passedDatabase" (click)="deleteDatabase()">
+          <span>Delete Database</span>
+        </button>
+        <button type="button" class="win-button win-button-primary btn right" (click)="saveDatabase()">
+          <span>Save Database</span>
+        </button>
+      </div>
     </div>
   </div>
 </div>

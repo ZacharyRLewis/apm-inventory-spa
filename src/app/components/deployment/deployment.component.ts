@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {ModalService} from '@win-angular/services';
 import {Application, Deployment} from '../../model';
-import {DeploymentService, ModalService} from '../../services';
+import {DeploymentService} from '../../services';
 
 @Component({
   selector: 'apm-deployment',
@@ -37,7 +38,7 @@ export class DeploymentComponent {
   }
 
   public closeModal(): void {
-    this.modalService.close(this.modalId);
+    this.modalService.closeModal(this.modalId);
   }
 
   public saveDeployment(): void {

@@ -1,125 +1,115 @@
-<div class="win-body">
-  <div class="apm-modal-body">
-    <div>
-      <div class="win-h2 apm-modal-title" *ngIf="!passedApplication">Add New Application</div>
-      <div class="win-h2 apm-modal-title" *ngIf="passedApplication">Update Application</div>
-      <button aria-label="Close" class="close apm-modal-close" (click)="closeModal()" type="button">
-        <i aria-hidden="true" class="fa fa-times"></i>
-      </button>
-    </div>
-    <form ngForm="newApplicationForm">
-      <div class="apm-form-body">
-        <div class="apm-form-group">
-          <label class="win-label apm-label" for="applicationMnemonic">Mnemonic</label>
-          <div class="apm-input-group">
-            <input type="text" class="apm-input" id="applicationMnemonic" name="mnemonic" [(ngModel)]="model.mnemonic">
-          </div>
-        </div>
-        <div class="apm-form-group">
-          <label class="win-label apm-label" for="applicationName">Name</label>
-          <div class="apm-input-group">
-            <input type="text" class="apm-input" id="applicationName" name="name" [(ngModel)]="model.name">
-          </div>
-        </div>
-        <div class="apm-form-group">
-          <label class="win-label apm-label" for="applicationDescription">Description</label>
-          <div class="apm-input-group">
-            <input type="text" class="apm-input" id="applicationDescription" name="description" [(ngModel)]="model.description">
-          </div>
-        </div>
-        <div class="apm-form-group">
-          <label class="win-label apm-label" for="applicationType">Type</label>
-          <div class="apm-input-group">
-            <select class="apm-input apm-select" id="applicationType" [(ngModel)]="model.applicationType.id" name="type" #type="ngModel">
-              <option *ngFor="let appType of applicationTypes" value="{{appType.id}}">
-                {{appType.name}} {{appType.version}}
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="apm-form-group">
-          <label class="win-label apm-label" for="serviceApi">Is Service/API?</label>
-          <div class="apm-input-group">
-            <select class="apm-input apm-select" id="serviceApi" [(ngModel)]="model.serviceApi" name="serviceApi" #type="ngModel">
-              <option *ngFor="let choice of ['true', 'false']" value="{{choice}}">
-                {{choice}}
-              </option>
-            </select>
-          </div>
-        </div>
+<div class="modal fade win-modal-big in" [id]="modalId">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header container">
+        <h2 class="modal-title" *ngIf="!passedApplication">Add New Application</h2>
+        <h2 class="modal-title" *ngIf="passedApplication">Update Application</h2>
+        <button type="button" class="close" data-dismiss="modal">
+          <span><i class="fa fa-times"></i></span>
+        </button>
       </div>
-      <div class="child-table-div">
-        <div>
-          <label class="win-label">Deployments</label>
-        </div>
-        <div class="child-table deployments-table" *ngIf="model.deployments.length > 0; else noDeployments">
-          <p-table [value]="model.deployments" [paginator]="false" dataKey="environment">
-            <ng-template pTemplate="header">
-              <tr>
-                <th style="width: 100px">Environment</th>
-                <th style="width: 180px">Directory</th>
-                <th style="width: 80px">HTTPS?</th>
-                <th style="width: 160px">Host Server</th>
-                <th style="width: 60px">Port</th>
-                <th style="width: 180px">Context Name</th>
-              </tr>
+      <div class="modal-body container">
+        <form ngForm="newApplicationForm">
+          <div class="apm-form-body">
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="applicationMnemonic">Mnemonic</label>
+              <div class="apm-input-group">
+                <input type="text" class="apm-input" id="applicationMnemonic" name="mnemonic" [(ngModel)]="model.mnemonic">
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="applicationName">Name</label>
+              <div class="apm-input-group">
+                <input type="text" class="apm-input" id="applicationName" name="name" [(ngModel)]="model.name">
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="applicationDescription">Description</label>
+              <div class="apm-input-group">
+                <input type="text" class="apm-input" id="applicationDescription" name="description" [(ngModel)]="model.description">
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="applicationType">Type</label>
+              <div class="apm-input-group">
+                <select class="apm-input apm-select" id="applicationType" [(ngModel)]="model.applicationType.id" name="type" #type="ngModel">
+                  <option *ngFor="let appType of applicationTypes" value="{{appType.id}}">
+                    {{appType.name}} {{appType.version}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="serviceApi">Is Service/API?</label>
+              <div class="apm-input-group">
+                <select class="apm-input apm-select" id="serviceApi" [(ngModel)]="model.serviceApi" name="serviceApi" #type="ngModel">
+                  <option *ngFor="let choice of ['true', 'false']" value="{{choice}}">
+                    {{choice}}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="child-table-div">
+            <div>
+              <label class="win-label">Deployments</label>
+            </div>
+            <div class="child-table" *ngIf="model.deployments.length > 0; else noDeployments">
+              <p-table [value]="model.deployments" [paginator]="false" dataKey="environment">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th style="width: 80px">Environment</th>
+                    <th style="width: 300px">Base URL</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-deployment>
+                  <tr>
+                    <td>{{deployment.environment}}</td>
+                    <td>{{getDeploymentBaseUrl(deployment)}}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+            <ng-template #noDeployments>
+              <div>None</div>
             </ng-template>
-            <ng-template pTemplate="body" let-deployment>
-              <tr>
-                <td>{{deployment.environment}}</td>
-                <td>{{deployment.directory}}</td>
-                <td>{{deployment.https}}</td>
-                <td>{{deployment.hostServer}}</td>
-                <td>{{deployment.port}}</td>
-                <td>{{deployment.contextName}}</td>
-              </tr>
+          </div>
+          <div class="child-table-div">
+            <div>
+              <label class="win-label">Dependencies</label>
+            </div>
+            <div class="child-table" *ngIf="model.dependencies.length > 0; else noDependencies">
+              <p-table [value]="model.dependencies" [paginator]="true" [rows]="10">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th style="width: 1em">Name</th>
+                    <th style="width: 1em">Version</th>
+                    <th style="width: 4em">Reference</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-dependency>
+                  <tr>
+                    <td>{{dependency.name}}</td>
+                    <td>{{dependency.versionCode}}</td>
+                    <td>{{dependency.managerReference}}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+            <ng-template #noDependencies>
+              <div>None</div>
             </ng-template>
-          </p-table>
-        </div>
-        <ng-template #noDeployments>
-          <div>None</div>
-        </ng-template>
+          </div>
+        </form>
       </div>
-      <div class="child-table-div">
-        <label class="win-label apm-label">Dependencies</label>
-        <div class="child-table" *ngIf="model.dependencies.length > 0; else noDependencies">
-          <p-table [value]="model.dependencies" [paginator]="true" [rows]="10">
-            <ng-template pTemplate="header">
-              <tr>
-                <th style="width: 1em">Name</th>
-                <th style="width: 1em">Version</th>
-                <th style="width: 4em">Reference</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-dependency>
-              <tr>
-                <td>{{dependency.name}}</td>
-                <td>{{dependency.versionCode}}</td>
-                <td>{{dependency.managerReference}}</td>
-              </tr>
-            </ng-template>
-          </p-table>
-        </div>
-        <ng-template #noDependencies>
-          <div>None</div>
-        </ng-template>
+      <div class="modal-footer container">
+        <button type="button" class="win-button win-button-secondary btn left" *ngIf="passedApplication" (click)="deleteApplication()">
+          <span>Delete Application</span>
+        </button>
+        <button type="button" class="win-button win-button-primary btn right" (click)="saveApplication()">
+          <span>Save Application</span>
+        </button>
       </div>
-    </form>
-
-  </div>
-</div>
-
-<div class="action-buttons">
-  <div class="container action-buttons-container">
-    <div class="left" *ngIf="passedApplication">
-      <button type="button" class="action-button win-button win-button-secondary" (click)="deleteApplication()">
-        <span>Delete Application</span>
-      </button>
-    </div>
-    <div class="right">
-      <button type="button" class="action-button win-button win-button-primary" (click)="saveApplication()">
-        <span>Save Application</span>
-      </button>
     </div>
   </div>
 </div>

@@ -1,120 +1,117 @@
-<div class="win-body">
-  <div class="apm-modal-body">
-    <div>
-      <div class="win-h2 apm-modal-title" *ngIf="!passedDeployment">Add New Deployment</div>
-      <div class="win-h2 apm-modal-title" *ngIf="passedDeployment">Update Deployment</div>
-      <button aria-label="Close" class="close apm-modal-close" (click)="closeModal()" type="button">
-        <i aria-hidden="true" class="fa fa-times"></i>
-      </button>
-    </div>
-    <form ngForm="newDeploymentForm">
-      <div class="apm-form-body">
-        <div class="apm-form-group">
-          <label class="win-label apm-label" for="applicationId">Application</label>
-          <div class="apm-input-group">
-            <select class="apm-input apm-select" id="applicationId" [(ngModel)]="model.applicationId" name="applicationId" #applicationId="ngModel">
-              <option *ngFor="let app of applications" value="{{app.id}}">
-                {{app.mnemonic}}
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="apm-form-group">
-          <label class="win-label apm-label" for="environment">Environment</label>
-          <div class="apm-input-group">
-            <select class="apm-input apm-select" id="environment" [(ngModel)]="model.environment" name="environment" #environment="ngModel">
-              <option *ngFor="let env of environments">
-                {{env}}
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="apm-form-group">
-          <label class="win-label apm-label" for="directory">Deployment Directory</label>
-          <div class="apm-input-group">
-            <input type="text" class="apm-input" id="directory" name="directory" [(ngModel)]="model.directory">
-          </div>
-        </div>
-        <div class="apm-form-group">
-          <label class="win-label apm-label" for="https">Is HTTPS?</label>
-          <div class="apm-input-group">
-            <select class="apm-input apm-select" id="https" [(ngModel)]="model.https" name="https" #https="ngModel">
-              <option *ngFor="let choice of ['true', 'false']" value="{{choice}}">
-                {{choice}}
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="apm-form-group">
-          <label class="win-label apm-label" for="hostServer">Host Server</label>
-          <div class="apm-input-group">
-            <input type="text" class="apm-input" id="hostServer" name="hostServer" [(ngModel)]="model.hostServer">
-          </div>
-        </div>
-        <div class="apm-form-group">
-          <label class="win-label apm-label" for="port">Port</label>
-          <div class="apm-input-group">
-            <input type="text" class="apm-input" id="port" name="port" [(ngModel)]="model.port">
-          </div>
-        </div>
-        <div class="apm-form-group">
-          <label class="win-label apm-label" for="contextName">Context Name</label>
-          <div class="apm-input-group">
-            <input type="text" class="apm-input" id="contextName" name="contextName" [(ngModel)]="model.contextName">
-          </div>
-        </div>
-        <div class="apm-form-group">
-          <label class="win-label apm-label" for="baseUrl">Base URL</label>
-          <div class="apm-input-group">
-            <div class="apm-input base-url" id="baseUrl">{{getDeploymentBaseUrl(model)}}</div>
-          </div>
-        </div>
+<div class="modal fade win-modal-big in" [id]="modalId">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header container">
+        <h2 class="modal-title" *ngIf="!passedDeployment">Add New Deployment</h2>
+        <h2 class="modal-title" *ngIf="passedDeployment">Update Deployment</h2>
+        <button type="button" class="close" data-dismiss="modal">
+          <span><i class="fa fa-times"></i></span>
+        </button>
       </div>
-      <div class="child-table-div">
-        <div>
-          <label class="win-label">Databases</label>
-        </div>
-        <div class="child-table databases-table" *ngIf="model.databases.length > 0; else noDatabases">
-          <p-table [value]="model.databases" [paginator]="false" dataKey="environment">
-            <ng-template pTemplate="header">
-              <tr>
-                <th style="width: 100px">Environment</th>
-                <th style="width: 180px">Host Name</th>
-                <th style="width: 160px">Name</th>
-                <th style="width: 60px">Port</th>
-                <th style="width: 180px">Type</th>
-              </tr>
+      <div class="modal-body container">
+        <form ngForm="newDeploymentForm">
+          <div class="apm-form-body">
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="applicationId">Application</label>
+              <div class="apm-input-group">
+                <select class="apm-input apm-select" id="applicationId" [(ngModel)]="model.applicationId" name="applicationId" #applicationId="ngModel">
+                  <option *ngFor="let app of applications" value="{{app.id}}">
+                    {{app.mnemonic}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="environment">Environment</label>
+              <div class="apm-input-group">
+                <select class="apm-input apm-select" id="environment" [(ngModel)]="model.environment" name="environment" #environment="ngModel">
+                  <option *ngFor="let env of environments">
+                    {{env}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="directory">Deployment Directory</label>
+              <div class="apm-input-group">
+                <input type="text" class="apm-input" id="directory" name="directory" [(ngModel)]="model.directory">
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="https">Is HTTPS?</label>
+              <div class="apm-input-group">
+                <select class="apm-input apm-select" id="https" [(ngModel)]="model.https" name="https" #https="ngModel">
+                  <option *ngFor="let choice of ['true', 'false']" value="{{choice}}">
+                    {{choice}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="hostServer">Host Server</label>
+              <div class="apm-input-group">
+                <input type="text" class="apm-input" id="hostServer" name="hostServer" [(ngModel)]="model.hostServer">
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="port">Port</label>
+              <div class="apm-input-group">
+                <input type="text" class="apm-input" id="port" name="port" [(ngModel)]="model.port">
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="contextName">Context Name</label>
+              <div class="apm-input-group">
+                <input type="text" class="apm-input" id="contextName" name="contextName" [(ngModel)]="model.contextName">
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="baseUrl">Base URL</label>
+              <div class="apm-input-group">
+                <div class="apm-input base-url" id="baseUrl">{{getDeploymentBaseUrl(model)}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="child-table-div">
+            <div>
+              <label class="win-label">Databases</label>
+            </div>
+            <div class="child-table" *ngIf="model.databases.length > 0; else noDatabases">
+              <p-table [value]="model.databases" [paginator]="false" dataKey="environment">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th style="width: 100px">Environment</th>
+                    <th style="width: 180px">Host Name</th>
+                    <th style="width: 160px">Name</th>
+                    <th style="width: 60px">Port</th>
+                    <th style="width: 180px">Type</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-database>
+                  <tr>
+                    <td>{{database.environment}}</td>
+                    <td>{{database.hostName}}</td>
+                    <td>{{database.name}}</td>
+                    <td>{{database.port}}</td>
+                    <td>{{database.type.name}}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+            <ng-template #noDatabases>
+              <div>None</div>
             </ng-template>
-            <ng-template pTemplate="body" let-database>
-              <tr>
-                <td>{{database.environment}}</td>
-                <td>{{database.hostName}}</td>
-                <td>{{database.name}}</td>
-                <td>{{database.port}}</td>
-                <td>{{database.type.name}}</td>
-              </tr>
-            </ng-template>
-          </p-table>
-        </div>
-        <ng-template #noDatabases>
-          <div>None</div>
-        </ng-template>
+          </div>
+        </form>
       </div>
-    </form>
-  </div>
-</div>
-
-<div class="action-buttons">
-  <div class="container action-buttons-container">
-    <div class="left" *ngIf="passedDeployment">
-      <button type="button" class="action-button win-button win-button-secondary" (click)="deleteDeployment()">
-        <span>Delete Deployment</span>
-      </button>
-    </div>
-    <div class="right">
-      <button type="button" class="action-button win-button win-button-primary" (click)="saveDeployment()">
-        <span>Save Deployment</span>
-      </button>
+      <div class="modal-footer container">
+        <button type="button" class="win-button win-button-secondary btn left" *ngIf="passedDeployment" (click)="deleteDeployment()">
+          <span>Delete Deployment</span>
+        </button>
+        <button type="button" class="win-button win-button-primary btn right" (click)="saveDeployment()">
+          <span>Save Deployment</span>
+        </button>
+      </div>
     </div>
   </div>
 </div>

@@ -2,7 +2,7 @@
   <div class="page-title-wrapper">
     <h2 class="page-title">Application Types</h2>
     <div class="button-wrapper">
-      <button class="add-button" (click)="resetApplicationTypeComponent(); openApplicationTypeModal();">
+      <button class="add-button" (click)="resetApplicationTypeComponent(); openModal(APPLICATION_TYPE_MODAL_ID);">
         <i class="fa fa-plus" aria-hidden="true"></i>
         <span>Create Application Type</span>
       </button>
@@ -21,7 +21,7 @@
       <ng-template pTemplate="body" let-applicationType>
         <tr>
           <td>
-            <a (click)="setPassedApplicationType(applicationType); openApplicationTypeModal();">{{applicationType.id}}</a>
+            <a (click)="setPassedApplicationType(applicationType); openModal(APPLICATION_TYPE_MODAL_ID);">{{applicationType.id}}</a>
           </td>
           <td>{{applicationType.name}}</td>
           <td>{{applicationType.version}}</td>
@@ -33,7 +33,7 @@
   <div class="page-title-wrapper database-type-section">
     <h2 class="page-title">Database Types</h2>
     <div class="button-wrapper">
-      <button class="add-button" (click)="resetDatabaseTypeComponent(); openDatabaseTypeModal();">
+      <button class="add-button" (click)="resetDatabaseTypeComponent(); openModal(DATABASE_TYPE_MODAL_ID);">
         <i class="fa fa-plus" aria-hidden="true"></i>
         <span>Create Database Type</span>
       </button>
@@ -51,7 +51,7 @@
       <ng-template pTemplate="body" let-databaseType>
         <tr>
           <td>
-            <a (click)="setPassedDatabaseType(databaseType); openDatabaseTypeModal();">{{databaseType.id}}</a>
+            <a (click)="setPassedDatabaseType(databaseType); openModal(DATABASE_TYPE_MODAL_ID);">{{databaseType.id}}</a>
           </td>
           <td>{{databaseType.name}}</td>
         </tr>
@@ -60,20 +60,14 @@
   </div>
 </div>
 
-<apm-modal id="application-type-component">
-  <apm-application-type modalId="application-type-component" #applicationTypeComponent
-                        (createEvent)="handleApplicationTypeCreate($event)"
-                        (deleteEvent)="handleApplicationTypeDelete($event)"
-                        (updateEvent)="handleApplicationTypeUpdate($event)">
+<apm-application-type #applicationTypeComponent [modalId]="APPLICATION_TYPE_MODAL_ID"
+                      (createEvent)="handleApplicationTypeCreate($event)"
+                      (deleteEvent)="handleApplicationTypeDelete($event)"
+                      (updateEvent)="handleApplicationTypeUpdate($event)">
+</apm-application-type>
 
-  </apm-application-type>
-</apm-modal>
-
-<apm-modal id="database-type-component">
-  <apm-database-type modalId="database-type-component" #databaseTypeComponent
-                     (createEvent)="handleDatabaseTypeCreate($event)"
-                     (deleteEvent)="handleDatabaseTypeDelete($event)"
-                     (updateEvent)="handleDatabaseTypeUpdate($event)">
-
-  </apm-database-type>
-</apm-modal>
+<apm-database-type #databaseTypeComponent [modalId]="DATABASE_TYPE_MODAL_ID"
+                   (createEvent)="handleDatabaseTypeCreate($event)"
+                   (deleteEvent)="handleDatabaseTypeDelete($event)"
+                   (updateEvent)="handleDatabaseTypeUpdate($event)">
+</apm-database-type>

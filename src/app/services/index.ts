@@ -3,4 +3,3 @@ export {ApplicationTypeService} from './application-type/application-type.servic
 export {DatabaseService} from './database/database.service';
 export {DatabaseTypeService} from './database-type/database-type.service';
 export {DeploymentService} from './deployment/deployment.service';
-export {ModalService} from './modal/modal.service';

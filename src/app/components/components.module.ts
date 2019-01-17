@@ -9,7 +9,6 @@ import {DatabaseListComponent} from './database/database-list.component';
 import {DatabaseComponent} from './database/database.component';
 import {DeploymentListComponent} from './deployment/deployment-list.component';
 import {DeploymentComponent} from './deployment/deployment.component';
-import {ModalComponent} from './modal/modal.component';
 import {NavbarComponent} from './navbar/navbar.component';
 import {SidenavComponent} from './sidenav/sidenav.component';
 import {ApplicationTypeComponent} from './type/application-type.component';
@@ -26,7 +25,6 @@ import {TypeListComponent} from './type/type-list.component';
     DeploymentComponent,
     DeploymentListComponent,
     InventoryComponent,
-    ModalComponent,
     NavbarComponent,
     SidenavComponent,
     TypeListComponent
@@ -41,7 +39,6 @@ import {TypeListComponent} from './type/type-list.component';
     DatabaseListComponent,
     DeploymentListComponent,
     InventoryComponent,
-    ModalComponent,
     NavbarComponent,
     SidenavComponent,
     TypeListComponent

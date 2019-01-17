@@ -1,12 +1,6 @@
-.win-main-container {
-  margin-left: 0;
-  margin-right: 0;
-}
-
-.app-container {
-  transition: margin-left .5s;
+.win-main-container .container-fluid {
+  padding-top: 70px;
   padding-left: 55px;
   padding-right: 15px;
-  padding-top: 50px;
-  height: 100vh !important;
+  height: 100vh;
 }

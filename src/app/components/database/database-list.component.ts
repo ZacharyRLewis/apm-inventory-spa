@@ -1,7 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
+import {ModalService} from '@win-angular/services';
 import {Database, DatabaseType} from '../../model';
 import {DatabaseTypeService} from '../../services/database-type/database-type.service';
-import {DatabaseService, ModalService} from '../../services';
+import {DatabaseService} from '../../services';
 import {DatabaseComponent} from './database.component';
 
 @Component({
@@ -13,6 +14,8 @@ export class DatabaseListComponent implements OnInit  {
 
   public databases: Database[] = [];
   public databaseTypes: DatabaseType[] = [];
+
+  public DATABASE_MODAL_ID = 'database-component';
 
   @ViewChild('databaseComponent')
   databaseComponent: DatabaseComponent;
@@ -44,7 +47,11 @@ export class DatabaseListComponent implements OnInit  {
 
   public openModal(): void {
     this.databaseComponent.databaseTypes = this.databaseTypes;
-    this.modalService.open('database-component');
+    this.modalService.openModal(this.DATABASE_MODAL_ID);
+  }
+
+  public closeModal(): void {
+    this.modalService.closeModal(this.DATABASE_MODAL_ID);
   }
 
   public handleCreate(database: Database): void {
