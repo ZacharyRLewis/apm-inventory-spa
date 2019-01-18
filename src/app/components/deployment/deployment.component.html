@@ -4,7 +4,7 @@
       <div class="modal-header container">
         <h2 class="modal-title" *ngIf="!passedDeployment">Add New Deployment</h2>
         <h2 class="modal-title" *ngIf="passedDeployment">Update Deployment</h2>
-        <button type="button" class="close" data-dismiss="modal">
+        <button type="button" class="close" (click)="closeModal()">
           <span><i class="fa fa-times"></i></span>
         </button>
       </div>
@@ -13,13 +13,18 @@
           <div class="apm-form-body">
             <div class="apm-form-group">
               <label class="win-label apm-label" for="applicationId">Application</label>
-              <div class="apm-input-group">
+              <div class="apm-input-group" *ngIf="!passedApplication; else passedApplicationAppId">
                 <select class="apm-input apm-select" id="applicationId" [(ngModel)]="model.applicationId" name="applicationId" #applicationId="ngModel">
                   <option *ngFor="let app of applications" value="{{app.id}}">
                     {{app.mnemonic}}
                   </option>
                 </select>
               </div>
+              <ng-template #passedApplicationAppId>
+                <div class="apm-input-group">
+                  <div class="apm-input base-url" id="passedApplicationMnemonic">{{passedApplication.mnemonic}}</div>
+                </div>
+              </ng-template>
             </div>
             <div class="apm-form-group">
               <label class="win-label apm-label" for="environment">Environment</label>
@@ -104,7 +109,7 @@
           </div>
         </form>
       </div>
-      <div class="modal-footer container">
+      <div class="modal-footer container" *ngIf="!passedApplication; else passedApplicationButtons">
         <button type="button" class="win-button win-button-secondary btn left" *ngIf="passedDeployment" (click)="deleteDeployment()">
           <span>Delete Deployment</span>
         </button>
@@ -112,6 +117,16 @@
           <span>Save Deployment</span>
         </button>
       </div>
+      <ng-template #passedApplicationButtons>
+        <div class="modal-footer container">
+          <button type="button" class="win-button win-button-secondary btn left" (click)="backToApplication()">
+            <span>Back to Application</span>
+          </button>
+          <button type="button" class="win-button win-button-primary btn right" (click)="addToApplication()">
+            <span>Add to Application</span>
+          </button>
+        </div>
+      </ng-template>
     </div>
   </div>
 </div>

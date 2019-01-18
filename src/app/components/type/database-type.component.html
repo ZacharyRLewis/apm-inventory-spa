@@ -4,7 +4,7 @@
       <div class="modal-header container">
         <h2 class="modal-title" *ngIf="!passedDatabaseType">Add New Database Type</h2>
         <h2 class="modal-title" *ngIf="passedDatabaseType">Update Database Type</h2>
-        <button type="button" class="close" data-dismiss="modal">
+        <button type="button" class="close" (click)="closeModal()">
           <span><i class="fa fa-times"></i></span>
         </button>
       </div>

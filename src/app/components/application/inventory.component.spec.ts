@@ -8,8 +8,9 @@ import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {Application, WinResponse} from '../../model';
 import {TestDomain} from '../../model/test-domain';
-import {ApplicationService, ApplicationTypeService, DatabaseService, DatabaseTypeService, DeploymentService} from '../../services';
+import {ApplicationService, ApplicationTypeService, DeploymentService} from '../../services';
 import {ApplicationComponent} from '../application/application.component';
+import {DeploymentComponent} from '../deployment/deployment.component';
 import {InventoryComponent} from './inventory.component';
 
 class MockApplicationService extends ApplicationService {
@@ -34,13 +35,14 @@ describe('InventoryComponent', () => {
   let component: InventoryComponent;
   let fixture: ComponentFixture<InventoryComponent>;
   let child: ApplicationComponent;
+  let child2: DeploymentComponent;
   let applicationService: ApplicationService;
   let modalService: ModalService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientModule, HttpClientTestingModule, TableModule],
-      declarations: [InventoryComponent, ApplicationComponent],
+      declarations: [InventoryComponent, ApplicationComponent, DeploymentComponent],
       providers: [
         {provide: ApplicationService, useClass: MockApplicationService},
         ApplicationTypeService, DeploymentService,
@@ -53,6 +55,7 @@ describe('InventoryComponent', () => {
     fixture = TestBed.createComponent(InventoryComponent);
     component = fixture.componentInstance;
     child = component.applicationComponent;
+    child2 = component.deploymentComponent;
     fixture.detectChanges();
     applicationService = TestBed.get(ApplicationService);
     modalService = TestBed.get(ModalService);
@@ -84,10 +87,18 @@ describe('InventoryComponent', () => {
     expect(child.model.id).toEqual(application.id);
   });
 
+  it('should set passed application in deployment component', () => {
+    const application = TestDomain.APPLICATION;
+    component.setPassedApplicationOnDeployment(application);
+
+    expect(child2.passedApplication.id).toEqual(application.id);
+    expect(child2.model.applicationId).toEqual(application.id);
+  });
+
   it('should open modal', () => {
     spyOn(modalService, 'openModal').and.callThrough();
 
-    component.openModal();
+    component.openModal('application-modal');
 
     expect(modalService.openModal).toHaveBeenCalled();
   });
@@ -111,5 +122,32 @@ describe('InventoryComponent', () => {
     component.handleUpdate(TestDomain.APPLICATION);
 
     expect(component.refreshApplications).toHaveBeenCalled();
+  });
+
+  it('should handle deployment cancel event', () => {
+    spyOn(component, 'setPassedApplication').and.callThrough();
+    spyOn(modalService, 'openModal').and.callThrough();
+    spyOn(modalService, 'closeModal').and.callThrough();
+    component.handleDeploymentCancel(TestDomain.APPLICATION);
+
+    expect(component.setPassedApplication).toHaveBeenCalled();
+    expect(modalService.openModal).toHaveBeenCalled();
+    expect(modalService.closeModal).toHaveBeenCalled();
+  });
+
+  it('should handle deployment create event', () => {
+    const application: Application = TestDomain.APPLICATION;
+    const deployment: Application = TestDomain.DEPLOYMENT;
+
+    spyOn(component, 'setPassedApplication').and.callThrough();
+    spyOn(modalService, 'openModal').and.callThrough();
+    spyOn(modalService, 'closeModal').and.callThrough();
+    component.handleDeploymentCreate({application, deployment});
+
+    expect(component.setPassedApplication).toHaveBeenCalled();
+    expect(modalService.openModal).toHaveBeenCalled();
+    expect(modalService.closeModal).toHaveBeenCalled();
+    expect(application.deployments.length).toEqual(1);
+    expect(application.deployments[0]).toEqual(deployment);
   });
 });

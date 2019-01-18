@@ -6,6 +6,8 @@ body {
 }
 
 .win-modal-big {
+  overflow-y: auto !important;
+
   .modal-dialog {
     max-width: 100%;
   }
@@ -93,5 +95,10 @@ body {
 
   .child-table {
     padding-top: 5px;
+  }
+
+  .add-button {
+    float: right;
+    font-size: 13px;
   }
 }

@@ -4,6 +4,7 @@ import {Application, ApplicationType} from '../../model';
 import {ApplicationTypeService} from '../../services/application-type/application-type.service';
 import {ApplicationService} from '../../services/application/application.service';
 import {ApplicationComponent} from '../application/application.component';
+import {DeploymentComponent} from '../deployment/deployment.component';
 
 @Component({
   selector: 'apm-inventory',
@@ -17,9 +18,13 @@ export class InventoryComponent implements OnInit  {
   public databaseTypes: ApplicationType[] = [];
 
   public APPLICATION_MODAL_ID = 'application-modal';
+  public DEPLOYMENT_MODAL_ID = 'deployment-modal';
 
   @ViewChild('applicationComponent')
   applicationComponent: ApplicationComponent;
+
+  @ViewChild('deploymentComponent')
+  deploymentComponent: DeploymentComponent;
 
   constructor(private applicationService: ApplicationService, private applicationTypeService: ApplicationTypeService,
               private modalService: ModalService) {
@@ -40,17 +45,33 @@ export class InventoryComponent implements OnInit  {
   public resetApplicationComponent(): void {
     this.applicationComponent.passedApplication = null;
     this.applicationComponent.setDefaultValues();
+    this.applicationComponent.applicationTypes = this.applicationTypes;
   }
 
   public setPassedApplication(application: Application): void {
     this.applicationComponent.passedApplication = Object.assign({}, application);
     this.applicationComponent.model = Object.assign({}, application);
+    console.log('setPassedApplication: ' + JSON.stringify(this.applicationComponent.applicationTypes));
+    this.applicationComponent.applicationTypes = this.applicationTypes;
   }
 
-  public openModal(): void {
-    this.applicationComponent.applicationTypes = this.applicationTypes;
-    // this.carouselService.first(this.APPLICATION_MODAL_ID);
-    this.modalService.openModal(this.APPLICATION_MODAL_ID);
+  public setPassedApplicationOnDeployment(application: Application): void {
+    this.deploymentComponent.passedApplication = Object.assign({}, application);
+    this.deploymentComponent.model.applicationId = application.id;
+  }
+
+  public openModal(modalId: string): void {
+    this.modalService.openModal(modalId);
+  }
+
+  public closeModal(modalId: string): void {
+    this.modalService.closeModal(modalId);
+  }
+
+  public addDeploymentToApplication(application: Application): void {
+    this.setPassedApplicationOnDeployment(application);
+    this.closeModal(this.APPLICATION_MODAL_ID);
+    this.openModal(this.DEPLOYMENT_MODAL_ID);
   }
 
   public handleCreate(application: Application): void {
@@ -66,6 +87,23 @@ export class InventoryComponent implements OnInit  {
   public handleUpdate(application: Application): void {
     console.log('Application ' + application.mnemonic + ' successfully updated');
     this.refreshApplications();
+  }
+
+  public handleDeploymentCancel(application: Application): void {
+    this.setPassedApplication(application);
+    this.closeModal(this.DEPLOYMENT_MODAL_ID);
+    this.openModal(this.APPLICATION_MODAL_ID);
+  }
+
+  public handleDeploymentCreate({application, deployment}): void {
+    if (application.deployments) {
+      application.deployments.push(deployment);
+    } else {
+      application.deployments = [deployment];
+    }
+    this.setPassedApplication(application);
+    this.closeModal(this.DEPLOYMENT_MODAL_ID);
+    this.openModal(this.APPLICATION_MODAL_ID);
   }
 
   loadApplicationTypes = () => {

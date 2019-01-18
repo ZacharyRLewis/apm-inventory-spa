@@ -2,7 +2,7 @@
   <div class="page-title-wrapper">
     <h2 class="page-title">Applications</h2>
     <div class="button-wrapper">
-      <button class="add-button" (click)="resetApplicationComponent(); openModal();">
+      <button class="add-button" (click)="resetApplicationComponent(); openModal(APPLICATION_MODAL_ID);">
         <i class="fa fa-plus" aria-hidden="true"></i>
         <span>Create Application</span>
       </button>
@@ -22,7 +22,7 @@
       <ng-template pTemplate="body" let-application>
         <tr>
           <td>
-            <a (click)="setPassedApplication(application); openModal();">{{application.mnemonic}}</a>
+            <a (click)="setPassedApplication(application); openModal(APPLICATION_MODAL_ID);">{{application.mnemonic}}</a>
           </td>
           <td>{{application.name}}</td>
           <td>{{application.applicationType.name}}</td>
@@ -33,6 +33,16 @@
   </div>
 </div>
 
+<input class="form-control" style="visibility: hidden" />
+
 <apm-application #applicationComponent [modalId]="APPLICATION_MODAL_ID"
-                (createEvent)="handleCreate($event)" (deleteEvent)="handleDelete($event)" (updateEvent)="handleUpdate($event)">
+                 (createEvent)="handleCreate($event)"
+                 (deleteEvent)="handleDelete($event)"
+                 (updateEvent)="handleUpdate($event)"
+                 (addDeploymentEvent)="addDeploymentToApplication($event)">
 </apm-application>
+
+<apm-deployment #deploymentComponent [modalId]="DEPLOYMENT_MODAL_ID"
+                (createAppDeploymentEvent)="handleDeploymentCreate($event)"
+                (cancelAppDeploymentEvent)="handleDeploymentCancel($event)">
+</apm-deployment>

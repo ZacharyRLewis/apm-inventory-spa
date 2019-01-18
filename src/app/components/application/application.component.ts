@@ -14,6 +14,7 @@ export class ApplicationComponent implements OnInit {
   @Output() createEvent: EventEmitter<Application> = new EventEmitter<Application>();
   @Output() deleteEvent: EventEmitter<Application> = new EventEmitter<Application>();
   @Output() updateEvent: EventEmitter<Application> = new EventEmitter<Application>();
+  @Output() addDeploymentEvent: EventEmitter<Application> = new EventEmitter<Application>();
 
   model: Application = new Application();
   passedApplication: Application;
@@ -42,7 +43,7 @@ export class ApplicationComponent implements OnInit {
   }
 
   public saveApplication(): void {
-    if (this.passedApplication) {
+    if (this.passedApplication && this.passedApplication.id) {
       this.updateApplication();
     } else {
       this.createApplication();
@@ -93,5 +94,11 @@ export class ApplicationComponent implements OnInit {
 
   public getDeploymentBaseUrl(deployment: Deployment): string {
     return Deployment.getBaseUrl(deployment);
+  }
+
+  public addDeployment(): void {
+    const application: Deployment = Object.assign({}, this.model);
+
+    this.addDeploymentEvent.emit(application);
   }
 }

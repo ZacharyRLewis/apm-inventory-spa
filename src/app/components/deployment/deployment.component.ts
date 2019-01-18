@@ -14,8 +14,11 @@ export class DeploymentComponent {
   @Output() createEvent: EventEmitter<Deployment> = new EventEmitter<Deployment>();
   @Output() deleteEvent: EventEmitter<Deployment> = new EventEmitter<Deployment>();
   @Output() updateEvent: EventEmitter<Deployment> = new EventEmitter<Deployment>();
+  @Output() createAppDeploymentEvent: EventEmitter<object> = new EventEmitter<object>();
+  @Output() cancelAppDeploymentEvent: EventEmitter<Application> = new EventEmitter<Application>();
 
   model: Deployment = new Deployment();
+  passedApplication: Application;
   passedDeployment: Deployment;
   environments: string[] = ['DEV', 'QA', 'PROD'];
   applications: Application[] = [];
@@ -39,6 +42,7 @@ export class DeploymentComponent {
 
   public closeModal(): void {
     this.modalService.closeModal(this.modalId);
+    this.setDefaultValues();
   }
 
   public saveDeployment(): void {
@@ -93,5 +97,18 @@ export class DeploymentComponent {
 
   public getDeploymentBaseUrl(deployment: Deployment): string {
     return Deployment.getBaseUrl(deployment);
+  }
+
+  public backToApplication(): void {
+    const application: Deployment = Object.assign({}, this.passedApplication);
+
+    this.cancelAppDeploymentEvent.emit(application);
+  }
+
+  public addToApplication(): void {
+    const deployment: Deployment = Object.assign({}, this.model);
+    const application: Deployment = Object.assign({}, this.passedApplication);
+
+    this.createAppDeploymentEvent.emit({application, deployment});
   }
 }
