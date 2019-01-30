@@ -81,8 +81,8 @@
             <div>
               <label class="win-label">Databases</label>
             </div>
-            <div class="child-table" *ngIf="model.databases.length > 0; else noDatabases">
-              <p-table [value]="model.databases" [paginator]="false" dataKey="environment">
+            <div class="child-table" *ngIf="databases?.length > 0; else noDatabases">
+            <p-table [value]="databases" [paginator]="false" dataKey="environment">
                 <ng-template pTemplate="header">
                   <tr>
                     <th style="width: 100px">Environment</th>

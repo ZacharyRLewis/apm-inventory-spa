@@ -44,6 +44,7 @@ export class DeploymentListComponent implements OnInit  {
   public setPassedDeployment(deployment: Deployment): void {
     this.deploymentComponent.passedDeployment = Object.assign({}, deployment);
     this.deploymentComponent.model = Object.assign({}, deployment);
+    this.deploymentComponent.loadDatabases();
   }
 
   public openModal(): void {

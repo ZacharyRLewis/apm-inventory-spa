@@ -5,10 +5,9 @@ import {ModalService} from '@win-angular/services';
 import {cold} from 'jasmine-marbles';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
-import {Application, WinResponse} from '../../model';
-import {TestDomain} from '../../model/test-domain';
-import {ApplicationService, DeploymentService} from '../../services';
-import {ApplicationComponent} from './application.component';
+import {ApplicationComponent} from '..';
+import {Application, TestDomain, WinResponse} from '../../model';
+import {ApplicationService, DependencyService, DeploymentService} from '../../services';
 
 class MockApplicationService extends ApplicationService {
   private response: WinResponse<Application> = {meta: null, data: TestDomain.APPLICATION};
@@ -49,6 +48,7 @@ describe('ApplicationComponent', () => {
       declarations: [ApplicationComponent],
       providers: [
         {provide: ApplicationService, useClass: MockApplicationService},
+        DependencyService,
         DeploymentService,
         {provide: ModalService, useClass: MockModalService}
       ]

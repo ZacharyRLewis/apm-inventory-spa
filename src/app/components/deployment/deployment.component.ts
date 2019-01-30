@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ModalService} from '@win-angular/services';
-import {Application, Deployment} from '../../model';
-import {DeploymentService} from '../../services';
+import {Application, Database, Deployment} from '../../model';
+import {DatabaseService, DeploymentService} from '../../services';
 
 @Component({
   selector: 'apm-deployment',
@@ -22,8 +22,9 @@ export class DeploymentComponent {
   passedDeployment: Deployment;
   environments: string[] = ['DEV', 'QA', 'PROD'];
   applications: Application[] = [];
+  databases: Database[] = [];
 
-  constructor(private deploymentService: DeploymentService, private modalService: ModalService) {
+  constructor(private deploymentService: DeploymentService, private modalService: ModalService, private databaseService: DatabaseService) {
     this.setDefaultValues();
   }
 
@@ -38,6 +39,13 @@ export class DeploymentComponent {
     this.model.contextName = '';
     this.model.databases = [];
     this.model.services = [];
+  }
+
+  public loadDatabases = () => {
+    this.databaseService.findAllByDeploymentId(this.passedDeployment.id)
+      .subscribe(response => {
+        this.databases = response.data;
+      });
   }
 
   public closeModal(): void {

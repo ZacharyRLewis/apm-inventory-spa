@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ModalService} from '@win-angular/services';
-import {Application, ApplicationType, Deployment} from '../../model';
-import {ApplicationService, DeploymentService} from '../../services';
+import {Application, ApplicationType, Dependency, Deployment} from '../../model';
+import {ApplicationService, DependencyService, DeploymentService} from '../../services';
 
 @Component({
   selector: 'apm-application',
@@ -15,12 +15,16 @@ export class ApplicationComponent implements OnInit {
   @Output() deleteEvent: EventEmitter<Application> = new EventEmitter<Application>();
   @Output() updateEvent: EventEmitter<Application> = new EventEmitter<Application>();
   @Output() addDeploymentEvent: EventEmitter<Application> = new EventEmitter<Application>();
+  @Output() uploadDependenciesEvent: EventEmitter<Application> = new EventEmitter<Application>();
 
   model: Application = new Application();
   passedApplication: Application;
   applicationTypes: ApplicationType[] = [];
+  deployments: Deployment[] = [];
+  dependencies: Dependency[] = [];
 
-  constructor(private applicationService: ApplicationService, private deploymentService: DeploymentService, private modalService: ModalService) {
+  constructor(private applicationService: ApplicationService, private deploymentService: DeploymentService,
+              private dependencyService: DependencyService, private modalService: ModalService) {
     this.setDefaultValues();
   }
 
@@ -36,6 +40,20 @@ export class ApplicationComponent implements OnInit {
     this.model.applicationType.name = '';
     this.model.deployments = [];
     this.model.dependencies = [];
+  }
+
+  public loadDeployments = () => {
+    this.deploymentService.findAllByApplicationId(this.passedApplication.id)
+      .subscribe(response => {
+        this.deployments = response.data;
+      });
+  }
+
+  public loadDependencies = () => {
+    this.dependencyService.findAllByApplicationId(this.passedApplication.id)
+      .subscribe(response => {
+        this.dependencies = response.data;
+      });
   }
 
   public closeModal(): void {
@@ -97,8 +115,14 @@ export class ApplicationComponent implements OnInit {
   }
 
   public addDeployment(): void {
-    const application: Deployment = Object.assign({}, this.model);
+    const application: Application = Object.assign({}, this.model);
 
     this.addDeploymentEvent.emit(application);
+  }
+
+  public uploadDependencies(): void {
+    const application: Application = Object.assign({}, this.model);
+
+    this.uploadDependenciesEvent.emit(application);
   }
 }

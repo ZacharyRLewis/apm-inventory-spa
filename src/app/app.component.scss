@@ -1,6 +1,9 @@
+@import "../assets/scss/variables";
+
 .win-main-container .container-fluid {
   padding-top: 70px;
   padding-left: 55px;
   padding-right: 15px;
   height: 100vh;
+  background-color: $win-background;
 }

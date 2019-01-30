@@ -4,10 +4,9 @@ import {FormsModule} from '@angular/forms';
 import {ModalService} from '@win-angular/services';
 import {cold} from 'jasmine-marbles';
 import {Observable} from 'rxjs';
-import {DatabaseType, WinResponse} from '../../model';
-import {TestDomain} from '../../model/test-domain';
+import {DatabaseTypeComponent} from '..';
+import {DatabaseType, TestDomain, WinResponse} from '../../model';
 import {DatabaseTypeService} from '../../services';
-import {DatabaseTypeComponent} from './database-type.component';
 
 class MockDatabaseTypeService extends DatabaseTypeService {
   private response: WinResponse<DatabaseType> = {meta: null, data: TestDomain.APPLICATION_TYPE};

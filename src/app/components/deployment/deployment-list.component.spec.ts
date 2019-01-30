@@ -6,11 +6,9 @@ import {ModalService} from '@win-angular/services';
 import {cold, getTestScheduler} from 'jasmine-marbles';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
-import {Deployment, WinResponse} from '../../model';
-import {TestDomain} from '../../model/test-domain';
-import {ApplicationService, DeploymentService} from '../../services';
-import {DeploymentListComponent} from './deployment-list.component';
-import {DeploymentComponent} from './deployment.component';
+import {DeploymentComponent, DeploymentListComponent} from '..';
+import {Deployment, TestDomain, WinResponse} from '../../model';
+import {ApplicationService, DatabaseService, DeploymentService} from '../../services';
 
 class MockDeploymentService extends DeploymentService {
   private response: WinResponse<Deployment[]> = {meta: null, data: [TestDomain.DEPLOYMENT]};
@@ -43,7 +41,7 @@ describe('DeploymentListComponent', () => {
       declarations: [DeploymentListComponent, DeploymentComponent],
       providers: [
         {provide: DeploymentService, useClass: MockDeploymentService},
-        ApplicationService,
+        ApplicationService, DatabaseService,
         {provide: ModalService, useClass: MockModalService}
       ]
     }).compileComponents();

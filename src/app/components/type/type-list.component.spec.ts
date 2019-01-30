@@ -6,12 +6,9 @@ import {ModalService} from '@win-angular/services';
 import {cold, getTestScheduler} from 'jasmine-marbles';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
-import {TypeListComponent} from '..';
-import {ApplicationType, DatabaseType, WinResponse} from '../../model';
-import {TestDomain} from '../../model/test-domain';
+import {ApplicationTypeComponent, DatabaseTypeComponent, TypeListComponent} from '..';
+import {ApplicationType, DatabaseType, TestDomain, WinResponse} from '../../model';
 import {ApplicationTypeService, DatabaseTypeService} from '../../services';
-import {ApplicationTypeComponent} from './application-type.component';
-import {DatabaseTypeComponent} from './database-type.component';
 
 class MockApplicationTypeService extends ApplicationTypeService {
   private response: WinResponse<ApplicationType[]> = {meta: null, data: [TestDomain.APPLICATION_TYPE]};

@@ -1,9 +1,8 @@
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import {TestBed, inject} from '@angular/core/testing';
-import {Database, WinResponse} from '../../model';
-import {TestDomain} from '../../model/test-domain';
-import {DatabaseService} from './database.service';
+import {inject, TestBed} from '@angular/core/testing';
+import {DatabaseService} from '..';
+import {Database, TestDomain, WinResponse} from '../../model';
 
 describe('DatabaseService', () => {
   let http: HttpClient;

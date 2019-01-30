@@ -5,6 +5,11 @@ body {
   margin: 20px 0 0 0;
 }
 
+button:disabled {
+  background-color: $win-background;
+  cursor: not-allowed;
+}
+
 .win-modal-big {
   overflow-y: auto !important;
 
@@ -30,6 +35,31 @@ body {
       height: 80px;
       border-top: solid 1px #ccc;
       padding: 15px 0;
+    }
+  }
+}
+
+.win-modal-small {
+  .modal-content {
+    .modal-header {
+      display: block;
+
+      .close {
+        color: $win-blue;
+        font-size: 32px;
+        opacity: 1;
+      }
+    }
+
+    .modal-body {
+      .ui-fileupload-choose {
+        margin: 15px;
+        background-color: $win-blue;
+      }
+    }
+
+    .modal-footer {
+      display: block;
     }
   }
 }

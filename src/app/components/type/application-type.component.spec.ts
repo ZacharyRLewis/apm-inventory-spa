@@ -4,10 +4,9 @@ import {FormsModule} from '@angular/forms';
 import {ModalService} from '@win-angular/services';
 import {cold} from 'jasmine-marbles';
 import {Observable} from 'rxjs';
-import {ApplicationType, WinResponse} from '../../model';
-import {TestDomain} from '../../model/test-domain';
+import {ApplicationTypeComponent} from '..';
+import {ApplicationType, TestDomain, WinResponse} from '../../model';
 import {ApplicationTypeService} from '../../services';
-import {ApplicationTypeComponent} from './application-type.component';
 
 class MockApplicationTypeService extends ApplicationTypeService {
   private response: WinResponse<ApplicationType> = {meta: null, data: TestDomain.APPLICATION_TYPE};

@@ -1,8 +1,9 @@
 export class Dependency {
 
-  constructor(public name: string,
-              public managerReference: string,
-              public versionCode: string) {
+  constructor(public id?: string,
+              public name?: string,
+              public managerReference?: string,
+              public versionCode?: string) {
   }
 
 }

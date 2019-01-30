@@ -4,14 +4,12 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {ModalService} from '@win-angular/services';
 import {cold, getTestScheduler} from 'jasmine-marbles';
+import {FileUploadModule} from 'primeng/primeng';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
-import {Application, WinResponse} from '../../model';
-import {TestDomain} from '../../model/test-domain';
-import {ApplicationService, ApplicationTypeService, DeploymentService} from '../../services';
-import {ApplicationComponent} from '../application/application.component';
-import {DeploymentComponent} from '../deployment/deployment.component';
-import {InventoryComponent} from './inventory.component';
+import {ApplicationComponent, DependencyUploadComponent, DeploymentComponent, InventoryComponent} from '..';
+import {Application, TestDomain, WinResponse} from '../../model';
+import {ApplicationService, ApplicationTypeService, DatabaseService, DependencyService, DeploymentService} from '../../services';
 
 class MockApplicationService extends ApplicationService {
   private response: WinResponse<Application[]> = {meta: null, data: [TestDomain.APPLICATION]};
@@ -36,16 +34,17 @@ describe('InventoryComponent', () => {
   let fixture: ComponentFixture<InventoryComponent>;
   let child: ApplicationComponent;
   let child2: DeploymentComponent;
+  let child3: DependencyUploadComponent;
   let applicationService: ApplicationService;
   let modalService: ModalService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, HttpClientModule, HttpClientTestingModule, TableModule],
-      declarations: [InventoryComponent, ApplicationComponent, DeploymentComponent],
+      imports: [FormsModule, HttpClientModule, HttpClientTestingModule, TableModule, FileUploadModule],
+      declarations: [InventoryComponent, ApplicationComponent, DependencyUploadComponent, DeploymentComponent],
       providers: [
         {provide: ApplicationService, useClass: MockApplicationService},
-        ApplicationTypeService, DeploymentService,
+        ApplicationTypeService, DatabaseService, DeploymentService, DependencyService,
         {provide: ModalService, useClass: MockModalService}
       ]
     }).compileComponents();
@@ -56,6 +55,7 @@ describe('InventoryComponent', () => {
     component = fixture.componentInstance;
     child = component.applicationComponent;
     child2 = component.deploymentComponent;
+    child3 = component.dependencyUploadComponent;
     fixture.detectChanges();
     applicationService = TestBed.get(ApplicationService);
     modalService = TestBed.get(ModalService);
@@ -93,6 +93,13 @@ describe('InventoryComponent', () => {
 
     expect(child2.passedApplication.id).toEqual(application.id);
     expect(child2.model.applicationId).toEqual(application.id);
+  });
+
+  it('should set passed application in dependency upload component', () => {
+    const application = TestDomain.APPLICATION;
+    component.setPassedApplicationOnDependencies(application);
+
+    expect(child3.passedApplication.id).toEqual(application.id);
   });
 
   it('should open modal', () => {

@@ -1,0 +1,21 @@
+<div class="modal fade win-modal-small in" [id]="modalId">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span><i class="fa fa-times"></i></span></button>
+        <h2 class="modal-title" id="modalLabel">Upload Dependencies</h2>
+      </div>
+      <div class="modal-body">
+        <div>
+          <p-fileUpload #fileUpload name="file" mode="basic" showUploadButton="false" accept=".gradle,.json"
+                        customUpload="true" (uploadHandler)="customUpload($event)"></p-fileUpload>
+        </div>
+        <div class="modal-message">At this time, only package.json and build.gradle files are accepted.</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn win-button win-button-big win-button-secondary left" (click)="backToApplication()">Back to Application</button>
+        <button class="btn win-button win-button-big win-button-primary right" (click)="addToApplication()">Add to Application</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,9 +1,8 @@
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import {TestBed, inject} from '@angular/core/testing';
-import {Application, WinResponse} from '../../model';
-import {TestDomain} from '../../model/test-domain';
-import {ApplicationService} from './application.service';
+import {inject, TestBed} from '@angular/core/testing';
+import {ApplicationService} from '..';
+import {Application, TestDomain, WinResponse} from '../../model';
 
 describe('ApplicationService', () => {
   let http: HttpClient;

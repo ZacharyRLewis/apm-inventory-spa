@@ -58,8 +58,8 @@
                 <span>Add Deployment</span>
               </button>
             </div>
-            <div class="child-table" *ngIf="model.deployments.length > 0; else noDeployments">
-              <p-table [value]="model.deployments" [paginator]="false" dataKey="environment">
+            <div class="child-table" *ngIf="deployments?.length > 0; else noDeployments">
+              <p-table [value]="deployments" [paginator]="false" dataKey="environment">
                 <ng-template pTemplate="header">
                   <tr>
                     <th style="width: 80px">Environment</th>
@@ -81,12 +81,16 @@
           <div class="child-table-div">
             <div>
               <label class="win-label">Dependencies</label>
+              <button class="add-button" [disabled]="!passedApplication" (click)="uploadDependencies()">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                <span>Upload Dependencies</span>
+              </button>
             </div>
-            <div class="child-table" *ngIf="model.dependencies.length > 0; else noDependencies">
-              <p-table [value]="model.dependencies" [paginator]="true" [rows]="10">
+            <div class="child-table" *ngIf="dependencies?.length > 0; else noDependencies">
+              <p-table [value]="dependencies" [paginator]="true" [rows]="10">
                 <ng-template pTemplate="header">
                   <tr>
-                    <th style="width: 1em">Name</th>
+                    <th style="width: 2em">Name</th>
                     <th style="width: 1em">Version</th>
                     <th style="width: 4em">Reference</th>
                   </tr>

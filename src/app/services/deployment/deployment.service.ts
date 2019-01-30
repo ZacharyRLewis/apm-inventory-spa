@@ -27,6 +27,10 @@ export class DeploymentService implements ServiceInterface<Deployment> {
     return this.http.get<WinResponse<Deployment[]>>(this.url, this._options);
   }
 
+  public findAllByApplicationId(applicationId: string): Observable<WinResponse<Deployment[]>> {
+    return this.http.get<WinResponse<Deployment[]>>(this.url + '?applicationId=' + applicationId, this._options);
+  }
+
   public findOne(id: string): Observable<WinResponse<Deployment>> {
     return this.http.get<WinResponse<Deployment>>(this.url + '/' + id, this._options);
   }

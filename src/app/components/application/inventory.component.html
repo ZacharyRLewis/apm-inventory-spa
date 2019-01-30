@@ -26,7 +26,7 @@
           </td>
           <td>{{application.name}}</td>
           <td>{{application.applicationType.name}}</td>
-          <td>{{application.deployments.length}}</td>
+          <td>{{application.deployments?.length}}</td>
         </tr>
       </ng-template>
     </p-table>
@@ -39,10 +39,16 @@
                  (createEvent)="handleCreate($event)"
                  (deleteEvent)="handleDelete($event)"
                  (updateEvent)="handleUpdate($event)"
-                 (addDeploymentEvent)="addDeploymentToApplication($event)">
+                 (addDeploymentEvent)="addDeploymentToApplication($event)"
+                 (uploadDependenciesEvent)="openDependencyUploadDialog($event)">
 </apm-application>
 
 <apm-deployment #deploymentComponent [modalId]="DEPLOYMENT_MODAL_ID"
                 (createAppDeploymentEvent)="handleDeploymentCreate($event)"
                 (cancelAppDeploymentEvent)="handleDeploymentCancel($event)">
 </apm-deployment>
+
+<apm-dependency-upload #dependencyUploadComponent [modalId]="DEPENDENCY_UPLOAD_MODAL_ID"
+                (uploadAppDependenciesEvent)="handleDependencyUpload($event)"
+                (cancelAppDependenciesEvent)="handleDependencyUploadCancel($event)">
+</apm-dependency-upload>
