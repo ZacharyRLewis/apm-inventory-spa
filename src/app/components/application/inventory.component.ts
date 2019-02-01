@@ -115,11 +115,6 @@ export class InventoryComponent implements OnInit  {
   }
 
   public handleDeploymentCreate({application, deployment}): void {
-    if (application.deployments) {
-      this.applicationComponent.deployments.push(deployment);
-    } else {
-      this.applicationComponent.deployments = [deployment];
-    }
     this.setPassedApplication(application);
     this.closeModal(this.DEPLOYMENT_MODAL_ID);
     this.openModal(this.APPLICATION_MODAL_ID);

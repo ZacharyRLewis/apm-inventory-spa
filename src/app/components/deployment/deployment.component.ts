@@ -115,8 +115,19 @@ export class DeploymentComponent {
 
   public addToApplication(): void {
     const deployment: Deployment = Object.assign({}, this.model);
-    const application: Deployment = Object.assign({}, this.passedApplication);
+    const application: Application = Object.assign({}, this.passedApplication);
 
-    this.createAppDeploymentEvent.emit({application, deployment});
+    deployment.applicationId = application.id;
+
+    this.deploymentService.create(deployment)
+      .subscribe(res => {
+          const created: Deployment = res.data;
+          console.log('Successfully added deployment to application: ' + JSON.stringify(created));
+
+          this.createAppDeploymentEvent.emit({application, created});
+        },
+        err => {
+          console.log('ERR:(create deployment) >> ' + err.message);
+        });
   }
 }
