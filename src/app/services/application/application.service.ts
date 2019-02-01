@@ -1,6 +1,7 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
+import {environment} from '../../../environments/environment';
 import {Application, WinResponse} from '../../model/';
 import {ServiceInterface} from '../service.interface';
 
@@ -13,8 +14,7 @@ export class ApplicationService implements ServiceInterface<Application> {
   };
 
   constructor(private http: HttpClient) {
-    // this._url = '__APM_INVENTORY_SERVICE_URL__' + this._path;
-    this.url = 'http://localhost:8181/apm' + this._path;
+    this.url = environment.serviceUrl + this._path;
 
     this._options = {
       headers: new HttpHeaders({

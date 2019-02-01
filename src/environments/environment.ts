@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  env: 'local'
+  env: 'local',
+  serviceUrl: 'http://localhost:8181/apm'
 };
 
 /*

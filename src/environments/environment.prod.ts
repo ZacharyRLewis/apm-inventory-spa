@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  env: 'prod'
+  env: 'prod',
+  serviceUrl: 'http://wservicep1.winwholesale.com:8181/apm'
 };

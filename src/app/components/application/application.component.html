@@ -81,7 +81,7 @@
           <div class="child-table-div">
             <div>
               <label class="win-label">Dependencies</label>
-              <button class="add-button" [disabled]="!passedApplication" (click)="uploadDependencies()">
+              <button class="add-button" [disabled]="!passedApplication || !model.id" (click)="uploadDependencies()">
                 <i class="fa fa-plus" aria-hidden="true"></i>
                 <span>Upload Dependencies</span>
               </button>
