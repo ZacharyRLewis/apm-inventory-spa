@@ -154,7 +154,5 @@ describe('InventoryComponent', () => {
     expect(component.setPassedApplication).toHaveBeenCalled();
     expect(modalService.openModal).toHaveBeenCalled();
     expect(modalService.closeModal).toHaveBeenCalled();
-    expect(application.deployments.length).toEqual(1);
-    expect(application.deployments[0]).toEqual(deployment);
   });
 });
