@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   env: 'local',
-  serviceUrl: 'http://localhost:8181/apm'
+  serviceUrl: 'http://localhost:8181/apm-inventory-service'
 };
 
 /*
