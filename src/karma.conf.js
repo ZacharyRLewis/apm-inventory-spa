@@ -25,19 +25,7 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome', 'Chrome-headless'],
+    browsers: ['Chrome'],
     singleRun: false,
-    customLaunchers: {
-      "Chrome-headless": {
-        base: 'ChromeHeadless',
-        flags: [
-          '--headless',
-          '--remote-debugging-port=9222',
-          '--no-sandbox',
-          '--proxy-server=\'direct://\'',
-          '--proxy-bypass-list=*'
-        ]
-      }
-    }
   });
 };
