@@ -29,7 +29,7 @@
           <td>{{database.environment}}</td>
           <td>{{database.hostName}}</td>
           <td>{{database.name}}</td>
-          <td>{{database.port}}</td>
+          <td>{{database.port ? database.port : 'N/A'}}</td>
           <td>{{database.type.name}}</td>
         </tr>
       </ng-template>

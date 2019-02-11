@@ -76,6 +76,8 @@ describe('ApplicationComponent', () => {
     expect(component.model.name).toEqual('');
     expect(component.model.mnemonic).toEqual('');
     expect(component.model.description).toEqual('');
+    expect(component.model.repository).toEqual('');
+    expect(component.model.defaultBranch).toEqual('');
     expect(component.model.applicationType.name).toEqual('');
     expect(component.model.deployments).toEqual([]);
     expect(component.model.dependencies).toEqual([]);

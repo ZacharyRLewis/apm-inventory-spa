@@ -8,7 +8,8 @@ import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {DeploymentComponent, DeploymentListComponent} from '..';
 import {Deployment, TestDomain, WinResponse} from '../../model';
-import {ApplicationService, DatabaseService, DeploymentService} from '../../services';
+import {ApplicationService, DatabaseService, DeploymentDatabaseService, DeploymentService, MulesoftApiService} from '../../services';
+import {DeploymentDatabaseComponent} from '../database/deployment-database.component';
 
 class MockDeploymentService extends DeploymentService {
   private response: WinResponse<Deployment[]> = {meta: null, data: [TestDomain.DEPLOYMENT]};
@@ -38,10 +39,10 @@ describe('DeploymentListComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientModule, HttpClientTestingModule, TableModule],
-      declarations: [DeploymentListComponent, DeploymentComponent],
+      declarations: [DeploymentListComponent, DeploymentComponent, DeploymentDatabaseComponent],
       providers: [
         {provide: DeploymentService, useClass: MockDeploymentService},
-        ApplicationService, DatabaseService,
+        ApplicationService, DatabaseService, DeploymentDatabaseService, MulesoftApiService,
         {provide: ModalService, useClass: MockModalService}
       ]
     }).compileComponents();
@@ -85,7 +86,7 @@ describe('DeploymentListComponent', () => {
   it('should open modal', () => {
     spyOn(modalService, 'openModal').and.callThrough();
 
-    component.openModal();
+    component.openModal('deployment-modal');
 
     expect(modalService.openModal).toHaveBeenCalled();
   });

@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ModalService} from '@win-angular/services';
-import {Application, Database, Deployment} from '../../model';
-import {DatabaseService, DeploymentService} from '../../services';
+import {Application, Database, Deployment, DeploymentDatabase, MulesoftApi} from '../../model';
+import {DatabaseService, DeploymentDatabaseService, DeploymentService, MulesoftApiService} from '../../services';
 
 @Component({
   selector: 'apm-deployment',
@@ -16,6 +16,7 @@ export class DeploymentComponent {
   @Output() updateEvent: EventEmitter<Deployment> = new EventEmitter<Deployment>();
   @Output() createAppDeploymentEvent: EventEmitter<object> = new EventEmitter<object>();
   @Output() cancelAppDeploymentEvent: EventEmitter<Application> = new EventEmitter<Application>();
+  @Output() addDatabaseEvent: EventEmitter<Deployment> = new EventEmitter<Deployment>();
 
   model: Deployment = new Deployment();
   passedApplication: Application;
@@ -23,8 +24,11 @@ export class DeploymentComponent {
   environments: string[] = ['DEV', 'QA', 'PROD'];
   applications: Application[] = [];
   databases: Database[] = [];
+  deploymentDatabases: DeploymentDatabase[] = [];
+  apis: MulesoftApi[] = [];
 
-  constructor(private deploymentService: DeploymentService, private modalService: ModalService, private databaseService: DatabaseService) {
+  constructor(private deploymentService: DeploymentService, private modalService: ModalService, private databaseService: DatabaseService,
+              private deploymentDatabaseService: DeploymentDatabaseService, private mulesoftAssetService: MulesoftApiService) {
     this.setDefaultValues();
   }
 
@@ -39,12 +43,39 @@ export class DeploymentComponent {
     this.model.contextName = '';
     this.model.databases = [];
     this.model.services = [];
+    this.databases = [];
+    this.deploymentDatabases = [];
+    this.apis = [];
   }
 
   public loadDatabases = () => {
-    this.databaseService.findAllByDeploymentId(this.passedDeployment.id)
+    this.databaseService.findAll()
       .subscribe(response => {
         this.databases = response.data;
+      });
+  }
+
+  public loadDeploymentDatabases = () => {
+    this.deploymentDatabaseService.findAllByDeploymentId(this.passedDeployment.id)
+      .subscribe(response => {
+        this.deploymentDatabases = response.data;
+      });
+  }
+
+  public loadApis = (assetId: string) => {
+    const params = [{name: 'assetId', value: assetId}];
+
+    this.mulesoftAssetService.filterAll(params)
+      .subscribe(response => {
+        const matchingApis: MulesoftApi[] = [];
+
+        response.data.forEach(api => {
+          if (api.implementationUrl === this.getDeploymentBaseUrl(this.model)) {
+            matchingApis.push(api);
+          }
+        });
+
+        this.apis = matchingApis;
       });
   }
 
@@ -117,17 +148,51 @@ export class DeploymentComponent {
     const deployment: Deployment = Object.assign({}, this.model);
     const application: Application = Object.assign({}, this.passedApplication);
 
-    deployment.applicationId = application.id;
+    this.createAppDeploymentEvent.emit({application, deployment});
+    this.setDefaultValues();
+  }
 
-    this.deploymentService.create(deployment)
-      .subscribe(res => {
-          const created: Deployment = res.data;
-          console.log('Successfully added deployment to application: ' + JSON.stringify(created));
+  public formatApiUrl(api: MulesoftApi): string {
+    let host = '';
 
-          this.createAppDeploymentEvent.emit({application, created});
-        },
-        err => {
-          console.log('ERR:(create deployment) >> ' + err.message);
-        });
+    switch (api.deploymentEnvironment) {
+      case 'Sandbox': host = 'https://devag1.winwholesale.com/';
+        break;
+      case 'QA': host = 'https://qaag1.winwholesale.com/';
+        break;
+      default: host = 'https://ag1.winwholesale.com/';
+    }
+
+    return host + this.model.contextName;
+  }
+
+  public addDatabase(): void {
+    const deployment: Deployment = Object.assign({}, this.model);
+
+    this.addDatabaseEvent.emit(deployment);
+  }
+
+  public getDatabaseName(databaseId: string): string {
+    if (!this.databases || !databaseId) {
+      return '';
+    }
+    for (const database of this.databases) {
+      if (database.id === databaseId) {
+        return database.name;
+      }
+    }
+    return null;
+  }
+
+  public getDatabaseHost(databaseId: string): string {
+    if (!this.databases || !databaseId) {
+      return '';
+    }
+    for (const database of this.databases) {
+      if (database.id === databaseId) {
+        return database.hostName;
+      }
+    }
+    return null;
   }
 }

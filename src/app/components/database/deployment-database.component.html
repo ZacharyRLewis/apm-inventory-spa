@@ -1,0 +1,48 @@
+<div class="modal fade win-modal-small in" [id]="modalId">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span><i class="fa fa-times"></i></span></button>
+        <h2 class="modal-title" id="modalLabel">Add DB to Deployment</h2>
+      </div>
+      <div class="modal-body">
+        <form ngForm="newDeploymentDatabaseForm">
+          <div class="apm-form-body">
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="databaseId">Database</label>
+              <div class="apm-input-group">
+                <select class="apm-input apm-select" id="databaseId" [(ngModel)]="model.databaseId" name="databaseId" #databaseId="ngModel">
+                  <option *ngFor="let db of databases" value="{{db.id}}">
+                    {{db.name}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="connectionUsername">Connection Username</label>
+              <div class="apm-input-group">
+                <input type="text" class="apm-input" id="connectionUsername" name="connectionUsername" [(ngModel)]="model.connectionUsername">
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="deployment">Deployment</label>
+              <div class="apm-input-group">
+                <div class="apm-input readonly" id="deployment">{{passedDeployment.contextName}}</div>
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="databaseHost">Database Host</label>
+              <div class="apm-input-group">
+                <div class="apm-input readonly" id="databaseHost">{{getDatabaseHost(model)}}</div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn win-button win-button-big win-button-secondary left" (click)="backToDeployment()">Cancel</button>
+        <button class="btn win-button win-button-big win-button-primary right" (click)="addToDeployment()">Add</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -2,7 +2,7 @@
   <div class="page-title-wrapper">
     <h2 class="page-title">Deployments</h2>
     <div class="button-wrapper">
-      <button class="add-button" (click)="resetDeploymentComponent(); openModal();">
+      <button class="add-button" (click)="resetDeploymentComponent(); openModal(DEPLOYMENT_MODAL_ID);">
         <i class="fa fa-plus" aria-hidden="true"></i>
         <span>Create Deployment</span>
       </button>
@@ -22,7 +22,7 @@
       <ng-template pTemplate="body" let-deployment>
         <tr>
           <td>
-            <a (click)="setPassedDeployment(deployment); openModal();">{{deployment.id}}</a>
+            <a (click)="setPassedDeployment(deployment); openModal(DEPLOYMENT_MODAL_ID);">{{deployment.id}}</a>
           </td>
           <td>{{getAppMnemonic(deployment.applicationId)}}</td>
           <td>{{deployment.environment}}</td>
@@ -36,5 +36,13 @@
 <input class="form-control" style="visibility: hidden" />
 
 <apm-deployment #deploymentComponent [modalId]="DEPLOYMENT_MODAL_ID"
-                (createEvent)="handleCreate($event)" (deleteEvent)="handleDelete($event)" (updateEvent)="handleUpdate($event)">
+                (createEvent)="handleCreate($event)"
+                (deleteEvent)="handleDelete($event)"
+                (updateEvent)="handleUpdate($event)"
+                (addDatabaseEvent)="addDatabaseToDeployment($event)">
 </apm-deployment>
+
+<apm-deployment-database #deploymentDatabaseComponent [modalId]="DEPLOYMENT_DATABASE_MODAL_ID"
+                       (addDatabaseEvent)="handleDeploymentDatabaseCreate($event)"
+                       (cancelAddDatabaseEvent)="handleDeploymentDatabaseCancel($event)">
+</apm-deployment-database>

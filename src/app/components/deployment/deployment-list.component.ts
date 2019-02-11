@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Application, Deployment} from '../../model';
 import {ApplicationService} from '../../services';
 import {DeploymentService} from '../../services/deployment/deployment.service';
+import {DeploymentDatabaseComponent} from '../database/deployment-database.component';
 import {DeploymentComponent} from './deployment.component';
 import {ModalService} from '@win-angular/services';
 
@@ -16,9 +17,13 @@ export class DeploymentListComponent implements OnInit  {
   public applications: Application[] = [];
 
   public DEPLOYMENT_MODAL_ID = 'deployment-modal';
+  public DEPLOYMENT_DATABASE_MODAL_ID = 'deployment-database-modal';
 
   @ViewChild('deploymentComponent')
   deploymentComponent: DeploymentComponent;
+
+  @ViewChild('deploymentDatabaseComponent')
+  deploymentDatabaseComponent: DeploymentDatabaseComponent;
 
   constructor(private applicationService: ApplicationService, private deploymentService: DeploymentService,
               private modalService: ModalService) {
@@ -27,6 +32,13 @@ export class DeploymentListComponent implements OnInit  {
 
   ngOnInit() {
     this.loadApplications();
+  }
+
+  public loadApplications = () => {
+    this.applicationService.findAll()
+      .subscribe(response => {
+        this.applications = response.data;
+      });
   }
 
   public refreshDeployments(): void {
@@ -38,19 +50,29 @@ export class DeploymentListComponent implements OnInit  {
 
   public resetDeploymentComponent(): void {
     this.deploymentComponent.passedDeployment = null;
+    this.deploymentComponent.applications = this.applications;
     this.deploymentComponent.setDefaultValues();
   }
 
   public setPassedDeployment(deployment: Deployment): void {
     this.deploymentComponent.passedDeployment = Object.assign({}, deployment);
     this.deploymentComponent.model = Object.assign({}, deployment);
+    this.deploymentComponent.applications = this.applications;
     this.deploymentComponent.loadDatabases();
+    this.deploymentComponent.loadDeploymentDatabases();
+    this.deploymentComponent.loadApis(deployment.contextName);
   }
 
-  public openModal(): void {
-    this.deploymentComponent.applications = this.applications;
-    // this.carouselService.first(this.DEPLOYMENT_MODAL_ID);
-    this.modalService.openModal(this.DEPLOYMENT_MODAL_ID);
+  public setPassedDeploymentOnDatabases(deployment: Deployment): void {
+    this.deploymentDatabaseComponent.passedDeployment = Object.assign({}, deployment);
+  }
+
+  public openModal(modalId: string): void {
+    this.modalService.openModal(modalId);
+  }
+
+  public closeModal(modalId: string): void {
+    this.modalService.closeModal(modalId);
   }
 
   public handleCreate(deployment: Deployment): void {
@@ -68,11 +90,23 @@ export class DeploymentListComponent implements OnInit  {
     this.refreshDeployments();
   }
 
-  loadApplications = () => {
-    this.applicationService.findAll()
-      .subscribe(response => {
-        this.applications = response.data;
-      });
+  public handleDeploymentDatabaseCancel(deployment: Deployment): void {
+    this.setPassedDeployment(deployment);
+    this.closeModal(this.DEPLOYMENT_DATABASE_MODAL_ID);
+    this.openModal(this.DEPLOYMENT_MODAL_ID);
+  }
+
+  public handleDeploymentDatabaseCreate(deployment: Deployment): void {
+    this.setPassedDeployment(deployment);
+    this.closeModal(this.DEPLOYMENT_DATABASE_MODAL_ID);
+    this.openModal(this.DEPLOYMENT_MODAL_ID);
+  }
+
+  public addDatabaseToDeployment(deployment: Deployment): void {
+    this.deploymentDatabaseComponent.loadDatabases();
+    this.setPassedDeploymentOnDatabases(deployment);
+    this.closeModal(this.DEPLOYMENT_MODAL_ID);
+    this.openModal(this.DEPLOYMENT_DATABASE_MODAL_ID);
   }
 
   public getAppMnemonic(applicationId: string): string {

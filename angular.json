@@ -106,7 +106,7 @@
               "src/*.ts",
               "src/app/*.ts",
               "src/**/index.ts",
-              "src/app/model/*.ts"
+              "src/app/model/**"
             ]
           }
         },

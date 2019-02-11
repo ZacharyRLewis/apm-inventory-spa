@@ -8,6 +8,7 @@ import {ApplicationComponent} from './application/application.component';
 import {InventoryComponent} from './application/inventory.component';
 import {DatabaseListComponent} from './database/database-list.component';
 import {DatabaseComponent} from './database/database.component';
+import {DeploymentDatabaseComponent} from './database/deployment-database.component';
 import {DependencyUploadComponent} from './dependency/dependency-upload.component';
 import {DeploymentListComponent} from './deployment/deployment-list.component';
 import {DeploymentComponent} from './deployment/deployment.component';
@@ -26,6 +27,7 @@ import {TypeListComponent} from './type/type-list.component';
     DatabaseListComponent,
     DependencyUploadComponent,
     DeploymentComponent,
+    DeploymentDatabaseComponent,
     DeploymentListComponent,
     InventoryComponent,
     NavbarComponent,

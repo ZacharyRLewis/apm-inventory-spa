@@ -27,10 +27,6 @@ export class DatabaseService implements ServiceInterface<Database> {
     return this.http.get<WinResponse<Database[]>>(this.url, this._options);
   }
 
-  public findAllByDeploymentId(deploymentId: string): Observable<WinResponse<Database[]>> {
-    return this.http.get<WinResponse<Database[]>>(this.url + '?deploymentId=' + deploymentId, this._options);
-  }
-
   public findOne(id: string): Observable<WinResponse<Database>> {
     return this.http.get<WinResponse<Database>>(this.url + '/' + id, this._options);
   }

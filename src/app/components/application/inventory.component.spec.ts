@@ -9,7 +9,15 @@ import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {ApplicationComponent, DependencyUploadComponent, DeploymentComponent, InventoryComponent} from '..';
 import {Application, TestDomain, WinResponse} from '../../model';
-import {ApplicationService, ApplicationTypeService, DatabaseService, DependencyService, DeploymentService} from '../../services';
+import {
+  ApplicationService,
+  ApplicationTypeService,
+  DatabaseService,
+  DependencyService,
+  DeploymentDatabaseService,
+  DeploymentService,
+  MulesoftApiService
+} from '../../services';
 
 class MockApplicationService extends ApplicationService {
   private response: WinResponse<Application[]> = {meta: null, data: [TestDomain.APPLICATION]};
@@ -44,7 +52,7 @@ describe('InventoryComponent', () => {
       declarations: [InventoryComponent, ApplicationComponent, DependencyUploadComponent, DeploymentComponent],
       providers: [
         {provide: ApplicationService, useClass: MockApplicationService},
-        ApplicationTypeService, DatabaseService, DeploymentService, DependencyService,
+        ApplicationTypeService, DatabaseService, DeploymentService, DeploymentDatabaseService, DependencyService, MulesoftApiService,
         {provide: ModalService, useClass: MockModalService}
       ]
     }).compileComponents();

@@ -8,6 +8,8 @@ export class Application {
               public name?: string,
               public mnemonic?: string,
               public description?: string,
+              public repository?: string,
+              public defaultBranch?: string,
               public serviceApi?: boolean,
               public applicationType?: ApplicationType,
               public deployments?: Deployment[],

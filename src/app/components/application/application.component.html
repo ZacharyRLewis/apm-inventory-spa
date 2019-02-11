@@ -40,6 +40,18 @@
               </div>
             </div>
             <div class="apm-form-group">
+              <label class="win-label apm-label" for="applicationRepository">Source Repository</label>
+              <div class="apm-input-group">
+                <input type="text" class="apm-input" id="applicationRepository" name="repository" [(ngModel)]="model.repository">
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="applicationDefaultBranch">Source Default Branch</label>
+              <div class="apm-input-group">
+                <input type="text" class="apm-input" id="applicationDefaultBranch" name="defaultBranch" [(ngModel)]="model.defaultBranch">
+              </div>
+            </div>
+            <div class="apm-form-group">
               <label class="win-label apm-label" for="serviceApi">Is Service/API?</label>
               <div class="apm-input-group">
                 <select class="apm-input apm-select" id="serviceApi" [(ngModel)]="model.serviceApi" name="serviceApi" #type="ngModel">

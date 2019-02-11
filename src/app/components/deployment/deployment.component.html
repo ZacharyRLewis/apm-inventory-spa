@@ -80,30 +80,60 @@
           <div class="child-table-div">
             <div>
               <label class="win-label">Databases</label>
+              <button class="add-button" [disabled]="!passedDeployment || !model.id" (click)="addDatabase()">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                <span>Add Database</span>
+              </button>
             </div>
-            <div class="child-table" *ngIf="databases?.length > 0; else noDatabases">
-            <p-table [value]="databases" [paginator]="false" dataKey="environment">
+            <div class="child-table" *ngIf="deploymentDatabases?.length > 0; else noDatabases">
+            <p-table [value]="deploymentDatabases" [paginator]="false" dataKey="id">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th style="width: 200px">Database Name</th>
+                  <th style="width: 200px">Database Host</th>
+                  <th style="width: 150px">Connection Username</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-database>
+                <tr>
+                  <td>{{getDatabaseName(database.databaseId)}}</td>
+                  <td>{{getDatabaseHost(database.databaseId)}}</td>
+                  <td>{{database.connectionUsername}}</td>
+                </tr>
+              </ng-template>
+              </p-table>
+            </div>
+            <ng-template #noDatabases>
+              <div>None</div>
+            </ng-template>
+          </div>
+          <div class="child-table-div">
+            <div>
+              <label class="win-label">MuleSoft API's</label>
+            </div>
+            <div class="child-table" *ngIf="apis?.length > 0; else noApis">
+              <p-table [value]="apis" [paginator]="false" dataKey="id">
                 <ng-template pTemplate="header">
                   <tr>
-                    <th style="width: 100px">Environment</th>
-                    <th style="width: 180px">Host Name</th>
-                    <th style="width: 160px">Name</th>
-                    <th style="width: 60px">Port</th>
-                    <th style="width: 180px">Type</th>
+                    <th style="width: 150px">Name</th>
+                    <th style="width: 60px">Environment</th>
+                    <th style="width: 50px">Version</th>
+                    <th style="width: 50px">Asset Version</th>
+                    <th style="width: 250px">URL</th>
                   </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-database>
+                <ng-template pTemplate="body" let-api>
                   <tr>
-                    <td>{{database.environment}}</td>
-                    <td>{{database.hostName}}</td>
-                    <td>{{database.name}}</td>
-                    <td>{{database.port}}</td>
-                    <td>{{database.type.name}}</td>
+                    <td>{{api.assetId}}</td>
+                    <td>{{api.deploymentEnvironment}}</td>
+                    <td>{{api.productVersion}}</td>
+                    <td>{{api.assetVersion}}</td>
+                    <td>{{formatApiUrl(api)}}</td>
                   </tr>
                 </ng-template>
               </p-table>
             </div>
-            <ng-template #noDatabases>
+            <ng-template #noApis>
               <div>None</div>
             </ng-template>
           </div>

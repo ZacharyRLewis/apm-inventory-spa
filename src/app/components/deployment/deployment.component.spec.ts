@@ -7,7 +7,7 @@ import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {DeploymentComponent} from '..';
 import {Deployment, TestDomain, WinResponse} from '../../model';
-import {DatabaseService, DeploymentService} from '../../services';
+import {DatabaseService, DeploymentDatabaseService, DeploymentService, MulesoftApiService} from '../../services';
 
 class MockDeploymentService extends DeploymentService {
   private response: WinResponse<Deployment> = {meta: null, data: TestDomain.DEPLOYMENT};
@@ -48,7 +48,7 @@ describe('DeploymentComponent', () => {
       declarations: [DeploymentComponent],
       providers: [
         {provide: DeploymentService, useClass: MockDeploymentService},
-        DatabaseService,
+        DatabaseService, DeploymentDatabaseService, MulesoftApiService,
         {provide: ModalService, useClass: MockModalService}
       ]
     }).compileComponents();

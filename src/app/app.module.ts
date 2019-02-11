@@ -7,7 +7,17 @@ import {TableModule} from 'primeng/table';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {ComponentsModule} from './components/components.module';
-import {ApplicationService, ApplicationTypeService, DatabaseService, DatabaseTypeService, DependencyService, DeploymentService} from './services';
+import {
+  ApplicationService,
+  ApplicationTypeService,
+  DatabaseService,
+  DatabaseTypeService,
+  DependencyService,
+  DeploymentDatabaseService,
+  DeploymentService,
+  MulesoftApiService
+} from './services';
+import {ApplicationDependencyService} from './services/application-dependency/application-dependency.service';
 
 @NgModule({
   declarations: [
@@ -29,11 +39,14 @@ import {ApplicationService, ApplicationTypeService, DatabaseService, DatabaseTyp
   ],
   providers: [
     ApplicationService,
+    ApplicationDependencyService,
     ApplicationTypeService,
     DatabaseService,
     DatabaseTypeService,
     DependencyService,
-    DeploymentService
+    DeploymentService,
+    DeploymentDatabaseService,
+    MulesoftApiService,
   ],
   bootstrap: [AppComponent]
 })

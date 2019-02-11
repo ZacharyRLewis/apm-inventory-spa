@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ModalService} from '@win-angular/services';
 import {Application, ApplicationType, Dependency, Deployment} from '../../model';
 import {ApplicationService, DependencyService, DeploymentService} from '../../services';
@@ -8,7 +8,7 @@ import {ApplicationService, DependencyService, DeploymentService} from '../../se
   templateUrl: './application.component.html',
   styleUrls: ['./application.component.scss']
 })
-export class ApplicationComponent implements OnInit {
+export class ApplicationComponent {
 
   @Input() modalId: string;
   @Output() createEvent: EventEmitter<Application> = new EventEmitter<Application>();
@@ -28,32 +28,45 @@ export class ApplicationComponent implements OnInit {
     this.setDefaultValues();
   }
 
-  ngOnInit() {
-  }
-
   public setDefaultValues(): void {
     this.model.id = null;
     this.model.name = '';
     this.model.mnemonic = '';
     this.model.description = '';
+    this.model.repository = '';
+    this.model.defaultBranch = '';
     this.model.applicationType = new ApplicationType();
     this.model.applicationType.name = '';
     this.model.deployments = [];
     this.model.dependencies = [];
+    this.deployments = [];
+    this.dependencies = [];
   }
 
   public loadDeployments = () => {
-    this.deploymentService.findAllByApplicationId(this.passedApplication.id)
-      .subscribe(response => {
-        this.deployments = response.data;
-      });
+    if (this.passedApplication.id) {
+      this.deploymentService.findAllByApplicationId(this.passedApplication.id)
+        .subscribe(response => {
+          const preloadedDeployments: Deployment[] = [];
+
+          this.deployments.forEach(deployment => {
+            if (!deployment.id || deployment.id === '0') {
+              preloadedDeployments.push(deployment);
+            }
+          });
+
+          this.deployments = [...preloadedDeployments, ...response.data];
+        });
+    }
   }
 
   public loadDependencies = () => {
-    this.dependencyService.findAllByApplicationId(this.passedApplication.id)
-      .subscribe(response => {
-        this.dependencies = response.data;
-      });
+    if (this.passedApplication.id) {
+      this.dependencyService.findAllByApplicationId(this.passedApplication.id)
+        .subscribe(response => {
+          this.dependencies = response.data;
+        });
+    }
   }
 
   public closeModal(): void {
@@ -72,10 +85,19 @@ export class ApplicationComponent implements OnInit {
     const created: Application = Object.assign({}, this.model);
 
     this.applicationService.create(created)
-      .subscribe(res => {
+      .subscribe(result => {
+          const returned: Application = result.data;
+
+          this.deployments.forEach(deployment => {
+            if (!deployment.id || deployment.id === '0') {
+              this.createDeployment(returned, deployment);
+            }
+          });
+
           this.closeModal();
           this.setDefaultValues();
           this.createEvent.emit(created);
+          this.deployments = [];
         },
         err => {
           console.log('ERR:(create application) >> ' + err.message);
@@ -86,10 +108,19 @@ export class ApplicationComponent implements OnInit {
     const updated: Application = Object.assign({}, this.model);
 
     this.applicationService.update(updated)
-      .subscribe(res => {
+      .subscribe(result => {
+          const returned: Application = result.data;
+
+          this.deployments.forEach(deployment => {
+            if (!deployment.id || deployment.id === '0') {
+              this.createDeployment(returned, deployment);
+            }
+          });
+
           this.closeModal();
           this.setDefaultValues();
           this.updateEvent.emit(updated);
+          this.deployments = [];
         },
         err => {
           console.log('ERR:(update application) >> ' + err.message);
@@ -124,5 +155,18 @@ export class ApplicationComponent implements OnInit {
     const application: Application = Object.assign({}, this.model);
 
     this.uploadDependenciesEvent.emit(application);
+  }
+
+  public createDeployment(application: Application, deployment: Deployment): void {
+    deployment.applicationId = application.id;
+
+    this.deploymentService.create(deployment)
+      .subscribe(res => {
+          const created: Deployment = res.data;
+          console.log('Successfully added deployment to application: ' + JSON.stringify(created));
+        },
+        err => {
+          console.log('ERR:(create deployment) >> ' + err.message);
+        });
   }
 }
