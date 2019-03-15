@@ -5,7 +5,6 @@ export {DatabaseListComponent} from './database/database-list.component';
 export {DatabaseTypeComponent} from './type/database-type.component';
 export {DeploymentComponent} from './deployment/deployment.component';
 export {DeploymentListComponent} from './deployment/deployment-list.component';
-export {DependencyUploadComponent} from './dependency/dependency-upload.component';
 export {InventoryComponent} from './application/inventory.component';
 export {NavbarComponent} from './navbar/navbar.component';
 export {SidenavComponent} from './sidenav/sidenav.component';

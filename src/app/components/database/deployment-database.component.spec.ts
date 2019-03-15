@@ -9,12 +9,6 @@ import {DeploymentDatabaseComponent} from './deployment-database.component';
 
 class MockDeploymentDatabaseService extends DeploymentDatabaseService {
   private response: WinResponse<DeploymentDatabase[]> = {meta: null, data: [TestDomain.DEPENDENCY]};
-
-  public uploadDependencies(event, applicationId): Promise<WinResponse<DeploymentDatabase[]>> {
-    return new Promise((resolve, reject) => {
-      resolve(this.response);
-    });
-  }
 }
 
 class MockModalService extends ModalService {
@@ -73,39 +67,4 @@ describe('DeploymentDatabaseComponent', () => {
 
     expect(modalService.closeModal).toHaveBeenCalled();
   });
-
-  // it('should upload dependencies', () => {
-  //   spyOn(deploymentDatabaseService, 'uploadDependencies').and.callThrough();
-  //
-  //   component.passedApplication = Object.assign({}, TestDomain.APPLICATION);
-  //   component.customUpload({});
-  //
-  //   expect(deploymentDatabaseService.uploadDependencies).toHaveBeenCalled();
-  //
-  //   component.addDatabaseEvent.subscribe(application => {
-  //     expect(application.dependencies.length).toEqual(1);
-  //   });
-  // });
-
-  // it('should add to application', () => {
-  //   spyOn(child, 'upload').and.callThrough();
-  //
-  //   component.addToApplication();
-  //
-  //   expect(child.upload).toHaveBeenCalled();
-  // });
-  //
-  // it('should go back to application', () => {
-  //   spyOn(child, 'clear').and.callThrough();
-  //   spyOn(component, 'cancelUpload').and.callThrough();
-  //
-  //   component.backToApplication();
-  //
-  //   expect(component.cancelUpload).toHaveBeenCalled();
-  //   expect(child.clear).toHaveBeenCalled();
-  //
-  //   component.cancelAddDatabaseEvent.subscribe(deployment => {
-  //     expect(deployment.datab).toEqual(0);
-  //   });
-  // });
 });

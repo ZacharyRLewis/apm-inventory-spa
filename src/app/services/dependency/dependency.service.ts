@@ -47,27 +47,7 @@ export class DependencyService implements ServiceInterface<Dependency> {
     return this.http.delete<WinResponse<Dependency>>(this.url + '/' + dependency.id, this._options);
   }
 
-  public uploadDependencies(event, applicationId): Promise<WinResponse<Dependency[]>> {
-    return new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      const formData = new FormData();
-
-      formData.append('file', event.files[0], event.files[0].name);
-      formData.append('applicationId', applicationId);
-
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-          if (xhr.status === 200) {
-            resolve(JSON.parse(xhr.response));
-          } else {
-            reject(xhr.response);
-          }
-        }
-      };
-
-      xhr.open('POST', this.url + '/upload', true);
-      xhr.withCredentials = false;
-      xhr.send(formData);
-    });
+  public refreshDependencies(applicationId: string): Observable<WinResponse<Dependency[]>> {
+    return this.http.get<WinResponse<Dependency[]>>(this.url + '/refresh?applicationId=' + applicationId, this._options);
   }
 }

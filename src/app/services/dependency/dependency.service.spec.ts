@@ -188,18 +188,4 @@ describe('DependencyService', () => {
       req.flush({}, {status: 404, statusText: 'Not Found'});
     });
   });
-
-  it('should attempt to upload dependencies', () => {
-    const event = {files: [{name: 'test'}]};
-
-    dependencyService.uploadDependencies(event, '1')
-      .then(response => {
-        const dependencies: Dependency[] = response.data;
-        expect(dependencies).toBeTruthy();
-      })
-      .catch(error => {
-        const json = JSON.parse(error);
-        expect(json.status).not.toEqual(200);
-      });
-  });
 });

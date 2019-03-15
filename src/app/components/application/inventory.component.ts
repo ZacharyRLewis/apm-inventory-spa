@@ -5,7 +5,6 @@ import {DependencyService} from '../../services';
 import {ApplicationTypeService} from '../../services/application-type/application-type.service';
 import {ApplicationService} from '../../services/application/application.service';
 import {ApplicationComponent} from '../application/application.component';
-import {DependencyUploadComponent} from '../dependency/dependency-upload.component';
 import {DeploymentComponent} from '../deployment/deployment.component';
 
 @Component({
@@ -21,16 +20,12 @@ export class InventoryComponent implements OnInit  {
 
   public APPLICATION_MODAL_ID = 'application-modal';
   public DEPLOYMENT_MODAL_ID = 'deployment-modal';
-  public DEPENDENCY_UPLOAD_MODAL_ID = 'dependency-upload-modal';
 
   @ViewChild('applicationComponent')
   applicationComponent: ApplicationComponent;
 
   @ViewChild('deploymentComponent')
   deploymentComponent: DeploymentComponent;
-
-  @ViewChild('dependencyUploadComponent')
-  dependencyUploadComponent: DependencyUploadComponent;
 
   constructor(private applicationService: ApplicationService, private applicationTypeService: ApplicationTypeService,
               private modalService: ModalService, private dependencyService: DependencyService) {
@@ -69,10 +64,6 @@ export class InventoryComponent implements OnInit  {
     this.deploymentComponent.model.applicationId = application.id;
   }
 
-  public setPassedApplicationOnDependencies(application: Application): void {
-    this.dependencyUploadComponent.passedApplication = Object.assign({}, application);
-  }
-
   public openModal(modalId: string): void {
     this.modalService.openModal(modalId);
   }
@@ -85,12 +76,6 @@ export class InventoryComponent implements OnInit  {
     this.setPassedApplicationOnDeployment(application);
     this.closeModal(this.APPLICATION_MODAL_ID);
     this.openModal(this.DEPLOYMENT_MODAL_ID);
-  }
-
-  public openDependencyUploadDialog(application: Application): void {
-    this.setPassedApplicationOnDependencies(application);
-    this.closeModal(this.APPLICATION_MODAL_ID);
-    this.openModal(this.DEPENDENCY_UPLOAD_MODAL_ID);
   }
 
   public handleCreate(application: Application): void {
@@ -124,18 +109,6 @@ export class InventoryComponent implements OnInit  {
     }
 
     this.closeModal(this.DEPLOYMENT_MODAL_ID);
-    this.openModal(this.APPLICATION_MODAL_ID);
-  }
-
-  public handleDependencyUploadCancel(application: Application): void {
-    this.setPassedApplication(application);
-    this.closeModal(this.DEPENDENCY_UPLOAD_MODAL_ID);
-    this.openModal(this.APPLICATION_MODAL_ID);
-  }
-
-  public handleDependencyUpload(application: Application): void {
-    this.setPassedApplication(application);
-    this.closeModal(this.DEPENDENCY_UPLOAD_MODAL_ID);
     this.openModal(this.APPLICATION_MODAL_ID);
   }
 

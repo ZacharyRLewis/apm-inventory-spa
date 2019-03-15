@@ -7,3 +7,15 @@
   height: 100vh;
   background-color: $win-background;
 }
+
+.win-spinner {
+  color: $win-blue;
+  font-size: 75px;
+  opacity: 1;
+  position: absolute;
+  top: 47%;
+  left: 47%;
+  -webkit-animation: spin 2s infinite linear;
+  -moz-animation: spin 2s infinite linear;
+  animation: spin 2s infinite linear;
+}

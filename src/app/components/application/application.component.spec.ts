@@ -1,12 +1,12 @@
 import {HttpClientModule} from '@angular/common/http';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {ModalService} from '@win-angular/services';
+import {ModalService, ShareDataService} from '@win-angular/services';
 import {cold} from 'jasmine-marbles';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {ApplicationComponent} from '..';
-import {Application, TestDomain, WinResponse} from '../../model';
+import {Application, Dependency, TestDomain, WinResponse} from '../../model';
 import {ApplicationService, DependencyService, DeploymentService} from '../../services';
 
 class MockApplicationService extends ApplicationService {
@@ -25,6 +25,14 @@ class MockApplicationService extends ApplicationService {
   }
 }
 
+class MockDependencyService extends DependencyService {
+  private response: WinResponse<Dependency[]> = {meta: null, data: [TestDomain.DEPENDENCY]};
+
+  public refreshDependencies(applicationId: string): Observable<WinResponse<Dependency[]>> {
+    return cold('--x|', {x: this.response});
+  }
+}
+
 class MockModalService extends ModalService {
   openModal(modalId: string, hideFocus?: boolean) {
     console.log('open modal');
@@ -35,11 +43,19 @@ class MockModalService extends ModalService {
   }
 }
 
+class MockShareDataService extends ShareDataService {
+  blockUI(isBlockUI: boolean) {
+    console.log('block ui = ' + isBlockUI);
+  }
+}
+
 describe('ApplicationComponent', () => {
   let component: ApplicationComponent;
   let fixture: ComponentFixture<ApplicationComponent>;
   let applicationService: ApplicationService;
+  let dependencyService: DependencyService;
   let modalService: ModalService;
+  let shareDataService: ShareDataService;
   let application: Application;
 
   beforeEach(async(() => {
@@ -50,7 +66,8 @@ describe('ApplicationComponent', () => {
         {provide: ApplicationService, useClass: MockApplicationService},
         DependencyService,
         DeploymentService,
-        {provide: ModalService, useClass: MockModalService}
+        {provide: ModalService, useClass: MockModalService},
+        {provide: ShareDataService, useClass: MockShareDataService},
       ]
     }).compileComponents();
   }));
@@ -60,7 +77,9 @@ describe('ApplicationComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     applicationService = TestBed.get(ApplicationService);
+    dependencyService = TestBed.get(DependencyService);
     modalService = TestBed.get(ModalService);
+    shareDataService = TestBed.get(ShareDataService);
     component.modalId = 'test';
     application = TestDomain.APPLICATION;
   });
@@ -153,5 +172,16 @@ describe('ApplicationComponent', () => {
       expect(updated.id).toEqual(application.id);
       expect(updated.mnemonic).toEqual(application.mnemonic);
     });
+  });
+
+  it('should refresh dependencies', () => {
+    spyOn(dependencyService, 'refreshDependencies').and.callThrough();
+    spyOn(shareDataService, 'blockUI').and.callThrough();
+
+    component.passedApplication = Object.assign({}, application);
+    component.refreshDependencies();
+
+    expect(dependencyService.refreshDependencies).toHaveBeenCalled();
+    expect(shareDataService.blockUI).toHaveBeenCalled();
   });
 });

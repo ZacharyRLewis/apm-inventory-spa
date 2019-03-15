@@ -51,13 +51,6 @@ button:disabled {
       }
     }
 
-    .modal-body {
-      .ui-fileupload-choose {
-        margin: 15px;
-        background-color: $win-blue;
-      }
-    }
-
     .modal-footer {
       display: block;
     }
@@ -132,3 +125,13 @@ button:disabled {
     font-size: 13px;
   }
 }
+
+.ui-blockui {
+  background: rgba(255, 255, 255, 0.5) !important;
+  opacity: 1 !important;
+  z-index: 1101 !important;
+}
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }

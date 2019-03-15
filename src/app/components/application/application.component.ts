@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ModalService} from '@win-angular/services';
+import {ModalService, ShareDataService} from '@win-angular/services';
 import {Application, ApplicationType, Dependency, Deployment} from '../../model';
 import {ApplicationService, DependencyService, DeploymentService} from '../../services';
 
@@ -15,7 +15,6 @@ export class ApplicationComponent {
   @Output() deleteEvent: EventEmitter<Application> = new EventEmitter<Application>();
   @Output() updateEvent: EventEmitter<Application> = new EventEmitter<Application>();
   @Output() addDeploymentEvent: EventEmitter<Application> = new EventEmitter<Application>();
-  @Output() uploadDependenciesEvent: EventEmitter<Application> = new EventEmitter<Application>();
 
   model: Application = new Application();
   passedApplication: Application;
@@ -23,8 +22,8 @@ export class ApplicationComponent {
   deployments: Deployment[] = [];
   dependencies: Dependency[] = [];
 
-  constructor(private applicationService: ApplicationService, private deploymentService: DeploymentService,
-              private dependencyService: DependencyService, private modalService: ModalService) {
+  constructor(private applicationService: ApplicationService, private deploymentService: DeploymentService, private modalService: ModalService,
+              private dependencyService: DependencyService, private shareDataService: ShareDataService) {
     this.setDefaultValues();
   }
 
@@ -151,10 +150,17 @@ export class ApplicationComponent {
     this.addDeploymentEvent.emit(application);
   }
 
-  public uploadDependencies(): void {
-    const application: Application = Object.assign({}, this.model);
+  public refreshDependencies(): void {
+    this.shareDataService.blockUI(true);
 
-    this.uploadDependenciesEvent.emit(application);
+    this.dependencyService.refreshDependencies(this.passedApplication.id)
+      .subscribe(response => {
+        this.dependencies = response.data;
+        this.shareDataService.blockUI(false);
+      }, err => {
+        console.log('ERR:(refresh application dependencies) >> ' + err.message);
+        this.shareDataService.blockUI(false);
+      });
   }
 
   public createDeployment(application: Application, deployment: Deployment): void {

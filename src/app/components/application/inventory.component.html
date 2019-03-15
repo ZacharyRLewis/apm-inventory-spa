@@ -37,16 +37,10 @@
                  (createEvent)="handleCreate($event)"
                  (deleteEvent)="handleDelete($event)"
                  (updateEvent)="handleUpdate($event)"
-                 (addDeploymentEvent)="addDeploymentToApplication($event)"
-                 (uploadDependenciesEvent)="openDependencyUploadDialog($event)">
+                 (addDeploymentEvent)="addDeploymentToApplication($event)">
 </apm-application>
 
 <apm-deployment #deploymentComponent [modalId]="DEPLOYMENT_MODAL_ID"
                 (createAppDeploymentEvent)="handleDeploymentCreate($event)"
                 (cancelAppDeploymentEvent)="handleDeploymentCancel($event)">
 </apm-deployment>
-
-<apm-dependency-upload #dependencyUploadComponent [modalId]="DEPENDENCY_UPLOAD_MODAL_ID"
-                (uploadAppDependenciesEvent)="handleDependencyUpload($event)"
-                (cancelAppDependenciesEvent)="handleDependencyUploadCancel($event)">
-</apm-dependency-upload>

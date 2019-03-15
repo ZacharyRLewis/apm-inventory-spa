@@ -1,8 +1,7 @@
 import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {ModalService} from '@win-angular/services';
-import {FileUpload} from 'primeng/primeng';
-import {Application, Database, Deployment, DeploymentDatabase} from '../../model';
-import {DatabaseService, DependencyService, DeploymentDatabaseService} from '../../services';
+import {Database, Deployment, DeploymentDatabase} from '../../model';
+import {DatabaseService, DeploymentDatabaseService} from '../../services';
 
 @Component({
   selector: 'apm-deployment-database',
