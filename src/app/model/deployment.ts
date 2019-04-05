@@ -6,7 +6,7 @@ export class Deployment {
   constructor(public id?: string,
               public applicationId?: string,
               public environment?: string,
-              public hostServer?: string,
+              public hostServerId?: string,
               public directory?: string,
               public contextName?: string,
               public port?: string,
@@ -15,10 +15,10 @@ export class Deployment {
               public services?: ServiceCall[]) {
   }
 
-  public static getBaseUrl(deployment: Deployment): string {
+  public static getBaseUrl(deployment: Deployment, hostServerName: string): string {
     const protocol: string = deployment.https && deployment.https === true ? 'https://' : 'http://';
     const port: string = deployment.port ? ':' + deployment.port : '';
 
-    return protocol + deployment.hostServer + port + '/' + deployment.contextName;
+    return protocol + hostServerName + port + '/' + deployment.contextName;
   }
 }

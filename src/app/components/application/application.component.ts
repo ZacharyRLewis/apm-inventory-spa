@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
-import {Application, ApplicationType, Dependency, Deployment} from '../../model';
-import {ApplicationService, DependencyService, DeploymentService} from '../../services';
+import {Application, ApplicationType, Dependency, Deployment, HostServer} from '../../model';
+import {ApplicationService, DependencyService, DeploymentService, HostServerService} from '../../services';
 
 @Component({
   selector: 'apm-application',
@@ -16,14 +16,16 @@ export class ApplicationComponent {
   @Output() updateEvent: EventEmitter<Application> = new EventEmitter<Application>();
   @Output() addDeploymentEvent: EventEmitter<Application> = new EventEmitter<Application>();
 
-  model: Application = new Application();
-  passedApplication: Application;
-  applicationTypes: ApplicationType[] = [];
-  deployments: Deployment[] = [];
-  dependencies: Dependency[] = [];
+  public model: Application = new Application();
+  public passedApplication: Application;
+  public applicationTypes: ApplicationType[] = [];
+  public deployments: Deployment[] = [];
+  public dependencies: Dependency[] = [];
+  public hostServers: HostServer[] = [];
 
-  constructor(private applicationService: ApplicationService, private deploymentService: DeploymentService, private modalService: ModalService,
-              private dependencyService: DependencyService, private shareDataService: ShareDataService) {
+  constructor(private applicationService: ApplicationService, private deploymentService: DeploymentService,
+              private modalService: ModalService, private dependencyService: DependencyService,
+              private shareDataService: ShareDataService, private hostServerService: HostServerService) {
     this.setDefaultValues();
   }
 
@@ -34,8 +36,7 @@ export class ApplicationComponent {
     this.model.description = '';
     this.model.repository = '';
     this.model.defaultBranch = '';
-    this.model.applicationType = new ApplicationType();
-    this.model.applicationType.name = '';
+    this.model.applicationTypeId = '';
     this.model.deployments = [];
     this.model.dependencies = [];
     this.deployments = [];
@@ -66,6 +67,13 @@ export class ApplicationComponent {
           this.dependencies = response.data;
         });
     }
+  }
+
+  public loadHostServers = () => {
+    this.hostServerService.findAll()
+      .subscribe(response => {
+        this.hostServers = response.data;
+      });
   }
 
   public closeModal(): void {
@@ -140,8 +148,22 @@ export class ApplicationComponent {
         });
   }
 
+  public getHostServerName(hostServerId: string): string {
+    if (!this.hostServers || !hostServerId) {
+      return '';
+    }
+    for (const hostServer of this.hostServers) {
+      if (hostServer.id === hostServerId) {
+        return hostServer.name;
+      }
+    }
+    return null;
+  }
+
   public getDeploymentBaseUrl(deployment: Deployment): string {
-    return Deployment.getBaseUrl(deployment);
+    const hostServerName: string = this.getHostServerName(deployment.hostServerId);
+
+    return Deployment.getBaseUrl(deployment, hostServerName);
   }
 
   public addDeployment(): void {

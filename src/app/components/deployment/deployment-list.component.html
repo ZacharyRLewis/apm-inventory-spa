@@ -1,22 +1,19 @@
 <div class="win-body">
   <div class="page-title-wrapper">
     <h2 class="page-title">Deployments</h2>
-    <div class="button-wrapper">
-      <button class="add-button" (click)="resetDeploymentComponent(); openModal(DEPLOYMENT_MODAL_ID);">
-        <i class="fa fa-plus" aria-hidden="true"></i>
-        <span>Create Deployment</span>
-      </button>
-    </div>
   </div>
 
+  <apm-deployment-flyout-filter #deploymentFiltersComponent [applications]="applications" [hostServers]="hostServers"
+                                (filter)="filters = $event; searchDeployments() " (clear)="resetFilters()"></apm-deployment-flyout-filter>
+
   <div class="deployments-table">
-    <p-table [value]="deployments" [paginator]="true" [rows]="10">
+    <p-table [value]="deployments" [columns]="columns" sortField="id" [paginator]="true" [rows]="10">
       <ng-template pTemplate="header">
         <tr>
-          <th style="width: 30px">ID</th>
-          <th style="width: 150px">Application</th>
-          <th style="width: 60px">Environment</th>
-          <th style="width: 300px">Base URL</th>
+          <th *ngFor="let column of columns" [pSortableColumn]="column.field" width="{{column.width}}">
+            {{column.header}}
+            <p-sortIcon [field]="column.field"></p-sortIcon>
+          </th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-deployment>
@@ -31,11 +28,20 @@
       </ng-template>
     </p-table>
   </div>
+
+  <nav class="navbar sticky-bottom-navbar">
+    <div class="text-right col-12 pr-0">
+      <button class="add-button" (click)="resetDeploymentComponent(); openModal(DEPLOYMENT_MODAL_ID);">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+        <span>Create Deployment</span>
+      </button>
+    </div>
+  </nav>
 </div>
 
 <input class="form-control" style="visibility: hidden" />
 
-<apm-deployment #deploymentComponent [modalId]="DEPLOYMENT_MODAL_ID"
+<apm-deployment #deploymentComponent [modalId]="DEPLOYMENT_MODAL_ID" [hostServers]="hostServers"
                 (createEvent)="handleCreate($event)"
                 (deleteEvent)="handleDelete($event)"
                 (updateEvent)="handleUpdate($event)"

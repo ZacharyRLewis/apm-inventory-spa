@@ -2,14 +2,26 @@ import {HttpClientModule} from '@angular/common/http';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ChipsComponentModule} from '@win-angular/chips-component';
+import {SelectComponentModule} from '@win-angular/select-component';
 import {ModalService} from '@win-angular/services';
 import {cold, getTestScheduler} from 'jasmine-marbles';
+import {SidebarModule} from 'primeng/primeng';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {DeploymentComponent, DeploymentListComponent} from '..';
-import {Deployment, TestDomain, WinResponse} from '../../model';
-import {ApplicationService, DatabaseService, DeploymentDatabaseService, DeploymentService, MulesoftApiService} from '../../services';
-import {DeploymentDatabaseComponent} from '../database/deployment-database.component';
+import {Deployment, DeploymentFilters, TestDomain, WinResponse} from '../../model';
+import {
+  ApplicationService,
+  DatabaseService,
+  DeploymentDatabaseService,
+  DeploymentService,
+  HostServerService,
+  MulesoftApiService
+} from '../../services';
+import {DeploymentDatabaseComponent} from './deployment-database.component';
+import {DeploymentFlyoutFilterComponent} from './deployment-flyout-filter.component';
 
 class MockDeploymentService extends DeploymentService {
   private response: WinResponse<Deployment[]> = {meta: null, data: [TestDomain.DEPLOYMENT]};
@@ -38,11 +50,14 @@ describe('DeploymentListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, HttpClientModule, HttpClientTestingModule, TableModule],
-      declarations: [DeploymentListComponent, DeploymentComponent, DeploymentDatabaseComponent],
+      imports: [
+        FormsModule, BrowserAnimationsModule, HttpClientModule, HttpClientTestingModule, TableModule,
+        ChipsComponentModule, SelectComponentModule, SidebarModule
+      ],
+      declarations: [DeploymentListComponent, DeploymentComponent, DeploymentDatabaseComponent, DeploymentFlyoutFilterComponent],
       providers: [
         {provide: DeploymentService, useClass: MockDeploymentService},
-        ApplicationService, DatabaseService, DeploymentDatabaseService, MulesoftApiService,
+        ApplicationService, DatabaseService, DeploymentDatabaseService, HostServerService, MulesoftApiService,
         {provide: ModalService, useClass: MockModalService}
       ]
     }).compileComponents();
@@ -110,5 +125,82 @@ describe('DeploymentListComponent', () => {
     component.handleUpdate(TestDomain.DEPLOYMENT);
 
     expect(component.refreshDeployments).toHaveBeenCalled();
+  });
+
+  it('should handle deployment database create', () => {
+    spyOn(component, 'setPassedDeployment').and.callThrough();
+    spyOn(modalService, 'closeModal').and.callThrough();
+    spyOn(modalService, 'openModal').and.callThrough();
+
+    const deployment: Deployment = TestDomain.DEPLOYMENT;
+
+    component.handleDeploymentDatabaseCreate(deployment);
+
+    expect(component.setPassedDeployment).toHaveBeenCalledWith(deployment);
+    expect(modalService.closeModal).toHaveBeenCalledWith(component.DEPLOYMENT_DATABASE_MODAL_ID);
+    expect(modalService.openModal).toHaveBeenCalledWith(component.DEPLOYMENT_MODAL_ID);
+  });
+
+  it('should handle deployment database cancel', () => {
+    spyOn(component, 'setPassedDeployment').and.callThrough();
+    spyOn(modalService, 'closeModal').and.callThrough();
+    spyOn(modalService, 'openModal').and.callThrough();
+
+    const deployment: Deployment = TestDomain.DEPLOYMENT;
+
+    component.handleDeploymentDatabaseCancel(deployment);
+
+    expect(component.setPassedDeployment).toHaveBeenCalledWith(deployment);
+    expect(modalService.closeModal).toHaveBeenCalledWith(component.DEPLOYMENT_DATABASE_MODAL_ID);
+    expect(modalService.openModal).toHaveBeenCalledWith(component.DEPLOYMENT_MODAL_ID);
+  });
+
+  it('should get app mnemonic correctly', () => {
+    component.applications = null;
+    const appMnemonic1: string = component.getAppMnemonic('123');
+
+    expect(appMnemonic1).toEqual('');
+
+    component.applications = [TestDomain.APPLICATION];
+    const appMnemonic2: string = component.getAppMnemonic(null);
+
+    expect(appMnemonic2).toEqual('');
+
+    component.applications = [TestDomain.APPLICATION];
+    const appMnemonic3: string = component.getAppMnemonic('123');
+
+    expect(appMnemonic3).toEqual('test');
+  });
+
+  it('should get host server name correctly', () => {
+    component.hostServers = null;
+    const hostServerName1: string = component.getHostServerName('123');
+
+    expect(hostServerName1).toEqual('');
+
+    component.hostServers = [TestDomain.HOST_SERVER];
+    const hostServerName2: string = component.getHostServerName(null);
+
+    expect(hostServerName2).toEqual('');
+
+    component.hostServers = [TestDomain.HOST_SERVER];
+    const hostServerName3: string = component.getHostServerName('123');
+
+    expect(hostServerName3).toEqual('localhost');
+  });
+
+  it('should search deployments with filters', () => {
+    spyOn(deploymentService, 'filterAll').and.callThrough();
+
+    const deploymentFilters = new DeploymentFilters('1', 'DEV', '1');
+    const params = [
+      {name: 'applicationId', value: '1'},
+      {name: 'environment', value: 'DEV'},
+      {name: 'hostServerId', value: '1'}
+    ];
+    component.filters = deploymentFilters;
+    component.searchDeployments();
+
+    expect(deploymentService.filterAll).toHaveBeenCalledWith(params);
   });
 });

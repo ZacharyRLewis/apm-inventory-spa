@@ -110,7 +110,7 @@ describe('DatabaseService', () => {
     const database: Database = TestDomain.DATABASE;
     const expected: WinResponse<Database> = {meta: null, data: database};
 
-    it('should create an database and return it', () => {
+    it('should create a database and return it', () => {
       databaseService.create(database)
         .subscribe(
           res => {
@@ -129,7 +129,7 @@ describe('DatabaseService', () => {
     const database: Database = TestDomain.DATABASE;
     const expected: WinResponse<Database> = {meta: null, data: database};
 
-    it('should update an database and return it', () => {
+    it('should update a database and return it', () => {
       databaseService.update(database)
         .subscribe(
           res => {
@@ -161,7 +161,7 @@ describe('DatabaseService', () => {
     const database: Database = TestDomain.DATABASE;
     const expected: WinResponse<Database> = {meta: null, data: null};
 
-    it('should delete an database', () => {
+    it('should delete a database', () => {
       databaseService.delete(database)
         .subscribe(
           res => {

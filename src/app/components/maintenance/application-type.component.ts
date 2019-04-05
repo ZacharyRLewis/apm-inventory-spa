@@ -26,6 +26,7 @@ export class ApplicationTypeComponent {
     this.model.id = null;
     this.model.name = '';
     this.model.version = '';
+    this.model.description = '';
   }
 
   public closeModal(): void {

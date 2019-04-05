@@ -18,12 +18,6 @@
               </div>
             </div>
             <div class="apm-form-group">
-              <label class="win-label apm-label" for="applicationName">Name</label>
-              <div class="apm-input-group">
-                <input type="text" class="apm-input" id="applicationName" name="name" [(ngModel)]="model.name">
-              </div>
-            </div>
-            <div class="apm-form-group">
               <label class="win-label apm-label" for="applicationDescription">Description</label>
               <div class="apm-input-group">
                 <input type="text" class="apm-input" id="applicationDescription" name="description" [(ngModel)]="model.description">
@@ -32,7 +26,7 @@
             <div class="apm-form-group">
               <label class="win-label apm-label" for="applicationType">Type</label>
               <div class="apm-input-group">
-                <select class="apm-input apm-select" id="applicationType" [(ngModel)]="model.applicationType.id" name="type" #type="ngModel">
+                <select class="apm-input apm-select" id="applicationType" [(ngModel)]="model.applicationTypeId" name="type" #type="ngModel">
                   <option *ngFor="let appType of applicationTypes" value="{{appType.id}}">
                     {{appType.name}} {{appType.version}}
                   </option>

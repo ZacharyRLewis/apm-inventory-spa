@@ -1,0 +1,196 @@
+<div class="win-body">
+  <div class="page-title-wrapper">
+    <h2 class="page-title">Maintenance</h2>
+    <div class="btn-group">
+      <button class="tab-btn" [disabled]="selectedTab === 0" (click)="toggleTabs(0)" [ngClass]="{'selected-tab': selectedTab === 0}">
+        {{tabNames[0]}}
+      </button>
+      <button class="tab-btn" [disabled]="selectedTab === 1" (click)="toggleTabs(1)" [ngClass]="{'selected-tab': selectedTab === 1}">
+        {{tabNames[1]}}
+      </button>
+      <button class="tab-btn" [disabled]="selectedTab === 2" (click)="toggleTabs(2)" [ngClass]="{'selected-tab': selectedTab === 2}">
+        {{tabNames[2]}}
+      </button>
+      <button class="tab-btn" [disabled]="selectedTab === 3" (click)="toggleTabs(3)" [ngClass]="{'selected-tab': selectedTab === 3}">
+        {{tabNames[3]}}
+      </button>
+    </div>
+  </div>
+
+  <div class="tab-body">
+    <div *ngIf="selectedTab === 0">
+      <div class="tab-title">
+        <div class="win-label">Application Types</div>
+      </div>
+      <div>
+        <div class="tab-table" *ngIf="applicationTypes?.length > 0; else noApplicationTypes">
+          <p-table [value]="applicationTypes" [columns]="applicationTypeColumns" sortField="id" [paginator]="true" [rows]="20">
+            <ng-template pTemplate="header">
+              <tr>
+                <th *ngFor="let column of applicationTypeColumns" [pSortableColumn]="column.field" width="{{column.width}}">
+                  {{column.header}}
+                  <p-sortIcon [field]="column.field"></p-sortIcon>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-applicationType>
+              <tr>
+                <td>
+                  <a (click)="setPassedApplicationType(applicationType); openModal(APPLICATION_TYPE_MODAL_ID);">{{applicationType.id}}</a>
+                </td>
+                <td>{{applicationType.name}}</td>
+                <td>{{applicationType.version}}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        <ng-template #noApplicationTypes>
+          <div class="no-results-found">No results found</div>
+        </ng-template>
+      </div>
+    </div>
+    <div *ngIf="selectedTab === 1">
+      <div class="tab-title">
+        <div class="win-label">Database Types</div>
+      </div>
+      <div>
+        <div class="tab-table" *ngIf="databaseTypes?.length > 0; else noDatabaseTypes">
+          <p-table [value]="databaseTypes" [columns]="databaseTypeColumns" sortField="id" [paginator]="true" [rows]="20">
+            <ng-template pTemplate="header">
+              <tr>
+                <th *ngFor="let column of databaseTypeColumns" [pSortableColumn]="column.field" width="{{column.width}}">
+                  {{column.header}}
+                  <p-sortIcon [field]="column.field"></p-sortIcon>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-databaseType>
+              <tr>
+                <td>
+                  <a (click)="setPassedDatabaseType(databaseType); openModal(DATABASE_TYPE_MODAL_ID);">{{databaseType.id}}</a>
+                </td>
+                <td>{{databaseType.name}}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        <ng-template #noDatabaseTypes>
+          <div class="no-results-found">No results found</div>
+        </ng-template>
+      </div>
+    </div>
+    <div *ngIf="selectedTab === 2">
+      <div class="tab-title">
+        <div class="win-label">Databases</div>
+      </div>
+      <div>
+        <div class="tab-table" *ngIf="databases?.length > 0; else noDatabases">
+          <p-table [value]="databases" [columns]="databaseColumns" sortField="id" [paginator]="true" [rows]="20">
+            <ng-template pTemplate="header">
+              <tr>
+                <th *ngFor="let column of databaseColumns" [pSortableColumn]="column.field" width="{{column.width}}">
+                  {{column.header}}
+                  <p-sortIcon [field]="column.field"></p-sortIcon>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-database>
+              <tr>
+                <td>
+                  <a (click)="setPassedDatabase(database); openModal(DATABASE_MODAL_ID);">{{database.id}}</a>
+                </td>
+                <td>{{database.environment}}</td>
+                <td>{{database.hostName}}</td>
+                <td>{{database.name}}</td>
+                <td>{{database.port ? database.port : 'N/A'}}</td>
+                <td>{{database.type.name}}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        <ng-template #noDatabases>
+          <div class="no-results-found">No results found</div>
+        </ng-template>
+      </div>
+    </div>
+    <div *ngIf="selectedTab === 3">
+      <div class="tab-title">
+        <div class="win-label">Host Servers</div>
+      </div>
+      <div>
+        <div class="tab-table" *ngIf="hostServers?.length > 0; else noHostServers">
+          <p-table [value]="hostServers" [columns]="hostServerColumns" sortField="id" [paginator]="true" [rows]="20">
+            <ng-template pTemplate="header">
+              <tr>
+                <th *ngFor="let column of hostServerColumns" [pSortableColumn]="column.field" width="{{column.width}}">
+                  {{column.header}}
+                  <p-sortIcon [field]="column.field"></p-sortIcon>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-hostServer>
+              <tr>
+                <td>
+                  <a (click)="setPassedHostServer(hostServer); openModal(HOST_SERVER_MODAL_ID);">{{hostServer.id}}</a>
+                </td>
+                <td>{{hostServer.name}}</td>
+                <td>{{hostServer.operatingSystem}}</td>
+                <td>{{hostServer.environment}}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        <ng-template #noHostServers>
+          <div class="no-results-found">No results found</div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <nav class="navbar sticky-bottom-navbar">
+    <div class="text-right col-12 pr-0">
+      <button *ngIf="selectedTab === 0" class="add-button" (click)="resetApplicationTypeComponent(); openModal(APPLICATION_TYPE_MODAL_ID);">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+        <span>Create Application Type</span>
+      </button>
+      <button *ngIf="selectedTab === 1" class="add-button" (click)="resetDatabaseTypeComponent(); openModal(DATABASE_TYPE_MODAL_ID);">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+        <span>Create Database Type</span>
+      </button>
+      <button *ngIf="selectedTab === 2" class="add-button" (click)="resetDatabaseComponent(); openModal(DATABASE_MODAL_ID);">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+        <span>Create Database</span>
+      </button>
+      <button *ngIf="selectedTab === 3" class="add-button" (click)="resetHostServerComponent(); openModal(HOST_SERVER_MODAL_ID);">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+        <span>Create Host Server</span>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<input class="form-control" style="visibility: hidden" />
+
+<apm-application-type #applicationTypeComponent [modalId]="APPLICATION_TYPE_MODAL_ID"
+                      (createEvent)="handleApplicationTypeCreate($event)"
+                      (deleteEvent)="handleApplicationTypeDelete($event)"
+                      (updateEvent)="handleApplicationTypeUpdate($event)">
+</apm-application-type>
+
+<apm-database-type #databaseTypeComponent [modalId]="DATABASE_TYPE_MODAL_ID"
+                   (createEvent)="handleDatabaseTypeCreate($event)"
+                   (deleteEvent)="handleDatabaseTypeDelete($event)"
+                   (updateEvent)="handleDatabaseTypeUpdate($event)">
+</apm-database-type>
+
+<apm-database #databaseComponent [modalId]="DATABASE_MODAL_ID"
+              (createEvent)="handleDatabaseCreate($event)"
+              (deleteEvent)="handleDatabaseDelete($event)"
+              (updateEvent)="handleDatabaseUpdate($event)">
+</apm-database>
+
+<apm-host-server #hostServerComponent [modalId]="HOST_SERVER_MODAL_ID"
+              (createEvent)="handleHostServerCreate($event)"
+              (deleteEvent)="handleHostServerDelete($event)"
+              (updateEvent)="handleHostServerUpdate($event)">
+</apm-host-server>

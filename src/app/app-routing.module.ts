@@ -1,18 +1,13 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {
-  TypeListComponent,
-  DatabaseListComponent,
-  DeploymentListComponent,
-  InventoryComponent
-} from './components';
+import {DashboardComponent, DeploymentListComponent, InventoryComponent, MaintenanceComponent} from './components';
 
 const routes: Routes = [
-  {path: 'databases', component: DatabaseListComponent},
+  {path: 'dashboard', component: DashboardComponent},
   {path: 'deployments', component: DeploymentListComponent},
   {path: 'inventory', component: InventoryComponent},
-  {path: 'types', component: TypeListComponent},
-  {path: '', redirectTo: 'inventory', pathMatch: 'full'}
+  {path: 'maintenance', component: MaintenanceComponent},
+  {path: '', redirectTo: 'dashboard', pathMatch: 'full'}
 ];
 
 @NgModule({

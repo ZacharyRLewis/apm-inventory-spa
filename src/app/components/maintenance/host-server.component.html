@@ -1,0 +1,53 @@
+<div class="modal fade win-modal-big in" [id]="modalId">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header container">
+        <h2 class="modal-title" *ngIf="!passedHostServer">Add New Host Server</h2>
+        <h2 class="modal-title" *ngIf="passedHostServer">Update Host Server</h2>
+        <button type="button" class="close" (click)="closeModal()">
+          <span><i class="fa fa-times"></i></span>
+        </button>
+      </div>
+      <div class="modal-body container">
+        <form ngForm="newHostServerForm">
+          <div class="apm-form-body">
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="name">Name</label>
+              <div class="apm-input-group">
+                <input type="text" class="apm-input" id="name" name="name" [(ngModel)]="model.name">
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="environment">Environment</label>
+              <div class="apm-input-group">
+                <select class="apm-input apm-select" id="environment" [(ngModel)]="model.environment" name="environment" #environment="ngModel">
+                  <option *ngFor="let env of environments">
+                    {{env}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="operatingSystem">Operating System</label>
+              <div class="apm-input-group">
+                <select class="apm-input apm-select" id="operatingSystem" [(ngModel)]="model.operatingSystem" name="operatingSystem" #operatingSystem="ngModel">
+                  <option *ngFor="let operatingSystem of operatingSystems">
+                    {{operatingSystem}}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer container">
+        <button type="button" class="win-button win-button-secondary btn left" *ngIf="passedHostServer" (click)="deleteHostServer()">
+          <span>Delete HostServer</span>
+        </button>
+        <button type="button" class="win-button win-button-primary btn right" (click)="saveHostServer()">
+          <span>Save HostServer</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

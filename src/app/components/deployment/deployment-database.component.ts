@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ModalService} from '@win-angular/services';
 import {Database, Deployment, DeploymentDatabase} from '../../model';
 import {DatabaseService, DeploymentDatabaseService} from '../../services';

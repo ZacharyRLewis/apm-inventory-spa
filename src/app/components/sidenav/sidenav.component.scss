@@ -1,9 +1,12 @@
+@import '../../../assets/scss/variables';
+
 #side-nav-wrapper {
   z-index: 999;
 }
 
 .side-nav-toolbar {
   display: table-cell;
+  background-color: $win-chroma-7;
 
   a i {
     font-size: 24px;

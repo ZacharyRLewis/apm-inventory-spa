@@ -1,10 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Application, Deployment} from '../../model';
-import {ApplicationService} from '../../services';
-import {DeploymentService} from '../../services/deployment/deployment.service';
-import {DeploymentDatabaseComponent} from '../database/deployment-database.component';
-import {DeploymentComponent} from './deployment.component';
 import {ModalService} from '@win-angular/services';
+import {Application, Deployment, HostServer} from '../../model';
+import {DeploymentFilters} from '../../model/deployment-filters';
+import {ApplicationService, HostServerService} from '../../services';
+import {DeploymentService} from '../../services/deployment/deployment.service';
+import {DeploymentDatabaseComponent} from './deployment-database.component';
+import {DeploymentComponent} from './deployment.component';
 
 @Component({
   selector: 'apm-deployment-list',
@@ -15,9 +16,18 @@ export class DeploymentListComponent implements OnInit  {
 
   public deployments: Deployment[] = [];
   public applications: Application[] = [];
+  public hostServers: HostServer[] = [];
+  public filters = new DeploymentFilters();
 
   public DEPLOYMENT_MODAL_ID = 'deployment-modal';
   public DEPLOYMENT_DATABASE_MODAL_ID = 'deployment-database-modal';
+
+  public columns = [
+    {field: 'id', header: 'Id', width: '30px'},
+    {field: 'applicationId', header: 'Application Mnemonic', width: '100px'},
+    {field: 'environment', header: 'Environment', width: '60px'},
+    {field: 'hostServerId', header: 'Base URL', width: '200px'}
+  ];
 
   @ViewChild('deploymentComponent')
   deploymentComponent: DeploymentComponent;
@@ -26,12 +36,13 @@ export class DeploymentListComponent implements OnInit  {
   deploymentDatabaseComponent: DeploymentDatabaseComponent;
 
   constructor(private applicationService: ApplicationService, private deploymentService: DeploymentService,
-              private modalService: ModalService) {
+              private hostServerService: HostServerService, private modalService: ModalService) {
     this.refreshDeployments();
   }
 
   ngOnInit() {
     this.loadApplications();
+    this.loadHostServers();
   }
 
   public loadApplications = () => {
@@ -41,8 +52,36 @@ export class DeploymentListComponent implements OnInit  {
       });
   }
 
+  public loadHostServers = () => {
+    this.hostServerService.findAll()
+      .subscribe(response => {
+        this.hostServers = response.data;
+      });
+  }
+
   public refreshDeployments(): void {
     this.deploymentService.findAll()
+      .subscribe(response => {
+        this.deployments = response.data;
+      });
+  }
+
+  public searchDeployments(): void {
+    const params = [];
+
+    if (this.filters.applicationId) {
+      params.push({name: 'applicationId', value: this.filters.applicationId});
+    }
+
+    if (this.filters.environment) {
+      params.push({name: 'environment', value: this.filters.environment});
+    }
+
+    if (this.filters.hostServerId) {
+      params.push({name: 'hostServerId', value: this.filters.hostServerId});
+    }
+
+    this.deploymentService.filterAll(params)
       .subscribe(response => {
         this.deployments = response.data;
       });
@@ -76,17 +115,17 @@ export class DeploymentListComponent implements OnInit  {
   }
 
   public handleCreate(deployment: Deployment): void {
-    console.log('Deployment ' + Deployment.getBaseUrl(deployment) + ' successfully created');
+    console.log('Deployment ' + deployment.contextName + ' successfully created');
     this.refreshDeployments();
   }
 
   public handleDelete(deployment: Deployment): void {
-    console.log('Deployment ' + Deployment.getBaseUrl(deployment) + ' successfully deleted');
+    console.log('Deployment ' + deployment.contextName + ' successfully deleted');
     this.refreshDeployments();
   }
 
   public handleUpdate(deployment: Deployment): void {
-    console.log('Deployment ' + Deployment.getBaseUrl(deployment) + ' successfully updated');
+    console.log('Deployment ' + deployment.contextName + ' successfully updated');
     this.refreshDeployments();
   }
 
@@ -121,7 +160,30 @@ export class DeploymentListComponent implements OnInit  {
     return null;
   }
 
+  public getHostServerName(hostServerId: string): string {
+    if (!this.hostServers || !hostServerId) {
+      return '';
+    }
+    for (const hostServer of this.hostServers) {
+      if (hostServer.id === hostServerId) {
+        return hostServer.name;
+      }
+    }
+    return null;
+  }
+
   public getDeploymentBaseUrl(deployment: Deployment): string {
-    return Deployment.getBaseUrl(deployment);
+    const hostServerName: string = this.getHostServerName(deployment.hostServerId);
+
+    return Deployment.getBaseUrl(deployment, hostServerName);
+  }
+
+  public resetFilters(event?): void {
+    this.filters = new DeploymentFilters();
+    this.filters.applicationId = '';
+    this.filters.environment = '';
+    this.filters.hostServerId = '';
+    this.deployments = [];
+    this.searchDeployments();
   }
 }

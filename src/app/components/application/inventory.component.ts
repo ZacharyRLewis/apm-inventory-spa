@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ModalService} from '@win-angular/services';
 import {Application, ApplicationType} from '../../model';
-import {DependencyService} from '../../services';
+import {ApplicationFilters} from '../../model/application-filters';
 import {ApplicationTypeService} from '../../services/application-type/application-type.service';
 import {ApplicationService} from '../../services/application/application.service';
 import {ApplicationComponent} from '../application/application.component';
@@ -17,9 +17,16 @@ export class InventoryComponent implements OnInit  {
   public applications: Application[] = [];
   public applicationTypes: ApplicationType[] = [];
   public databaseTypes: ApplicationType[] = [];
+  public filters = new ApplicationFilters();
 
   public APPLICATION_MODAL_ID = 'application-modal';
   public DEPLOYMENT_MODAL_ID = 'deployment-modal';
+
+  public columns = [
+    {field: 'mnemonic', header: 'Mnemonic', width: '100px'},
+    {field: 'description', header: 'Description', width: '150px'},
+    {field: 'applicationTypeId', header: 'Type', width: '100px'}
+  ];
 
   @ViewChild('applicationComponent')
   applicationComponent: ApplicationComponent;
@@ -28,7 +35,7 @@ export class InventoryComponent implements OnInit  {
   deploymentComponent: DeploymentComponent;
 
   constructor(private applicationService: ApplicationService, private applicationTypeService: ApplicationTypeService,
-              private modalService: ModalService, private dependencyService: DependencyService) {
+              private modalService: ModalService) {
     this.refreshApplications();
   }
 
@@ -38,6 +45,27 @@ export class InventoryComponent implements OnInit  {
 
   public refreshApplications(): void {
     this.applicationService.findAll()
+      .subscribe(response => {
+        this.applications = response.data;
+      });
+  }
+
+  public searchApplications(): void {
+    const params = [];
+
+    if (this.filters.mnemonic) {
+      params.push({name: 'mnemonic', value: this.filters.mnemonic});
+    }
+
+    if (this.filters.isServiceApi) {
+      params.push({name: 'isServiceApi', value: this.filters.isServiceApi});
+    }
+
+    if (this.filters.applicationTypeId) {
+      params.push({name: 'applicationTypeId', value: this.filters.applicationTypeId});
+    }
+
+    this.applicationService.filterAll(params)
       .subscribe(response => {
         this.applications = response.data;
       });
@@ -57,6 +85,7 @@ export class InventoryComponent implements OnInit  {
     this.applicationComponent.applicationTypes = this.applicationTypes;
     this.applicationComponent.loadDeployments();
     this.applicationComponent.loadDependencies();
+    this.applicationComponent.loadHostServers();
   }
 
   public setPassedApplicationOnDeployment(application: Application): void {
@@ -117,5 +146,26 @@ export class InventoryComponent implements OnInit  {
       .subscribe(response => {
         this.applicationTypes = response.data;
       });
+  }
+
+  public getApplicationTypeDescription(applicationTypeId: string): string {
+    if (!this.applicationTypes || !applicationTypeId) {
+      return '';
+    }
+    for (const applicationType of this.applicationTypes) {
+      if (applicationType.id === applicationTypeId) {
+        return applicationType.description;
+      }
+    }
+    return null;
+  }
+
+  public resetFilters(event?): void {
+    this.filters = new ApplicationFilters();
+    this.filters.mnemonic = '';
+    this.filters.isServiceApi = false;
+    this.filters.applicationTypeId = '';
+    this.applications = [];
+    this.searchApplications();
   }
 }

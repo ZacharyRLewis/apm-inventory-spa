@@ -1,4 +1,3 @@
-
 export class ServiceCall {
 
   constructor(public id?: string,

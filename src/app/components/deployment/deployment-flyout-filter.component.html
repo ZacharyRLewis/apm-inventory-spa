@@ -1,0 +1,53 @@
+<win-chips [list]="chipList" (removeItem)="removeFilter($event)" class="mobile-hide" (removeAllItems)="removeFilter()"></win-chips>
+<button #filterBtn type="button" class="filters-btn" (click)="showSidebar()"><i class="fa fa-search"></i></button>
+
+<p-sidebar #sidebar class="sidebar hidden" [visible]="isSidebarVisible" position="right" [modal]="false" (onHide)="hideSidebar()">
+  <div class="col-xs-10">
+    <h1 class="panel-title">Search Filters</h1>
+  </div>
+
+  <div class="scroll-pane" (keydown.enter)="isFormClear() && applyFilters()">
+    <div class="input-field">
+      <div class="form-group">
+        <label for="mnemonic" class="win-label">Application Mnemonic</label>
+        <input id="mnemonic" type="text" class="form-control validate filter-input" autocomplete="off"
+               [(ngModel)]="selectedAppMnemonic"
+               (keyup)="processTypeAhead()"
+               (focus)="showSuggestions(true)">
+        <div class="suggestions appMnemonicSuggestions" *ngIf="showAppMnemonicSuggestions && appMnemonicSuggestions.length > 0">
+          <ul *ngFor="let suggestion of appMnemonicSuggestions">
+            <li>
+              <a (mousedown)="selectSuggestion(suggestion)">{{suggestion.mnemonic}}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-field">
+      <div class="form-group">
+        <label for="environment" class="win-label">Environment</label>
+        <win-select id="environment" [options]="environmentChoices" labelKey="key" valueKey="value"
+                    [(ngModel)]="filters.environment" defaultOption=" "></win-select>
+      </div>
+    </div>
+
+    <div class="input-field">
+      <div class="form-group">
+        <label for="hostServerId" class="win-label">Host Server</label>
+        <win-select id="hostServerId" [options]="hostServers" labelKey="name" valueKey="id"
+                    [(ngModel)]="filters.hostServerId" defaultOption=" "></win-select>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <button type="button" class="btn win-button btn-primary apply-filter" (click)="applyFilters()" [disabled]="isFormClear()">
+      Apply Filters
+    </button>
+    <button type="button" class="btn win-button btn-neutral red" (click)="clearFilters()" [disabled]="isFormClear()">
+      Clear All Filters
+    </button>
+  </footer>
+</p-sidebar>

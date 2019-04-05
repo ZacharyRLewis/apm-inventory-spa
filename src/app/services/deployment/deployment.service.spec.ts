@@ -110,7 +110,7 @@ describe('DeploymentService', () => {
     const deployment: Deployment = TestDomain.DEPLOYMENT;
     const expected: WinResponse<Deployment> = {meta: null, data: deployment};
 
-    it('should create an deployment and return it', () => {
+    it('should create a deployment and return it', () => {
       deploymentService.create(deployment)
         .subscribe(
           res => {
@@ -129,7 +129,7 @@ describe('DeploymentService', () => {
     const deployment: Deployment = TestDomain.DEPLOYMENT;
     const expected: WinResponse<Deployment> = {meta: null, data: deployment};
 
-    it('should update an deployment and return it', () => {
+    it('should update a deployment and return it', () => {
       deploymentService.update(deployment)
         .subscribe(
           res => {
@@ -161,7 +161,7 @@ describe('DeploymentService', () => {
     const deployment: Deployment = TestDomain.DEPLOYMENT;
     const expected: WinResponse<Deployment> = {meta: null, data: null};
 
-    it('should delete an deployment', () => {
+    it('should delete a deployment', () => {
       deploymentService.delete(deployment)
         .subscribe(
           res => {

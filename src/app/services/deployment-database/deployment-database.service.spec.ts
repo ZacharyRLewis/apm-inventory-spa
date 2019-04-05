@@ -110,7 +110,7 @@ describe('DeploymentDatabaseService', () => {
     const deploymentDatabase: DeploymentDatabase = TestDomain.DEPLOYMENT;
     const expected: WinResponse<DeploymentDatabase> = {meta: null, data: deploymentDatabase};
 
-    it('should create an deployment database and return it', () => {
+    it('should create a deployment database and return it', () => {
       deploymentDatabaseService.create(deploymentDatabase)
         .subscribe(
           res => {
@@ -129,7 +129,7 @@ describe('DeploymentDatabaseService', () => {
     const deploymentDatabase: DeploymentDatabase = TestDomain.DEPLOYMENT;
     const expected: WinResponse<DeploymentDatabase> = {meta: null, data: deploymentDatabase};
 
-    it('should update an deployment database and return it', () => {
+    it('should update a deployment database and return it', () => {
       deploymentDatabaseService.update(deploymentDatabase)
         .subscribe(
           res => {
@@ -161,7 +161,7 @@ describe('DeploymentDatabaseService', () => {
     const deploymentDatabase: DeploymentDatabase = TestDomain.DEPLOYMENT;
     const expected: WinResponse<DeploymentDatabase> = {meta: null, data: null};
 
-    it('should delete an deployment database', () => {
+    it('should delete a deployment database', () => {
       deploymentDatabaseService.delete(deploymentDatabase)
         .subscribe(
           res => {

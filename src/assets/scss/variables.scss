@@ -1,4 +1,22 @@
+@import url('https://cdn.winwholesale.com/styles/styleLight.css');
+
 // Colors
 
-$win-blue: #0072cf;
-$win-background: #f5f5f5;
+$win-error: var(--win-error);                                   // Light, HC: #CC0000, Dark: #F44336
+$win-primary: var(--win-primary);                               // Light, HC: #0072CF, Dark: #31ACFF
+$win-primary-text: var(--win-primary-text);                     // Light: #000000, Dark: #EEEEEE, HC: #373737
+
+$white: var(--white);                                           // Light, HC: #FFFFFF, Dark: #000000
+$win-chroma-1: var(--win-chroma-1);                             // Light, HC: #F5F5F5, Dark: #181818
+$win-chroma-2: var(--win-chroma-2);                             // Light, HC: #EEEEEE, Dark: #333333
+$win-chroma-3: var(--win-chroma-3);                             // Light, HC: #CCCCCC, Dark: #666666
+$win-chroma-4: var(--win-chroma-4);                             // Light, HC: #999999, Dark: #9B9C99
+$win-chroma-5: var(--win-chroma-5);                             // Light, HC: #515151, Dark: #A8A9A6
+$win-chroma-6: var(--win-chroma-6);                             // Light, HC: #444444, Dark: #444444
+$win-chroma-7: var(--win-chroma-7);                             // Light, HC: #373737, Dark: #EEEEEE
+
+$base-border: var(--base-border);
+
+// Formatting
+
+$win-weight: var(--win-weight);

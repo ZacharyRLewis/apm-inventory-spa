@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ModalService} from '@win-angular/services';
-import {Application, Database, Deployment, DeploymentDatabase, MulesoftApi} from '../../model';
+import {Application, Database, Deployment, DeploymentDatabase, HostServer, MulesoftApi} from '../../model';
 import {DatabaseService, DeploymentDatabaseService, DeploymentService, MulesoftApiService} from '../../services';
 
 @Component({
@@ -11,6 +11,8 @@ import {DatabaseService, DeploymentDatabaseService, DeploymentService, MulesoftA
 export class DeploymentComponent {
 
   @Input() modalId: string;
+  @Input() hostServers: HostServer[] = [];
+
   @Output() createEvent: EventEmitter<Deployment> = new EventEmitter<Deployment>();
   @Output() deleteEvent: EventEmitter<Deployment> = new EventEmitter<Deployment>();
   @Output() updateEvent: EventEmitter<Deployment> = new EventEmitter<Deployment>();
@@ -18,14 +20,14 @@ export class DeploymentComponent {
   @Output() cancelAppDeploymentEvent: EventEmitter<Application> = new EventEmitter<Application>();
   @Output() addDatabaseEvent: EventEmitter<Deployment> = new EventEmitter<Deployment>();
 
-  model: Deployment = new Deployment();
-  passedApplication: Application;
-  passedDeployment: Deployment;
-  environments: string[] = ['DEV', 'QA', 'PROD'];
-  applications: Application[] = [];
-  databases: Database[] = [];
-  deploymentDatabases: DeploymentDatabase[] = [];
-  apis: MulesoftApi[] = [];
+  public model: Deployment = new Deployment();
+  public passedApplication: Application;
+  public passedDeployment: Deployment;
+  public environments: string[] = ['DEV', 'QA', 'PROD'];
+  public applications: Application[] = [];
+  public databases: Database[] = [];
+  public deploymentDatabases: DeploymentDatabase[] = [];
+  public apis: MulesoftApi[] = [];
 
   constructor(private deploymentService: DeploymentService, private modalService: ModalService, private databaseService: DatabaseService,
               private deploymentDatabaseService: DeploymentDatabaseService, private mulesoftAssetService: MulesoftApiService) {
@@ -38,7 +40,7 @@ export class DeploymentComponent {
     this.model.environment = '';
     this.model.directory = '';
     this.model.https = null;
-    this.model.hostServer = '';
+    this.model.hostServerId = '';
     this.model.port = '';
     this.model.contextName = '';
     this.model.databases = [];
@@ -134,8 +136,22 @@ export class DeploymentComponent {
         });
   }
 
+  public getHostServerName(hostServerId: string): string {
+    if (!this.hostServers || !hostServerId) {
+      return '';
+    }
+    for (const hostServer of this.hostServers) {
+      if (hostServer.id === hostServerId) {
+        return hostServer.name;
+      }
+    }
+    return null;
+  }
+
   public getDeploymentBaseUrl(deployment: Deployment): string {
-    return Deployment.getBaseUrl(deployment);
+    const hostServerName: string = this.getHostServerName(deployment.hostServerId);
+
+    return Deployment.getBaseUrl(deployment, hostServerName);
   }
 
   public backToApplication(): void {

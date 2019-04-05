@@ -27,6 +27,18 @@ export class ApplicationDependencyService implements ServiceInterface<Applicatio
     return this.http.get<WinResponse<ApplicationDependency[]>>(this.url, this._options);
   }
 
+  public filterAll(params: { name, value } []): Observable<WinResponse<ApplicationDependency[]>> {
+    let requestUrl: string = this.url;
+
+    for (let i = 0; i < params.length; i++) {
+      const separator: string = (i === 0) ? '?' : '&';
+
+      requestUrl = requestUrl + separator + params[i].name + '=' + params[i].value;
+    }
+
+    return this.http.get<WinResponse<ApplicationDependency[]>>(requestUrl, this._options);
+  }
+
   public findOne(id: string): Observable<WinResponse<ApplicationDependency>> {
     return this.http.get<WinResponse<ApplicationDependency>>(this.url + '/' + id, this._options);
   }

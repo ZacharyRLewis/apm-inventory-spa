@@ -2,6 +2,7 @@ import {CommonModule} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ServicesModule, ShareDataService} from '@win-angular/services';
 import {TableModule} from 'primeng/table';
 import {AppRoutingModule} from './app-routing.module';
@@ -15,6 +16,7 @@ import {
   DependencyService,
   DeploymentDatabaseService,
   DeploymentService,
+  HostServerService,
   MulesoftApiService
 } from './services';
 import {ApplicationDependencyService} from './services/application-dependency/application-dependency.service';
@@ -26,6 +28,7 @@ import {ApplicationDependencyService} from './services/application-dependency/ap
   imports: [
     AppRoutingModule,
     BrowserModule,
+    BrowserAnimationsModule,
     CommonModule,
     ComponentsModule,
     HttpClientModule
@@ -46,6 +49,7 @@ import {ApplicationDependencyService} from './services/application-dependency/ap
     DependencyService,
     DeploymentService,
     DeploymentDatabaseService,
+    HostServerService,
     MulesoftApiService,
     ShareDataService
   ],

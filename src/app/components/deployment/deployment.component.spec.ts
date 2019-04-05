@@ -6,7 +6,7 @@ import {cold} from 'jasmine-marbles';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {DeploymentComponent} from '..';
-import {Deployment, TestDomain, WinResponse} from '../../model';
+import {Deployment, HostServer, MulesoftApi, TestDomain, WinResponse} from '../../model';
 import {DatabaseService, DeploymentDatabaseService, DeploymentService, MulesoftApiService} from '../../services';
 
 class MockDeploymentService extends DeploymentService {
@@ -39,6 +39,7 @@ describe('DeploymentComponent', () => {
   let component: DeploymentComponent;
   let fixture: ComponentFixture<DeploymentComponent>;
   let deploymentService: DeploymentService;
+  let databaseService: DatabaseService;
   let modalService: ModalService;
   let deployment: Deployment;
 
@@ -59,6 +60,7 @@ describe('DeploymentComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     deploymentService = TestBed.get(DeploymentService);
+    databaseService = TestBed.get(DatabaseService);
     modalService = TestBed.get(ModalService);
     component.modalId = 'test';
     deployment = TestDomain.DEPLOYMENT;
@@ -76,11 +78,13 @@ describe('DeploymentComponent', () => {
     expect(component.model.environment).toEqual('');
     expect(component.model.directory).toEqual('');
     expect(component.model.https).toEqual(null);
-    expect(component.model.hostServer).toEqual('');
+    expect(component.model.hostServerId).toEqual('');
     expect(component.model.port).toEqual('');
     expect(component.model.contextName).toEqual('');
     expect(component.model.databases).toEqual([]);
     expect(component.model.services).toEqual([]);
+    expect(component.databases).toEqual([]);
+    expect(component.deploymentDatabases).toEqual([]);
   });
 
   it('should close modal', () => {
@@ -89,6 +93,14 @@ describe('DeploymentComponent', () => {
     component.closeModal();
 
     expect(modalService.closeModal).toHaveBeenCalled();
+  });
+
+  it('should load databases', () => {
+    spyOn(databaseService, 'findAll').and.callThrough();
+
+    component.loadDatabases();
+
+    expect(databaseService.findAll).toHaveBeenCalled();
   });
 
   it('should call update deployment when passedDeployment exists', () => {
@@ -149,6 +161,76 @@ describe('DeploymentComponent', () => {
 
     component.updateEvent.subscribe(updated => {
       expect(updated.id).toEqual(deployment.id);
+    });
+  });
+
+  it('should get host server name correctly', () => {
+    component.hostServers = null;
+    const hostServerName1: string = component.getHostServerName('123');
+
+    expect(hostServerName1).toEqual('');
+
+    component.hostServers = [TestDomain.HOST_SERVER];
+    const hostServerName2: string = component.getHostServerName(null);
+
+    expect(hostServerName2).toEqual('');
+
+    component.hostServers = [TestDomain.HOST_SERVER];
+    const hostServerName3: string = component.getHostServerName('999');
+
+    expect(hostServerName3).toBeNull();
+
+    component.hostServers = [TestDomain.HOST_SERVER, new HostServer('456', 'test', 'DEV', 'LINUX')];
+    const hostServerName4: string = component.getHostServerName('123');
+
+    expect(hostServerName4).toEqual('localhost');
+  });
+
+  it('should format api url correctly', () => {
+    component.model = deployment;
+    const api: MulesoftApi = TestDomain.MULESOFT_API;
+    api.deploymentEnvironment = 'Sandbox';
+    const apiUrl1: string = component.formatApiUrl(TestDomain.MULESOFT_API);
+
+    expect(apiUrl1).toEqual('https://devag1.winwholesale.com/' + deployment.contextName);
+
+    api.deploymentEnvironment = 'QA';
+    const apiUrl2: string = component.formatApiUrl(TestDomain.MULESOFT_API);
+
+    expect(apiUrl2).toEqual('https://qaag1.winwholesale.com/' + deployment.contextName);
+
+    api.deploymentEnvironment = 'PROD';
+    const apiUrl3: string = component.formatApiUrl(TestDomain.MULESOFT_API);
+
+    expect(apiUrl3).toEqual('https://ag1.winwholesale.com/' + deployment.contextName);
+  });
+
+  it('should emit cancel app deployment event', () => {
+    component.passedApplication = TestDomain.APPLICATION;
+    component.backToApplication();
+
+    component.cancelAppDeploymentEvent.subscribe(application => {
+      expect(application.id).toEqual('123');
+    });
+  });
+
+  it('should emit add database event', () => {
+    component.model = deployment;
+    component.addDatabase();
+
+    component.addDatabaseEvent.subscribe(depl => {
+      expect(depl.id).toEqual(deployment.id);
+    });
+  });
+
+  it('should emit create app deployment event', () => {
+    component.model = deployment;
+    component.passedApplication = TestDomain.APPLICATION;
+    component.addToApplication();
+
+    component.createAppDeploymentEvent.subscribe(({application, deployment1}) => {
+      expect(application.id).toEqual('123');
+      expect(deployment1.id).toEqual('123');
     });
   });
 });

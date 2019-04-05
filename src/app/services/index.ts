@@ -6,4 +6,5 @@ export {DatabaseTypeService} from './database-type/database-type.service';
 export {DependencyService} from './dependency/dependency.service';
 export {DeploymentService} from './deployment/deployment.service';
 export {DeploymentDatabaseService} from './deployment-database/deployment-database.service';
+export {HostServerService} from './host-server/host-server.service';
 export {MulesoftApiService} from './mulesoft/mulesoft-api.service';

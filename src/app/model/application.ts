@@ -1,6 +1,5 @@
-import {ApplicationType} from './application-type';
-import {Deployment} from './deployment';
 import {Dependency} from './dependency';
+import {Deployment} from './deployment';
 
 export class Application {
 
@@ -11,7 +10,8 @@ export class Application {
               public repository?: string,
               public defaultBranch?: string,
               public serviceApi?: boolean,
-              public applicationType?: ApplicationType,
+              public applicationTypeId?: string,
+              // public applicationType?: ApplicationType,
               public deployments?: Deployment[],
               public dependencies?: Dependency[]) {
   }

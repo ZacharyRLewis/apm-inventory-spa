@@ -2,12 +2,16 @@ import {HttpClientModule} from '@angular/common/http';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ChipsComponentModule} from '@win-angular/chips-component';
+import {SelectComponentModule} from '@win-angular/select-component';
 import {ModalService, ShareDataService} from '@win-angular/services';
 import {cold, getTestScheduler} from 'jasmine-marbles';
+import {SidebarModule} from 'primeng/primeng';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {ApplicationComponent, DeploymentComponent, InventoryComponent} from '..';
-import {Application, TestDomain, WinResponse} from '../../model';
+import {Application, ApplicationFilters, TestDomain, WinResponse} from '../../model';
 import {
   ApplicationService,
   ApplicationTypeService,
@@ -15,8 +19,10 @@ import {
   DependencyService,
   DeploymentDatabaseService,
   DeploymentService,
+  HostServerService,
   MulesoftApiService
 } from '../../services';
+import {ApplicationFlyoutFilterComponent} from './application-flyout-filter.component';
 
 class MockApplicationService extends ApplicationService {
   private response: WinResponse<Application[]> = {meta: null, data: [TestDomain.APPLICATION]};
@@ -52,11 +58,15 @@ describe('InventoryComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, HttpClientModule, HttpClientTestingModule, TableModule],
-      declarations: [InventoryComponent, ApplicationComponent, DeploymentComponent],
+      imports: [
+        FormsModule, BrowserAnimationsModule, HttpClientModule, HttpClientTestingModule, TableModule,
+        ChipsComponentModule, SelectComponentModule, SidebarModule
+      ],
+      declarations: [InventoryComponent, ApplicationComponent, ApplicationFlyoutFilterComponent, DeploymentComponent],
       providers: [
         {provide: ApplicationService, useClass: MockApplicationService},
-        ApplicationTypeService, DatabaseService, DeploymentService, DeploymentDatabaseService, DependencyService, MulesoftApiService,
+        ApplicationTypeService, DatabaseService, DeploymentService, DeploymentDatabaseService,
+        DependencyService, HostServerService, MulesoftApiService,
         {provide: ModalService, useClass: MockModalService},
         {provide: ShareDataService, useClass: MockShareDataService},
       ]
@@ -159,5 +169,20 @@ describe('InventoryComponent', () => {
     expect(component.setPassedApplication).toHaveBeenCalled();
     expect(modalService.openModal).toHaveBeenCalled();
     expect(modalService.closeModal).toHaveBeenCalled();
+  });
+
+  it('should search applications with filters', () => {
+    spyOn(applicationService, 'filterAll').and.callThrough();
+
+    const applicationFilters = new ApplicationFilters('test', true, '1');
+    const params = [
+      {name: 'mnemonic', value: 'test'},
+      {name: 'isServiceApi', value: true},
+      {name: 'applicationTypeId', value: '1'}
+    ];
+    component.filters = applicationFilters;
+    component.searchApplications();
+
+    expect(applicationService.filterAll).toHaveBeenCalledWith(params);
   });
 });

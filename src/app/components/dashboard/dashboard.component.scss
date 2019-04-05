@@ -1,0 +1,13 @@
+@import '../../../assets/scss/variables';
+
+.dependency-search {
+  font-size: 13px;
+  padding-left: 12px;
+}
+
+.dependencySuggestions {
+  top: 191px;
+  left: 55px;
+  width: 450px;
+  z-index: 101;
+}

@@ -110,7 +110,7 @@ describe('DependencyService', () => {
     const dependency: Dependency = TestDomain.DATABASE;
     const expected: WinResponse<Dependency> = {meta: null, data: dependency};
 
-    it('should create an dependency and return it', () => {
+    it('should create a dependency and return it', () => {
       dependencyService.create(dependency)
         .subscribe(
           res => {
@@ -129,7 +129,7 @@ describe('DependencyService', () => {
     const dependency: Dependency = TestDomain.DATABASE;
     const expected: WinResponse<Dependency> = {meta: null, data: dependency};
 
-    it('should update an dependency and return it', () => {
+    it('should update a dependency and return it', () => {
       dependencyService.update(dependency)
         .subscribe(
           res => {
@@ -161,7 +161,7 @@ describe('DependencyService', () => {
     const dependency: Dependency = TestDomain.DATABASE;
     const expected: WinResponse<Dependency> = {meta: null, data: null};
 
-    it('should delete an dependency', () => {
+    it('should delete a dependency', () => {
       dependencyService.delete(dependency)
         .subscribe(
           res => {

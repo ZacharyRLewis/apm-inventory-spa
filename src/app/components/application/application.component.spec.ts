@@ -6,8 +6,8 @@ import {cold} from 'jasmine-marbles';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {ApplicationComponent} from '..';
-import {Application, Dependency, TestDomain, WinResponse} from '../../model';
-import {ApplicationService, DependencyService, DeploymentService} from '../../services';
+import {Application, Dependency, Deployment, TestDomain, WinResponse} from '../../model';
+import {ApplicationService, DependencyService, DeploymentService, HostServerService} from '../../services';
 
 class MockApplicationService extends ApplicationService {
   private response: WinResponse<Application> = {meta: null, data: TestDomain.APPLICATION};
@@ -66,6 +66,7 @@ describe('ApplicationComponent', () => {
         {provide: ApplicationService, useClass: MockApplicationService},
         DependencyService,
         DeploymentService,
+        HostServerService,
         {provide: ModalService, useClass: MockModalService},
         {provide: ShareDataService, useClass: MockShareDataService},
       ]
@@ -97,9 +98,11 @@ describe('ApplicationComponent', () => {
     expect(component.model.description).toEqual('');
     expect(component.model.repository).toEqual('');
     expect(component.model.defaultBranch).toEqual('');
-    expect(component.model.applicationType.name).toEqual('');
+    expect(component.model.applicationTypeId).toEqual('');
     expect(component.model.deployments).toEqual([]);
     expect(component.model.dependencies).toEqual([]);
+    expect(component.deployments).toEqual([]);
+    expect(component.dependencies).toEqual([]);
   });
 
   it('should close modal', () => {
@@ -149,10 +152,11 @@ describe('ApplicationComponent', () => {
   it('should delete application', () => {
     spyOn(applicationService, 'delete').and.callThrough();
 
-    component.model = Object.assign({}, application);
+    const appl: Application = Object.assign({}, application);
+    component.model = appl;
     component.deleteApplication();
 
-    expect(applicationService.delete).toHaveBeenCalled();
+    expect(applicationService.delete).toHaveBeenCalledWith(appl);
 
     component.deleteEvent.subscribe(deleted => {
       expect(deleted.id).toEqual(application.id);
@@ -163,10 +167,12 @@ describe('ApplicationComponent', () => {
   it('should update application', () => {
     spyOn(applicationService, 'update').and.callThrough();
 
-    component.model = Object.assign({}, application);
+    const appl: Application = Object.assign({}, application);
+    appl.deployments = [new Deployment('0'), new Deployment('0')];
+    component.model = appl;
     component.updateApplication();
 
-    expect(applicationService.update).toHaveBeenCalled();
+    expect(applicationService.update).toHaveBeenCalledWith(appl);
 
     component.updateEvent.subscribe(updated => {
       expect(updated.id).toEqual(application.id);
@@ -183,5 +189,14 @@ describe('ApplicationComponent', () => {
 
     expect(dependencyService.refreshDependencies).toHaveBeenCalled();
     expect(shareDataService.blockUI).toHaveBeenCalled();
+  });
+
+  it('should emit add deployment event', () => {
+    component.model = application;
+    component.addDeployment();
+
+    component.addDeploymentEvent.subscribe(appl => {
+      expect(appl.id).toEqual('123');
+    });
   });
 });

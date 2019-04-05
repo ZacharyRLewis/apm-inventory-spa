@@ -27,6 +27,18 @@ export class DeploymentService implements ServiceInterface<Deployment> {
     return this.http.get<WinResponse<Deployment[]>>(this.url, this._options);
   }
 
+  public filterAll(params: { name, value } []): Observable<WinResponse<Deployment[]>> {
+    let requestUrl: string = this.url;
+
+    for (let i = 0; i < params.length; i++) {
+      const separator: string = (i === 0) ? '?' : '&';
+
+      requestUrl = requestUrl + separator + params[i].name + '=' + params[i].value;
+    }
+
+    return this.http.get<WinResponse<Deployment[]>>(requestUrl, this._options);
+  }
+
   public findAllByApplicationId(applicationId: string): Observable<WinResponse<Deployment[]>> {
     return this.http.get<WinResponse<Deployment[]>>(this.url + '?applicationId=' + applicationId, this._options);
   }
@@ -45,5 +57,9 @@ export class DeploymentService implements ServiceInterface<Deployment> {
 
   public delete(deployment: Deployment): Observable<WinResponse<Deployment>> {
     return this.http.delete<WinResponse<Deployment>>(this.url + '/' + deployment.id, this._options);
+  }
+
+  public findAllHostServers(): Observable<WinResponse<string[]>> {
+    return this.http.get<WinResponse<string[]>>(this.url + '/hostServers', this._options);
   }
 }

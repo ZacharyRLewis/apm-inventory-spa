@@ -1,51 +1,61 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
+import {ChipsComponentModule} from '@win-angular/chips-component';
+import {SelectComponentModule} from '@win-angular/select-component';
 import {ModalService, ServicesModule, ShareDataService} from '@win-angular/services';
-import {BlockUIModule} from 'primeng/primeng';
+import {BlockUIModule, SidebarModule} from 'primeng/primeng';
 import {TableModule} from 'primeng/table';
+import {ApplicationFlyoutFilterComponent} from './application/application-flyout-filter.component';
 import {ApplicationComponent} from './application/application.component';
 import {InventoryComponent} from './application/inventory.component';
-import {DatabaseListComponent} from './database/database-list.component';
-import {DatabaseComponent} from './database/database.component';
-import {DeploymentDatabaseComponent} from './database/deployment-database.component';
+import {DashboardComponent} from './dashboard/dashboard.component';
+import {DeploymentDatabaseComponent} from './deployment/deployment-database.component';
+import {DeploymentFlyoutFilterComponent} from './deployment/deployment-flyout-filter.component';
 import {DeploymentListComponent} from './deployment/deployment-list.component';
 import {DeploymentComponent} from './deployment/deployment.component';
+import {ApplicationTypeComponent} from './maintenance/application-type.component';
+import {DatabaseTypeComponent} from './maintenance/database-type.component';
+import {DatabaseComponent} from './maintenance/database.component';
+import {HostServerComponent} from './maintenance/host-server.component';
+import {MaintenanceComponent} from './maintenance/maintenance.component';
 import {NavbarComponent} from './navbar/navbar.component';
 import {SidenavComponent} from './sidenav/sidenav.component';
-import {ApplicationTypeComponent} from './type/application-type.component';
-import {DatabaseTypeComponent} from './type/database-type.component';
-import {TypeListComponent} from './type/type-list.component';
 
 @NgModule({
   declarations: [
     ApplicationComponent,
+    ApplicationFlyoutFilterComponent,
     ApplicationTypeComponent,
+    DashboardComponent,
     DatabaseComponent,
     DatabaseTypeComponent,
-    DatabaseListComponent,
     DeploymentComponent,
     DeploymentDatabaseComponent,
+    DeploymentFlyoutFilterComponent,
     DeploymentListComponent,
+    HostServerComponent,
     InventoryComponent,
+    MaintenanceComponent,
     NavbarComponent,
     SidenavComponent,
-    TypeListComponent,
   ],
   imports: [
+    ChipsComponentModule,
     CommonModule,
     FormsModule,
     TableModule,
+    SelectComponentModule,
     ServicesModule,
+    SidebarModule
   ],
   exports: [
     BlockUIModule,
-    DatabaseListComponent,
     DeploymentListComponent,
     InventoryComponent,
+    MaintenanceComponent,
     NavbarComponent,
     SidenavComponent,
-    TypeListComponent,
   ],
   providers: [
     ModalService,

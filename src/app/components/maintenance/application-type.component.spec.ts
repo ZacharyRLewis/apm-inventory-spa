@@ -69,6 +69,7 @@ describe('ApplicationTypeComponent', () => {
     expect(component.model.id).toEqual(null);
     expect(component.model.name).toEqual('');
     expect(component.model.version).toEqual('');
+    expect(component.model.description).toEqual('');
   });
 
   it('should close modal', () => {

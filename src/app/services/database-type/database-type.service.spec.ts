@@ -110,7 +110,7 @@ describe('DatabaseTypeService', () => {
     const databaseType: DatabaseType = TestDomain.DATABASE_TYPE;
     const expected: WinResponse<DatabaseType> = {meta: null, data: databaseType};
 
-    it('should create an databaseType and return it', () => {
+    it('should create a databaseType and return it', () => {
       databaseTypeService.create(databaseType)
         .subscribe(
           res => {
@@ -129,7 +129,7 @@ describe('DatabaseTypeService', () => {
     const databaseType: DatabaseType = TestDomain.DATABASE_TYPE;
     const expected: WinResponse<DatabaseType> = {meta: null, data: databaseType};
 
-    it('should update an databaseType and return it', () => {
+    it('should update a databaseType and return it', () => {
       databaseTypeService.update(databaseType)
         .subscribe(
           res => {
@@ -161,7 +161,7 @@ describe('DatabaseTypeService', () => {
     const databaseType: DatabaseType = TestDomain.DATABASE_TYPE;
     const expected: WinResponse<DatabaseType> = {meta: null, data: null};
 
-    it('should delete an databaseType', () => {
+    it('should delete a databaseType', () => {
       databaseTypeService.delete(databaseType)
         .subscribe(
           res => {
