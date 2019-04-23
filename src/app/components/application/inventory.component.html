@@ -19,7 +19,7 @@
       <ng-template pTemplate="body" let-application>
         <tr>
           <td>
-            <a (click)="setPassedApplication(application); openModal(APPLICATION_MODAL_ID);">{{application.mnemonic}}</a>
+            <a (click)="prepareApplicationModal(application); openModal(APPLICATION_MODAL_ID);">{{application.mnemonic}}</a>
           </td>
           <td>{{application.description}}</td>
           <td>{{getApplicationTypeDescription(application.applicationTypeId)}}</td>
@@ -40,14 +40,14 @@
 
 <input class="form-control" style="visibility: hidden" />
 
-<apm-application #applicationComponent [modalId]="APPLICATION_MODAL_ID"
+<apm-application #applicationComponent [modalId]="APPLICATION_MODAL_ID" [applicationTypes]="applicationTypes" [hostServers]="hostServers"
                  (createEvent)="handleCreate($event)"
                  (deleteEvent)="handleDelete($event)"
                  (updateEvent)="handleUpdate($event)"
                  (addDeploymentEvent)="addDeploymentToApplication($event)">
 </apm-application>
 
-<apm-deployment #deploymentComponent [modalId]="DEPLOYMENT_MODAL_ID"
-                (createAppDeploymentEvent)="handleDeploymentCreate($event)"
-                (cancelAppDeploymentEvent)="handleDeploymentCancel($event)">
-</apm-deployment>
+<apm-deployment-bulk-add #deploymentBulkAddComponent [modalId]="DEPLOYMENT_BULK_ADD_MODAL_ID" [hostServers]="hostServers"
+                         (createAppDeploymentEvent)="handleBulkDeploymentCreate($event)"
+                         (cancelAppDeploymentEvent)="handleBulkDeploymentCancel($event)">
+</apm-deployment-bulk-add>

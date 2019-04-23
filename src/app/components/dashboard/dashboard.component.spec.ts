@@ -3,6 +3,7 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {ShareDataService} from '@win-angular/services';
+import {AutoCompleteModule} from 'primeng/primeng';
 import {TableModule} from 'primeng/table';
 import {TestDomain} from '../../model';
 import {ApplicationDependencyService, DependencyService} from '../../services';
@@ -24,7 +25,7 @@ describe('DashboardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, TableModule, HttpClientModule, HttpClientTestingModule],
+      imports: [AutoCompleteModule, FormsModule, HttpClientModule, HttpClientTestingModule, TableModule],
       declarations: [DashboardComponent],
       providers: [
         ApplicationDependencyService, DependencyService,

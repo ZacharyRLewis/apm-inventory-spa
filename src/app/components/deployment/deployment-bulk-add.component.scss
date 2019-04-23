@@ -1,0 +1,16 @@
+@import "../../../assets/scss/variables";
+
+.base-url {
+  background: white;
+}
+
+.deployment-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-gap: 10px;
+  padding-bottom: 30px;
+}
+
+#addAnotherButton {
+  height: 35px;
+}

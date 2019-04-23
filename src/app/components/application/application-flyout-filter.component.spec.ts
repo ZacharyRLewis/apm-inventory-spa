@@ -4,7 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ChipsComponentModule} from '@win-angular/chips-component';
 import {SelectComponentModule} from '@win-angular/select-component';
-import {SidebarModule} from 'primeng/primeng';
+import {AutoCompleteModule, SidebarModule} from 'primeng/primeng';
 import {ApplicationFilters, TestDomain} from '../../model';
 import {ApplicationFlyoutFilterComponent} from './application-flyout-filter.component';
 
@@ -15,7 +15,7 @@ describe('ApplicationFlyoutFilterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, BrowserAnimationsModule, ChipsComponentModule, SelectComponentModule, SidebarModule],
+      imports: [AutoCompleteModule, BrowserAnimationsModule, ChipsComponentModule, FormsModule, SelectComponentModule, SidebarModule],
       declarations: [ApplicationFlyoutFilterComponent],
       providers: [Renderer2]
     })
@@ -98,21 +98,10 @@ describe('ApplicationFlyoutFilterComponent', () => {
     expect(check2).toBeFalsy();
   });
 
-  it('should toggle suggestions', () => {
-    expect(component.showAppMnemonicSuggestions).toBeFalsy();
-
-    component.showSuggestions(true);
-    expect(component.showAppMnemonicSuggestions).toBeTruthy();
-
-    component.showSuggestions(false);
-    expect(component.showAppMnemonicSuggestions).toBeFalsy();
-  });
-
   it('should select a suggestion', () => {
     component.selectSuggestion('selectedSuggestion');
 
     expect(component.filters.mnemonic).toEqual('selectedSuggestion');
-    expect(component.showAppMnemonicSuggestions).toBeFalsy();
     expect(component.appMnemonicSuggestions.length).toEqual(0);
   });
 

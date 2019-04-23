@@ -20,20 +20,13 @@
   <div class="tab-body">
     <div *ngIf="selectedTab === 0">
       <div class="tab-title">
-        <label for="dependencyId" class="win-label">Dependency</label>
-        <input id="dependencyId" type="text" class="form-control validate filter-input dependency-search" autocomplete="off"
-               [(ngModel)]="selectedDependencyReference"
-               (keyup)="processTypeAhead()"
-               (keypress)="triggerSearchOnEnter($event)"
-               (focus)="showSuggestions(true)"
-               (blur)="performSearch()">
-      </div>
-      <div class="suggestions dependencySuggestions" *ngIf="showDependencySuggestions && dependencySuggestions.length > 0">
-        <ul *ngFor="let suggestion of dependencySuggestions">
-          <li>
-            <a (mousedown)="selectSuggestion(suggestion)">{{suggestion.managerReference}}</a>
-          </li>
-        </ul>
+        <p-autoComplete [suggestions]="dependencySuggestions" placeholder="Dependency Name" [(ngModel)]="selectedDependencyReference"
+                        (completeMethod)="processTypeAhead()" (onSelect)="selectSuggestion($event)" class="dashboard-autocomplete">
+          <ng-template let-suggestion pTemplate="item">
+            {{suggestion.managerReference}}
+          </ng-template>
+        </p-autoComplete>
+        <button class="dependency-search-btn" (click)="performSearch()">Search Partial Name</button>
       </div>
       <div>
         <div class="tab-table" *ngIf="applicationDependencies?.length > 0; else noApplicationDependencies">

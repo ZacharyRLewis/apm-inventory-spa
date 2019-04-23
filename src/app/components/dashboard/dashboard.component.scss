@@ -1,13 +1,11 @@
 @import '../../../assets/scss/variables';
 
-.dependency-search {
-  font-size: 13px;
-  padding-left: 12px;
-}
-
-.dependencySuggestions {
-  top: 191px;
-  left: 55px;
-  width: 450px;
-  z-index: 101;
+.dependency-search-btn, .dependency-search-btn:focus {
+  position: absolute;
+  height: 27.5px;
+  margin-left: 10px;
+  border-radius: 3px;
+  background-color: $win-primary;
+  color: $white;
+  outline: none;
 }

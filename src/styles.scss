@@ -127,7 +127,7 @@ button:disabled {
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 
     &:focus {
-      outline: none;
+      outline: $win-primary auto 3px;
       background-color: $white;
     }
   }
@@ -366,6 +366,13 @@ button:disabled {
   float: right;
 }
 
+@media(max-width: 767px) {
+  .btn-group {
+    float: left;
+    padding-bottom: 20px;
+  }
+}
+
 .btn-group-toggle {
   .btn.active {
     background-color: inherit;
@@ -432,39 +439,34 @@ button:disabled {
   }
 }
 
-// Suggestions Type Ahead
-
-.suggestions {
-  border: solid 1px #ccc;
-  position: absolute;
-  background: white;
-}
-
-.suggestions ul {
-  padding: 0px;
-  margin: 0px;
-}
-
-.suggestions ul li {
-  list-style: none;
-  padding: 0px;
-  margin: 0px;
-}
-
-.suggestions ul li a {
-  padding: 5px 12px;
-  display: block;
-  text-decoration: none !important;
-  color: $win-primary-text !important;
-}
-
-.suggestions ul li a:hover {
-  background-color: $win-chroma-1;
-}
-
 // PrimeNG Table
 
 .ui-paginator .ui-paginator-page.ui-state-active,
 .ui-table .ui-sortable-column.ui-state-highlight {
   background-color: $win-primary !important;
+}
+
+// PrimeNG Autocomplete
+
+.ui-autocomplete {
+  font-size: 13px;
+
+  input {
+    width: 100%;
+    padding-left: 12px;
+    font-size: 13px !important;
+  }
+
+  .ui-autocomplete-panel .ui-autocomplete-list-item {
+    font-size: 13px;
+    padding: 1px;
+  }
+}
+
+.dashboard-autocomplete .ui-autocomplete {
+  width: 450px !important;
+}
+
+.flyout-autocomplete .ui-autocomplete {
+  width: 100% !important;
 }

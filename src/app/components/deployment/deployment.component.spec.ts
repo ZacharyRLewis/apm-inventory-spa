@@ -205,32 +205,12 @@ describe('DeploymentComponent', () => {
     expect(apiUrl3).toEqual('https://ag1.winwholesale.com/' + deployment.contextName);
   });
 
-  it('should emit cancel app deployment event', () => {
-    component.passedApplication = TestDomain.APPLICATION;
-    component.backToApplication();
-
-    component.cancelAppDeploymentEvent.subscribe(application => {
-      expect(application.id).toEqual('123');
-    });
-  });
-
   it('should emit add database event', () => {
     component.model = deployment;
     component.addDatabase();
 
     component.addDatabaseEvent.subscribe(depl => {
       expect(depl.id).toEqual(deployment.id);
-    });
-  });
-
-  it('should emit create app deployment event', () => {
-    component.model = deployment;
-    component.passedApplication = TestDomain.APPLICATION;
-    component.addToApplication();
-
-    component.createAppDeploymentEvent.subscribe(({application, deployment1}) => {
-      expect(application.id).toEqual('123');
-      expect(deployment1.id).toEqual('123');
     });
   });
 });

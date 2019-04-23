@@ -36,7 +36,7 @@
             <ng-template pTemplate="body" let-applicationType>
               <tr>
                 <td>
-                  <a (click)="setPassedApplicationType(applicationType); openModal(APPLICATION_TYPE_MODAL_ID);">{{applicationType.id}}</a>
+                  <a (click)="prepareApplicationTypeModal(applicationType); openModal(APPLICATION_TYPE_MODAL_ID);">{{applicationType.id}}</a>
                 </td>
                 <td>{{applicationType.name}}</td>
                 <td>{{applicationType.version}}</td>
@@ -67,7 +67,7 @@
             <ng-template pTemplate="body" let-databaseType>
               <tr>
                 <td>
-                  <a (click)="setPassedDatabaseType(databaseType); openModal(DATABASE_TYPE_MODAL_ID);">{{databaseType.id}}</a>
+                  <a (click)="prepareDatabaseTypeModal(databaseType); openModal(DATABASE_TYPE_MODAL_ID);">{{databaseType.id}}</a>
                 </td>
                 <td>{{databaseType.name}}</td>
               </tr>
@@ -97,7 +97,7 @@
             <ng-template pTemplate="body" let-database>
               <tr>
                 <td>
-                  <a (click)="setPassedDatabase(database); openModal(DATABASE_MODAL_ID);">{{database.id}}</a>
+                  <a (click)="prepareDatabaseModal(database); openModal(DATABASE_MODAL_ID);">{{database.id}}</a>
                 </td>
                 <td>{{database.environment}}</td>
                 <td>{{database.hostName}}</td>
@@ -131,7 +131,7 @@
             <ng-template pTemplate="body" let-hostServer>
               <tr>
                 <td>
-                  <a (click)="setPassedHostServer(hostServer); openModal(HOST_SERVER_MODAL_ID);">{{hostServer.id}}</a>
+                  <a (click)="prepareHostServerModal(hostServer); openModal(HOST_SERVER_MODAL_ID);">{{hostServer.id}}</a>
                 </td>
                 <td>{{hostServer.name}}</td>
                 <td>{{hostServer.operatingSystem}}</td>
@@ -183,7 +183,7 @@
                    (updateEvent)="handleDatabaseTypeUpdate($event)">
 </apm-database-type>
 
-<apm-database #databaseComponent [modalId]="DATABASE_MODAL_ID"
+<apm-database #databaseComponent [modalId]="DATABASE_MODAL_ID" [databaseTypes]="databaseTypes"
               (createEvent)="handleDatabaseCreate($event)"
               (deleteEvent)="handleDatabaseDelete($event)"
               (updateEvent)="handleDatabaseUpdate($event)">

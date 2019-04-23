@@ -4,7 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ChipsComponentModule} from '@win-angular/chips-component';
 import {SelectComponentModule} from '@win-angular/select-component';
-import {SidebarModule} from 'primeng/primeng';
+import {AutoCompleteModule, SidebarModule} from 'primeng/primeng';
 import {DeploymentFilters, TestDomain} from '../../model';
 import {DeploymentFlyoutFilterComponent} from './deployment-flyout-filter.component';
 
@@ -15,7 +15,7 @@ describe('DeploymentFlyoutFilterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, BrowserAnimationsModule, ChipsComponentModule, SelectComponentModule, SidebarModule],
+      imports: [AutoCompleteModule, BrowserAnimationsModule, ChipsComponentModule, FormsModule, SelectComponentModule, SidebarModule],
       declarations: [DeploymentFlyoutFilterComponent],
       providers: [Renderer2]
     })
@@ -98,23 +98,12 @@ describe('DeploymentFlyoutFilterComponent', () => {
     expect(check2).toBeFalsy();
   });
 
-  it('should toggle suggestions', () => {
-    expect(component.showAppMnemonicSuggestions).toBeFalsy();
-
-    component.showSuggestions(true);
-    expect(component.showAppMnemonicSuggestions).toBeTruthy();
-
-    component.showSuggestions(false);
-    expect(component.showAppMnemonicSuggestions).toBeFalsy();
-  });
-
   it('should select a suggestion', () => {
     const application = TestDomain.APPLICATION;
     component.selectSuggestion(application);
 
     expect(component.selectedAppMnemonic).toEqual(application.mnemonic);
     expect(component.filters.applicationId).toEqual(application.id);
-    expect(component.showAppMnemonicSuggestions).toBeFalsy();
     expect(component.appMnemonicSuggestions.length).toEqual(0);
   });
 

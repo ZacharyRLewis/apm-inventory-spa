@@ -4,7 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {ChipsComponentModule} from '@win-angular/chips-component';
 import {SelectComponentModule} from '@win-angular/select-component';
 import {ModalService, ServicesModule, ShareDataService} from '@win-angular/services';
-import {BlockUIModule, SidebarModule} from 'primeng/primeng';
+import {AutoCompleteModule, BlockUIModule, SidebarModule} from 'primeng/primeng';
 import {TableModule} from 'primeng/table';
 import {ApplicationFlyoutFilterComponent} from './application/application-flyout-filter.component';
 import {ApplicationComponent} from './application/application.component';
@@ -14,6 +14,7 @@ import {DeploymentDatabaseComponent} from './deployment/deployment-database.comp
 import {DeploymentFlyoutFilterComponent} from './deployment/deployment-flyout-filter.component';
 import {DeploymentListComponent} from './deployment/deployment-list.component';
 import {DeploymentComponent} from './deployment/deployment.component';
+import {DeploymentBulkAddComponent} from './deployment/deployment-bulk-add.component';
 import {ApplicationTypeComponent} from './maintenance/application-type.component';
 import {DatabaseTypeComponent} from './maintenance/database-type.component';
 import {DatabaseComponent} from './maintenance/database.component';
@@ -31,6 +32,7 @@ import {SidenavComponent} from './sidenav/sidenav.component';
     DatabaseComponent,
     DatabaseTypeComponent,
     DeploymentComponent,
+    DeploymentBulkAddComponent,
     DeploymentDatabaseComponent,
     DeploymentFlyoutFilterComponent,
     DeploymentListComponent,
@@ -41,6 +43,7 @@ import {SidenavComponent} from './sidenav/sidenav.component';
     SidenavComponent,
   ],
   imports: [
+    AutoCompleteModule,
     ChipsComponentModule,
     CommonModule,
     FormsModule,

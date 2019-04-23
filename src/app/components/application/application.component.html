@@ -59,9 +59,9 @@
           <div class="child-table-div">
             <div>
               <label class="win-label">Deployments</label>
-              <button class="add-button" (click)="addDeployment()">
+              <button class="add-button" (click)="addDeployments()">
                 <i class="fa fa-plus" aria-hidden="true"></i>
-                <span>Add Deployment</span>
+                <span>Add Deployments</span>
               </button>
             </div>
             <div class="child-table" *ngIf="deployments?.length > 0; else noDeployments">
@@ -87,7 +87,9 @@
           <div class="child-table-div">
             <div>
               <label class="win-label">Dependencies</label>
-              <button class="add-button" [disabled]="!passedApplication || !model.id" (click)="refreshDependencies()">
+              <button class="add-button"
+                      [disabled]="!passedApplication || !model.id || !(model.repository && model.defaultBranch)"
+                      (click)="refreshDependencies()">
                 <i class="fa fa-plus" aria-hidden="true"></i>
                 <span>Refresh Dependencies</span>
               </button>

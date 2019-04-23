@@ -11,20 +11,18 @@ import {DatabaseService, DeploymentDatabaseService, DeploymentService, MulesoftA
 export class DeploymentComponent {
 
   @Input() modalId: string;
+  @Input() applications: Application[] = [];
   @Input() hostServers: HostServer[] = [];
 
   @Output() createEvent: EventEmitter<Deployment> = new EventEmitter<Deployment>();
   @Output() deleteEvent: EventEmitter<Deployment> = new EventEmitter<Deployment>();
   @Output() updateEvent: EventEmitter<Deployment> = new EventEmitter<Deployment>();
-  @Output() createAppDeploymentEvent: EventEmitter<object> = new EventEmitter<object>();
-  @Output() cancelAppDeploymentEvent: EventEmitter<Application> = new EventEmitter<Application>();
   @Output() addDatabaseEvent: EventEmitter<Deployment> = new EventEmitter<Deployment>();
 
   public model: Deployment = new Deployment();
   public passedApplication: Application;
   public passedDeployment: Deployment;
   public environments: string[] = ['DEV', 'QA', 'PROD'];
-  public applications: Application[] = [];
   public databases: Database[] = [];
   public deploymentDatabases: DeploymentDatabase[] = [];
   public apis: MulesoftApi[] = [];
@@ -152,20 +150,6 @@ export class DeploymentComponent {
     const hostServerName: string = this.getHostServerName(deployment.hostServerId);
 
     return Deployment.getBaseUrl(deployment, hostServerName);
-  }
-
-  public backToApplication(): void {
-    const application: Deployment = Object.assign({}, this.passedApplication);
-
-    this.cancelAppDeploymentEvent.emit(application);
-  }
-
-  public addToApplication(): void {
-    const deployment: Deployment = Object.assign({}, this.model);
-    const application: Application = Object.assign({}, this.passedApplication);
-
-    this.createAppDeploymentEvent.emit({application, deployment});
-    this.setDefaultValues();
   }
 
   public formatApiUrl(api: MulesoftApi): string {

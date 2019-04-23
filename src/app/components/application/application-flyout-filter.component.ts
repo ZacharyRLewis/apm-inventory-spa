@@ -35,7 +35,6 @@ export class ApplicationFlyoutFilterComponent {
   public chipList = [];
   public filterFields;
   public appMnemonicSuggestions: string[] = [];
-  public showAppMnemonicSuggestions = false;
 
   constructor(private renderer: Renderer2) {
     this.filterFields = {
@@ -121,13 +120,8 @@ export class ApplicationFlyoutFilterComponent {
     }
   }
 
-  public showSuggestions(isVisible: boolean) {
-    this.showAppMnemonicSuggestions = isVisible;
-  }
-
   public selectSuggestion(suggestion: string) {
     this.filters.mnemonic = suggestion;
-    this.showSuggestions(false);
     this.appMnemonicSuggestions = [];
   }
 

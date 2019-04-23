@@ -11,6 +11,9 @@ import {ApplicationService, DependencyService, DeploymentService, HostServerServ
 export class ApplicationComponent {
 
   @Input() modalId: string;
+  @Input() applicationTypes: ApplicationType[] = [];
+  @Input() hostServers: HostServer[] = [];
+
   @Output() createEvent: EventEmitter<Application> = new EventEmitter<Application>();
   @Output() deleteEvent: EventEmitter<Application> = new EventEmitter<Application>();
   @Output() updateEvent: EventEmitter<Application> = new EventEmitter<Application>();
@@ -18,10 +21,8 @@ export class ApplicationComponent {
 
   public model: Application = new Application();
   public passedApplication: Application;
-  public applicationTypes: ApplicationType[] = [];
   public deployments: Deployment[] = [];
   public dependencies: Dependency[] = [];
-  public hostServers: HostServer[] = [];
 
   constructor(private applicationService: ApplicationService, private deploymentService: DeploymentService,
               private modalService: ModalService, private dependencyService: DependencyService,
@@ -67,13 +68,6 @@ export class ApplicationComponent {
           this.dependencies = response.data;
         });
     }
-  }
-
-  public loadHostServers = () => {
-    this.hostServerService.findAll()
-      .subscribe(response => {
-        this.hostServers = response.data;
-      });
   }
 
   public closeModal(): void {
@@ -153,7 +147,7 @@ export class ApplicationComponent {
       return '';
     }
     for (const hostServer of this.hostServers) {
-      if (hostServer.id === hostServerId) {
+      if (hostServer.id == hostServerId) {
         return hostServer.name;
       }
     }
@@ -166,7 +160,7 @@ export class ApplicationComponent {
     return Deployment.getBaseUrl(deployment, hostServerName);
   }
 
-  public addDeployment(): void {
+  public addDeployments(): void {
     const application: Application = Object.assign({}, this.model);
 
     this.addDeploymentEvent.emit(application);

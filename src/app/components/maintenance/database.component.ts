@@ -11,6 +11,7 @@ import {DatabaseService} from '../../services';
 export class DatabaseComponent {
 
   @Input() modalId: string;
+  @Input() databaseTypes: DatabaseType[] = [];
   @Output() createEvent: EventEmitter<Database> = new EventEmitter<Database>();
   @Output() deleteEvent: EventEmitter<Database> = new EventEmitter<Database>();
   @Output() updateEvent: EventEmitter<Database> = new EventEmitter<Database>();
@@ -18,7 +19,6 @@ export class DatabaseComponent {
   model: Database = new Database();
   passedDatabase: Database;
   environments: string[] = ['DEV', 'QA', 'PROD'];
-  databaseTypes: DatabaseType[] = [];
 
   constructor(private databaseService: DatabaseService, private modalService: ModalService) {
     this.setDefaultValues();

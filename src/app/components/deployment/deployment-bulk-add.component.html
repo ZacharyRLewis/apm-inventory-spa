@@ -1,0 +1,113 @@
+<div class="modal fade win-modal-big in" [id]="modalId">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header container">
+        <h2 class="modal-title">Add Multiple Application Deployments</h2>
+        <button type="button" class="close" (click)="closeModal()">
+          <span><i class="fa fa-times"></i></span>
+        </button>
+      </div>
+      <div class="modal-body container">
+        <form ngForm="newDeploymentForm">
+          <div class="apm-form-body">
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="applicationMnemonic">Application Mnemonic</label>
+              <div class="apm-input-group">
+                <div class="apm-input-group">
+                  <div class="apm-input base-url" id="applicationMnemonic">{{passedApplication?.mnemonic}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="environment">Environment</label>
+              <div class="apm-input-group">
+                <select class="apm-input apm-select" id="environment" [(ngModel)]="environment" name="environment">
+                  <option *ngFor="let env of environments">
+                    {{env}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="directory">Deployment Directory</label>
+              <div class="apm-input-group">
+                <input type="text" class="apm-input" id="directory" name="directory" [(ngModel)]="directory">
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="https">Is HTTPS?</label>
+              <div class="apm-input-group">
+                <select class="apm-input apm-select" id="https" [(ngModel)]="https" name="https">
+                  <option *ngFor="let choice of ['true', 'false']" value="{{choice}}">
+                    {{choice}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="hostServerId">Host Server</label>
+              <div class="apm-input-group">
+                <select class="apm-input apm-select" id="hostServerId" [(ngModel)]="hostServerId" name="hostServerId">
+                  <option *ngFor="let hostServer of hostServers" value="{{hostServer.id}}">
+                    {{hostServer.name}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="port">Port</label>
+              <div class="apm-input-group">
+                <input type="text" class="apm-input" id="port" name="port" [(ngModel)]="port">
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="contextName">Context Name</label>
+              <div class="apm-input-group">
+                <input type="text" class="apm-input" id="contextName" name="contextName" [(ngModel)]="contextName">
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="addAnotherButton">&nbsp;</label>
+              <div class="apm-input-group">
+                <button id="addAnotherButton" class="win-button win-button-primary btn left"
+                        [disabled]="fieldsHaveNotBeenChanged()"
+                        (click)="createDeploymentFromFields()">
+                  <span>Add Another</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="child-table-div" *ngIf="deployments?.length > 0">
+            <div>
+              <label class="win-label">Deployments</label>
+            </div>
+            <div class="child-table">
+              <p-table [value]="deployments" [paginator]="false" dataKey="environment">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th style="width: 80px">Environment</th>
+                    <th style="width: 300px">Base URL</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-deployment>
+                  <tr>
+                    <td>{{deployment.environment}}</td>
+                    <td>{{getDeploymentBaseUrl(deployment)}}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer container">
+        <button type="button" class="win-button win-button-secondary btn left" (click)="backToApplication()">
+          <span>Back to Application</span>
+        </button>
+        <button type="button" class="win-button win-button-primary btn right" (click)="addToApplication()">
+          <span>Add to Application</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

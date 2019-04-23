@@ -129,23 +129,22 @@ export class MaintenanceComponent implements OnInit {
     this.hostServerComponent.setDefaultValues();
   }
 
-  public setPassedApplicationType(applicationType: ApplicationType): void {
+  public prepareApplicationTypeModal(applicationType: ApplicationType): void {
     this.applicationTypeComponent.passedApplicationType = Object.assign({}, applicationType);
     this.applicationTypeComponent.model = Object.assign({}, applicationType);
   }
 
-  public setPassedDatabaseType(databaseType: DatabaseType): void {
+  public prepareDatabaseTypeModal(databaseType: DatabaseType): void {
     this.databaseTypeComponent.passedDatabaseType = Object.assign({}, databaseType);
     this.databaseTypeComponent.model = Object.assign({}, databaseType);
   }
 
-  public setPassedDatabase(database: Database): void {
-    this.databaseComponent.databaseTypes = this.databaseTypes;
+  public prepareDatabaseModal(database: Database): void {
     this.databaseComponent.passedDatabase = Object.assign({}, database);
     this.databaseComponent.model = Object.assign({}, database);
   }
 
-  public setPassedHostServer(hostServer: HostServer): void {
+  public prepareHostServerModal(hostServer: HostServer): void {
     this.hostServerComponent.passedHostServer = Object.assign({}, hostServer);
     this.hostServerComponent.model = Object.assign({}, hostServer);
   }

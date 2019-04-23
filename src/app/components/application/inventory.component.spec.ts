@@ -7,11 +7,11 @@ import {ChipsComponentModule} from '@win-angular/chips-component';
 import {SelectComponentModule} from '@win-angular/select-component';
 import {ModalService, ShareDataService} from '@win-angular/services';
 import {cold, getTestScheduler} from 'jasmine-marbles';
-import {SidebarModule} from 'primeng/primeng';
+import {AutoCompleteModule, SidebarModule} from 'primeng/primeng';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
-import {ApplicationComponent, DeploymentComponent, InventoryComponent} from '..';
-import {Application, ApplicationFilters, TestDomain, WinResponse} from '../../model';
+import {ApplicationComponent, DeploymentBulkAddComponent, InventoryComponent} from '..';
+import {Application, ApplicationFilters, Deployment, TestDomain, WinResponse} from '../../model';
 import {
   ApplicationService,
   ApplicationTypeService,
@@ -52,17 +52,17 @@ describe('InventoryComponent', () => {
   let component: InventoryComponent;
   let fixture: ComponentFixture<InventoryComponent>;
   let child: ApplicationComponent;
-  let child2: DeploymentComponent;
+  let child2: DeploymentBulkAddComponent;
   let applicationService: ApplicationService;
   let modalService: ModalService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        FormsModule, BrowserAnimationsModule, HttpClientModule, HttpClientTestingModule, TableModule,
-        ChipsComponentModule, SelectComponentModule, SidebarModule
+        AutoCompleteModule, BrowserAnimationsModule, ChipsComponentModule, FormsModule, HttpClientModule,
+        HttpClientTestingModule, SelectComponentModule, SidebarModule, TableModule
       ],
-      declarations: [InventoryComponent, ApplicationComponent, ApplicationFlyoutFilterComponent, DeploymentComponent],
+      declarations: [InventoryComponent, ApplicationComponent, ApplicationFlyoutFilterComponent, DeploymentBulkAddComponent],
       providers: [
         {provide: ApplicationService, useClass: MockApplicationService},
         ApplicationTypeService, DatabaseService, DeploymentService, DeploymentDatabaseService,
@@ -77,7 +77,7 @@ describe('InventoryComponent', () => {
     fixture = TestBed.createComponent(InventoryComponent);
     component = fixture.componentInstance;
     child = component.applicationComponent;
-    child2 = component.deploymentComponent;
+    child2 = component.deploymentBulkAddComponent;
     fixture.detectChanges();
     applicationService = TestBed.get(ApplicationService);
     modalService = TestBed.get(ModalService);
@@ -103,7 +103,7 @@ describe('InventoryComponent', () => {
 
   it('should set passed application in application component', () => {
     const application = TestDomain.APPLICATION;
-    component.setPassedApplication(application);
+    component.prepareApplicationModal(application);
 
     expect(child.passedApplication.id).toEqual(application.id);
     expect(child.model.id).toEqual(application.id);
@@ -111,10 +111,9 @@ describe('InventoryComponent', () => {
 
   it('should set passed application in deployment component', () => {
     const application = TestDomain.APPLICATION;
-    component.setPassedApplicationOnDeployment(application);
+    component.prepareDeploymentBulkAddModal(application);
 
     expect(child2.passedApplication.id).toEqual(application.id);
-    expect(child2.model.applicationId).toEqual(application.id);
   });
 
   it('should open modal', () => {
@@ -147,26 +146,26 @@ describe('InventoryComponent', () => {
   });
 
   it('should handle deployment cancel event', () => {
-    spyOn(component, 'setPassedApplication').and.callThrough();
+    spyOn(component, 'prepareApplicationModal').and.callThrough();
     spyOn(modalService, 'openModal').and.callThrough();
     spyOn(modalService, 'closeModal').and.callThrough();
-    component.handleDeploymentCancel(TestDomain.APPLICATION);
+    component.handleBulkDeploymentCancel(TestDomain.APPLICATION);
 
-    expect(component.setPassedApplication).toHaveBeenCalled();
+    expect(component.prepareApplicationModal).toHaveBeenCalled();
     expect(modalService.openModal).toHaveBeenCalled();
     expect(modalService.closeModal).toHaveBeenCalled();
   });
 
   it('should handle deployment create event', () => {
     const application: Application = TestDomain.APPLICATION;
-    const deployment: Application = TestDomain.DEPLOYMENT;
+    const deployments: Deployment[] = [TestDomain.DEPLOYMENT];
 
-    spyOn(component, 'setPassedApplication').and.callThrough();
+    spyOn(component, 'prepareApplicationModal').and.callThrough();
     spyOn(modalService, 'openModal').and.callThrough();
     spyOn(modalService, 'closeModal').and.callThrough();
-    component.handleDeploymentCreate({application, deployment});
+    component.handleBulkDeploymentCreate({application, deployments});
 
-    expect(component.setPassedApplication).toHaveBeenCalled();
+    expect(component.prepareApplicationModal).toHaveBeenCalled();
     expect(modalService.openModal).toHaveBeenCalled();
     expect(modalService.closeModal).toHaveBeenCalled();
   });

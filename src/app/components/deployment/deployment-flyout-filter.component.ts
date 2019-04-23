@@ -35,7 +35,6 @@ export class DeploymentFlyoutFilterComponent {
   public chipList = [];
   public filterFields;
   public appMnemonicSuggestions: Application[] = [];
-  public showAppMnemonicSuggestions = false;
   public selectedAppMnemonic = '';
 
   constructor(private renderer: Renderer2) {
@@ -129,14 +128,9 @@ export class DeploymentFlyoutFilterComponent {
     }
   }
 
-  public showSuggestions(isVisible: boolean) {
-    this.showAppMnemonicSuggestions = isVisible;
-  }
-
   public selectSuggestion(suggestion: Application) {
     this.selectedAppMnemonic = suggestion.mnemonic;
     this.filters.applicationId = suggestion.id;
-    this.showSuggestions(false);
     this.appMnemonicSuggestions = [];
   }
 

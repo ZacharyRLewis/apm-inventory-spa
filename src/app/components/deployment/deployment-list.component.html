@@ -19,7 +19,7 @@
       <ng-template pTemplate="body" let-deployment>
         <tr>
           <td>
-            <a (click)="setPassedDeployment(deployment); openModal(DEPLOYMENT_MODAL_ID);">{{deployment.id}}</a>
+            <a (click)="prepareDeploymentModal(deployment); openModal(DEPLOYMENT_MODAL_ID);">{{deployment.id}}</a>
           </td>
           <td>{{getAppMnemonic(deployment.applicationId)}}</td>
           <td>{{deployment.environment}}</td>
@@ -41,7 +41,7 @@
 
 <input class="form-control" style="visibility: hidden" />
 
-<apm-deployment #deploymentComponent [modalId]="DEPLOYMENT_MODAL_ID" [hostServers]="hostServers"
+<apm-deployment #deploymentComponent [modalId]="DEPLOYMENT_MODAL_ID" [applications]="applications" [hostServers]="hostServers"
                 (createEvent)="handleCreate($event)"
                 (deleteEvent)="handleDelete($event)"
                 (updateEvent)="handleUpdate($event)"

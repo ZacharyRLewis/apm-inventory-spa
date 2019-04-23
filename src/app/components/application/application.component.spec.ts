@@ -193,7 +193,7 @@ describe('ApplicationComponent', () => {
 
   it('should emit add deployment event', () => {
     component.model = application;
-    component.addDeployment();
+    component.addDeployments();
 
     component.addDeploymentEvent.subscribe(appl => {
       expect(appl.id).toEqual('123');

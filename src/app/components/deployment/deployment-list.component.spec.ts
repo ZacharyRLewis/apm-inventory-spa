@@ -7,7 +7,7 @@ import {ChipsComponentModule} from '@win-angular/chips-component';
 import {SelectComponentModule} from '@win-angular/select-component';
 import {ModalService} from '@win-angular/services';
 import {cold, getTestScheduler} from 'jasmine-marbles';
-import {SidebarModule} from 'primeng/primeng';
+import {AutoCompleteModule, SidebarModule} from 'primeng/primeng';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {DeploymentComponent, DeploymentListComponent} from '..';
@@ -51,8 +51,8 @@ describe('DeploymentListComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        FormsModule, BrowserAnimationsModule, HttpClientModule, HttpClientTestingModule, TableModule,
-        ChipsComponentModule, SelectComponentModule, SidebarModule
+        AutoCompleteModule, BrowserAnimationsModule, ChipsComponentModule, FormsModule, HttpClientModule,
+        HttpClientTestingModule, SelectComponentModule, SidebarModule, TableModule
       ],
       declarations: [DeploymentListComponent, DeploymentComponent, DeploymentDatabaseComponent, DeploymentFlyoutFilterComponent],
       providers: [
@@ -92,7 +92,7 @@ describe('DeploymentListComponent', () => {
 
   it('should set passed deployment in deployment component', () => {
     const deployment = TestDomain.DEPLOYMENT;
-    component.setPassedDeployment(deployment);
+    component.prepareDeploymentModal(deployment);
 
     expect(child.passedDeployment.id).toEqual(deployment.id);
     expect(child.model.id).toEqual(deployment.id);
@@ -128,7 +128,7 @@ describe('DeploymentListComponent', () => {
   });
 
   it('should handle deployment database create', () => {
-    spyOn(component, 'setPassedDeployment').and.callThrough();
+    spyOn(component, 'prepareDeploymentModal').and.callThrough();
     spyOn(modalService, 'closeModal').and.callThrough();
     spyOn(modalService, 'openModal').and.callThrough();
 
@@ -136,13 +136,13 @@ describe('DeploymentListComponent', () => {
 
     component.handleDeploymentDatabaseCreate(deployment);
 
-    expect(component.setPassedDeployment).toHaveBeenCalledWith(deployment);
+    expect(component.prepareDeploymentModal).toHaveBeenCalledWith(deployment);
     expect(modalService.closeModal).toHaveBeenCalledWith(component.DEPLOYMENT_DATABASE_MODAL_ID);
     expect(modalService.openModal).toHaveBeenCalledWith(component.DEPLOYMENT_MODAL_ID);
   });
 
   it('should handle deployment database cancel', () => {
-    spyOn(component, 'setPassedDeployment').and.callThrough();
+    spyOn(component, 'prepareDeploymentModal').and.callThrough();
     spyOn(modalService, 'closeModal').and.callThrough();
     spyOn(modalService, 'openModal').and.callThrough();
 
@@ -150,7 +150,7 @@ describe('DeploymentListComponent', () => {
 
     component.handleDeploymentDatabaseCancel(deployment);
 
-    expect(component.setPassedDeployment).toHaveBeenCalledWith(deployment);
+    expect(component.prepareDeploymentModal).toHaveBeenCalledWith(deployment);
     expect(modalService.closeModal).toHaveBeenCalledWith(component.DEPLOYMENT_DATABASE_MODAL_ID);
     expect(modalService.openModal).toHaveBeenCalledWith(component.DEPLOYMENT_MODAL_ID);
   });

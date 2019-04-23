@@ -93,16 +93,15 @@ export class DeploymentListComponent implements OnInit  {
     this.deploymentComponent.setDefaultValues();
   }
 
-  public setPassedDeployment(deployment: Deployment): void {
+  public prepareDeploymentModal(deployment: Deployment): void {
     this.deploymentComponent.passedDeployment = Object.assign({}, deployment);
     this.deploymentComponent.model = Object.assign({}, deployment);
-    this.deploymentComponent.applications = this.applications;
     this.deploymentComponent.loadDatabases();
     this.deploymentComponent.loadDeploymentDatabases();
     this.deploymentComponent.loadApis(deployment.contextName);
   }
 
-  public setPassedDeploymentOnDatabases(deployment: Deployment): void {
+  public prepareDeploymentDatabaseModal(deployment: Deployment): void {
     this.deploymentDatabaseComponent.passedDeployment = Object.assign({}, deployment);
   }
 
@@ -130,20 +129,20 @@ export class DeploymentListComponent implements OnInit  {
   }
 
   public handleDeploymentDatabaseCancel(deployment: Deployment): void {
-    this.setPassedDeployment(deployment);
+    this.prepareDeploymentModal(deployment);
     this.closeModal(this.DEPLOYMENT_DATABASE_MODAL_ID);
     this.openModal(this.DEPLOYMENT_MODAL_ID);
   }
 
   public handleDeploymentDatabaseCreate(deployment: Deployment): void {
-    this.setPassedDeployment(deployment);
+    this.prepareDeploymentModal(deployment);
     this.closeModal(this.DEPLOYMENT_DATABASE_MODAL_ID);
     this.openModal(this.DEPLOYMENT_MODAL_ID);
   }
 
   public addDatabaseToDeployment(deployment: Deployment): void {
     this.deploymentDatabaseComponent.loadDatabases();
-    this.setPassedDeploymentOnDatabases(deployment);
+    this.prepareDeploymentDatabaseModal(deployment);
     this.closeModal(this.DEPLOYMENT_MODAL_ID);
     this.openModal(this.DEPLOYMENT_DATABASE_MODAL_ID);
   }

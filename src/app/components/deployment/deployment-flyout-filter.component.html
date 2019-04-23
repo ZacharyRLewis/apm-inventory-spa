@@ -10,16 +10,13 @@
     <div class="input-field">
       <div class="form-group">
         <label for="mnemonic" class="win-label">Application Mnemonic</label>
-        <input id="mnemonic" type="text" class="form-control validate filter-input" autocomplete="off"
-               [(ngModel)]="selectedAppMnemonic"
-               (keyup)="processTypeAhead()"
-               (focus)="showSuggestions(true)">
-        <div class="suggestions appMnemonicSuggestions" *ngIf="showAppMnemonicSuggestions && appMnemonicSuggestions.length > 0">
-          <ul *ngFor="let suggestion of appMnemonicSuggestions">
-            <li>
-              <a (mousedown)="selectSuggestion(suggestion)">{{suggestion.mnemonic}}</a>
-            </li>
-          </ul>
+        <div class="autocomplete-div">
+          <p-autoComplete id="mnemonic" [suggestions]="appMnemonicSuggestions" [(ngModel)]="selectedAppMnemonic"
+                          (completeMethod)="processTypeAhead()" (onSelect)="selectSuggestion($event)" class="flyout-autocomplete">
+            <ng-template let-suggestion pTemplate="item">
+              {{suggestion.mnemonic}}
+            </ng-template>
+          </p-autoComplete>
         </div>
       </div>
     </div>

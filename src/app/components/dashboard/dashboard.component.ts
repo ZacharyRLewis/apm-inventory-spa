@@ -82,15 +82,6 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  public triggerSearchOnEnter(event): void {
-    const keyCode = event.charCode;
-
-    // enter key code === 13
-    if (keyCode === 13) {
-      this.performSearch();
-    }
-  }
-
   public showSuggestions(isVisible: boolean) {
     this.showDependencySuggestions = isVisible;
   }

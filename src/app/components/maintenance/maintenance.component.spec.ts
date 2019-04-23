@@ -150,7 +150,7 @@ describe('MaintenanceComponent', () => {
 
   it('should set passed applicationType in applicationType component', () => {
     const applicationType = TestDomain.APPLICATION_TYPE;
-    component.setPassedApplicationType(applicationType);
+    component.prepareApplicationTypeModal(applicationType);
 
     expect(child.passedApplicationType.id).toEqual(applicationType.id);
     expect(child.model.id).toEqual(applicationType.id);
@@ -158,7 +158,7 @@ describe('MaintenanceComponent', () => {
 
   it('should set passed databaseType in databaseType component', () => {
     const databaseType = TestDomain.DATABASE_TYPE;
-    component.setPassedDatabaseType(databaseType);
+    component.prepareDatabaseTypeModal(databaseType);
 
     expect(child2.passedDatabaseType.id).toEqual(databaseType.id);
     expect(child2.model.id).toEqual(databaseType.id);
@@ -166,7 +166,7 @@ describe('MaintenanceComponent', () => {
 
   it('should set passed database in database component', () => {
     const database = TestDomain.DATABASE;
-    component.setPassedDatabase(database);
+    component.prepareDatabaseModal(database);
 
     expect(child3.passedDatabase.id).toEqual(database.id);
     expect(child3.model.id).toEqual(database.id);
@@ -174,7 +174,7 @@ describe('MaintenanceComponent', () => {
 
   it('should set passed hostServer in hostServer component', () => {
     const hostServer = TestDomain.HOST_SERVER;
-    component.setPassedHostServer(hostServer);
+    component.prepareHostServerModal(hostServer);
 
     expect(child4.passedHostServer.id).toEqual(hostServer.id);
     expect(child4.model.id).toEqual(hostServer.id);
