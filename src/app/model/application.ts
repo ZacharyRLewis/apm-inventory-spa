@@ -11,7 +11,10 @@ export class Application {
               public defaultBranch?: string,
               public serviceApi?: boolean,
               public applicationTypeId?: string,
-              // public applicationType?: ApplicationType,
+              public owningDepartment?: string,
+              public primaryContactName?: string,
+              public primaryContactEmail?: string,
+              public primaryContactPhone?: string,
               public deployments?: Deployment[],
               public dependencies?: Dependency[]) {
   }

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ModalService} from '@win-angular/services';
 import {Application, Database, Deployment, DeploymentDatabase, HostServer, MulesoftApi} from '../../model';
 import {DatabaseService, DeploymentDatabaseService, DeploymentService, MulesoftApiService} from '../../services';
@@ -8,7 +8,7 @@ import {DatabaseService, DeploymentDatabaseService, DeploymentService, MulesoftA
   templateUrl: './deployment.component.html',
   styleUrls: ['./deployment.component.scss']
 })
-export class DeploymentComponent {
+export class DeploymentComponent implements OnInit {
 
   @Input() modalId: string;
   @Input() applications: Application[] = [];
@@ -46,6 +46,10 @@ export class DeploymentComponent {
     this.databases = [];
     this.deploymentDatabases = [];
     this.apis = [];
+  }
+
+  ngOnInit() {
+    this.loadDatabases();
   }
 
   public loadDatabases = () => {
@@ -139,7 +143,7 @@ export class DeploymentComponent {
       return '';
     }
     for (const hostServer of this.hostServers) {
-      if (hostServer.id === hostServerId) {
+      if (hostServer.id == hostServerId) {
         return hostServer.name;
       }
     }

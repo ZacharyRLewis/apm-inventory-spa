@@ -12,7 +12,8 @@
         <label for="mnemonic" class="win-label">Application Mnemonic</label>
         <div class="autocomplete-div">
           <p-autoComplete id="mnemonic" [suggestions]="appMnemonicSuggestions" [(ngModel)]="selectedAppMnemonic"
-                          (completeMethod)="processTypeAhead()" (onSelect)="selectSuggestion($event)" class="flyout-autocomplete">
+                          (completeMethod)="processAppMnemonicTypeAhead()"
+                          (onSelect)="selectAppMnemonicSuggestion($event)" class="flyout-autocomplete">
             <ng-template let-suggestion pTemplate="item">
               {{suggestion.mnemonic}}
             </ng-template>

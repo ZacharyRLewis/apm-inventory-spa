@@ -17,6 +17,9 @@ export class ApplicationFlyoutFilterComponent {
   @Input()
   public applicationTypes: ApplicationType[];
 
+  @Input()
+  public departments: string[];
+
   @Output('filter')
   public filter: EventEmitter<any> = new EventEmitter();
 
@@ -39,6 +42,7 @@ export class ApplicationFlyoutFilterComponent {
   constructor(private renderer: Renderer2) {
     this.filterFields = {
       mnemonic: 'Application Mnemonic',
+      owningDepartment: 'Department',
       isServiceApi: 'Is Service/API',
       applicationTypeId: 'Application Type'
     };
@@ -120,12 +124,12 @@ export class ApplicationFlyoutFilterComponent {
     }
   }
 
-  public selectSuggestion(suggestion: string) {
+  public selectAppMnemonicSuggestion(suggestion: string) {
     this.filters.mnemonic = suggestion;
     this.appMnemonicSuggestions = [];
   }
 
-  public processTypeAhead(): void {
+  public processAppMnemonicTypeAhead(): void {
     const results: string[] = [];
 
     if (!this.filters.mnemonic || this.filters.mnemonic === '') {

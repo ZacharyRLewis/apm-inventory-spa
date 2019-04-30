@@ -4,7 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {ChipsComponentModule} from '@win-angular/chips-component';
 import {SelectComponentModule} from '@win-angular/select-component';
 import {ModalService, ServicesModule, ShareDataService} from '@win-angular/services';
-import {AutoCompleteModule, BlockUIModule, SidebarModule} from 'primeng/primeng';
+import {AutoCompleteModule, BlockUIModule, PanelModule, SidebarModule} from 'primeng/primeng';
 import {TableModule} from 'primeng/table';
 import {ApplicationFlyoutFilterComponent} from './application/application-flyout-filter.component';
 import {ApplicationComponent} from './application/application.component';
@@ -47,10 +47,11 @@ import {SidenavComponent} from './sidenav/sidenav.component';
     ChipsComponentModule,
     CommonModule,
     FormsModule,
-    TableModule,
+    PanelModule,
     SelectComponentModule,
     ServicesModule,
-    SidebarModule
+    SidebarModule,
+    TableModule
   ],
   exports: [
     BlockUIModule,

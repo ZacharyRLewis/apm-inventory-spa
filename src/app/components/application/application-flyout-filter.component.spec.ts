@@ -57,7 +57,7 @@ describe('ApplicationFlyoutFilterComponent', () => {
   });
 
   it('should clear filters', () => {
-    const applicationFilters = new ApplicationFilters('test', true, '1');
+    const applicationFilters = new ApplicationFilters('test', 'test', true, '1');
     component.filters = applicationFilters;
     component.clearFilters();
 
@@ -67,7 +67,7 @@ describe('ApplicationFlyoutFilterComponent', () => {
   });
 
   it('should remove one filter', () => {
-    const applicationFilters = new ApplicationFilters('test', true, '1');
+    const applicationFilters = new ApplicationFilters('test', 'test', true, '1');
     const event = 'mnemonic';
     component.filters = applicationFilters;
     component.removeFilter(event);
@@ -78,7 +78,7 @@ describe('ApplicationFlyoutFilterComponent', () => {
   });
 
   it('should remove all filters', () => {
-    const applicationFilters = new ApplicationFilters('test', true, '1');
+    const applicationFilters = new ApplicationFilters('test', 'test', true, '1');
     component.filters = applicationFilters;
     component.removeFilter();
 
@@ -91,7 +91,7 @@ describe('ApplicationFlyoutFilterComponent', () => {
     const check1: boolean = component.isFormClear();
     expect(check1).toBeTruthy();
 
-    const applicationFilters = new ApplicationFilters('test', true, '1');
+    const applicationFilters = new ApplicationFilters('test', 'test', true, '1');
     component.filters = applicationFilters;
 
     const check2: boolean = component.isFormClear();
@@ -99,7 +99,7 @@ describe('ApplicationFlyoutFilterComponent', () => {
   });
 
   it('should select a suggestion', () => {
-    component.selectSuggestion('selectedSuggestion');
+    component.selectAppMnemonicSuggestion('selectedSuggestion');
 
     expect(component.filters.mnemonic).toEqual('selectedSuggestion');
     expect(component.appMnemonicSuggestions.length).toEqual(0);
@@ -110,7 +110,7 @@ describe('ApplicationFlyoutFilterComponent', () => {
     component.filters = applicationFilters1;
     component.applications = [TestDomain.APPLICATION];
 
-    component.processTypeAhead();
+    component.processAppMnemonicTypeAhead();
 
     expect(component.appMnemonicSuggestions.length).toEqual(1);
 
@@ -118,14 +118,14 @@ describe('ApplicationFlyoutFilterComponent', () => {
     component.filters = applicationFilters2;
     component.applications = [TestDomain.APPLICATION];
 
-    component.processTypeAhead();
+    component.processAppMnemonicTypeAhead();
 
     expect(component.appMnemonicSuggestions.length).toEqual(0);
 
     const applicationFilters3 = new ApplicationFilters();
     component.filters = applicationFilters3;
 
-    component.processTypeAhead();
+    component.processAppMnemonicTypeAhead();
 
     expect(component.appMnemonicSuggestions.length).toEqual(0);
   });

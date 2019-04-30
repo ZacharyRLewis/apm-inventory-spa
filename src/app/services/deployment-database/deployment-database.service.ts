@@ -27,6 +27,18 @@ export class DeploymentDatabaseService implements ServiceInterface<DeploymentDat
     return this.http.get<WinResponse<DeploymentDatabase[]>>(this.url, this._options);
   }
 
+  public filterAll(params: { name, value } []): Observable<WinResponse<DeploymentDatabase[]>> {
+    let requestUrl: string = this.url;
+
+    for (let i = 0; i < params.length; i++) {
+      const separator: string = (i === 0) ? '?' : '&';
+
+      requestUrl = requestUrl + separator + params[i].name + '=' + params[i].value;
+    }
+
+    return this.http.get<WinResponse<DeploymentDatabase[]>>(requestUrl, this._options);
+  }
+
   public findAllByDeploymentId(deploymentId: string): Observable<WinResponse<DeploymentDatabase[]>> {
     return this.http.get<WinResponse<DeploymentDatabase[]>>(this.url + '?deploymentId=' + deploymentId, this._options);
   }

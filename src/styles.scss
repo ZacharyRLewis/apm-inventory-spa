@@ -23,6 +23,11 @@ button:disabled {
   font-size: 13px;
 }
 
+.win-button {
+  font-size: 13px !important;
+  border-radius: 4px !important;
+}
+
 // Modals
 
 .win-modal-big {
@@ -49,7 +54,7 @@ button:disabled {
     .modal-footer {
       display: block;
       height: 80px;
-      border-top: solid 1px #ccc;
+      border-top: solid 1px $win-chroma-3;
       padding: 15px 0;
     }
   }
@@ -121,7 +126,7 @@ button:disabled {
     width: 100%;
     padding: 6px 12px;
     font-size: 14px;
-    border: 1px solid #ccc;
+    border: 1px solid $win-chroma-3;
     border-radius: 4px;
     background-color: $white;
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
@@ -139,16 +144,9 @@ button:disabled {
 }
 
 .child-table-div {
-  margin-top: 30px;
-  margin-bottom: 30px;
-
-  .child-table {
-    padding-top: 5px;
-  }
-
   .add-button {
-    float: right;
     font-size: 13px;
+    margin-bottom: 10px;
   }
 }
 
@@ -469,4 +467,30 @@ button:disabled {
 
 .flyout-autocomplete .ui-autocomplete {
   width: 100% !important;
+}
+
+// PrimeNG Collapsible Panels
+
+.ui-widget-content {
+  border: none !important;
+  background-color: inherit !important;
+  padding-bottom: 20px;
+}
+
+.ui-widget-header {
+  background: none !important;
+}
+
+.ui-panel-titlebar {
+  color: $win-primary-text !important;
+  font-size: 15px;
+  font-weight: 600 !important;
+  border: none !important;
+  border-bottom: 1px solid $win-chroma-3 !important;
+  margin-bottom: 20px;
+}
+
+.ui-panel-titlebar-icon {
+  color: $win-primary !important;
+  border-color: $win-primary !important;
 }

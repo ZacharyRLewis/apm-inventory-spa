@@ -11,22 +11,21 @@
       <button class="tab-btn" [disabled]="selectedTab === 2" (click)="toggleTabs(2)" [ngClass]="{'selected-tab': selectedTab === 2}">
         {{tabNames[2]}}
       </button>
-      <button class="tab-btn" [disabled]="selectedTab === 3" (click)="toggleTabs(3)" [ngClass]="{'selected-tab': selectedTab === 3}">
-        {{tabNames[3]}}
-      </button>
     </div>
   </div>
 
   <div class="tab-body">
     <div *ngIf="selectedTab === 0">
       <div class="tab-title">
-        <p-autoComplete [suggestions]="dependencySuggestions" placeholder="Dependency Name" [(ngModel)]="selectedDependencyReference"
-                        (completeMethod)="processTypeAhead()" (onSelect)="selectSuggestion($event)" class="dashboard-autocomplete">
+        <p-autoComplete [suggestions]="dependencySuggestions" placeholder="Dependency Name"
+                        [(ngModel)]="selectedDependencyReference"
+                        (completeMethod)="processDependencyTypeAhead()" (onSelect)="selectDependencySuggestion($event)"
+                        class="dashboard-autocomplete">
           <ng-template let-suggestion pTemplate="item">
             {{suggestion.managerReference}}
           </ng-template>
         </p-autoComplete>
-        <button class="dependency-search-btn" (click)="performSearch()">Search Partial Name</button>
+        <button class="dependency-search-btn" (click)="performDependencySearch()">Search Partial Name</button>
       </div>
       <div>
         <div class="tab-table" *ngIf="applicationDependencies?.length > 0; else noApplicationDependencies">
@@ -53,13 +52,87 @@
       </div>
     </div>
     <div *ngIf="selectedTab === 1">
-      <div>!!!!!!!! TAB 2 !!!!!!!!</div>
+      <div class="tab-title">
+        <p-autoComplete [suggestions]="databaseUserSuggestions" placeholder="Database User"
+                        [(ngModel)]="selectedDatabaseUser"
+                        (completeMethod)="processDatabaseUserTypeAhead()"
+                        (onSelect)="selectDatabaseUserSuggestion($event)" class="dashboard-autocomplete">
+          <ng-template let-suggestion pTemplate="item">
+            {{suggestion}}
+          </ng-template>
+        </p-autoComplete>
+        <button class="dependency-search-btn" (click)="performDatabaseUserSearch()">Search Partial Name</button>
+      </div>
+      <div>
+        <div class="tab-table" *ngIf="deploymentDatabases?.length > 0; else noDeploymentDatabases">
+          <p-table [value]="deploymentDatabases" [columns]="dbUserSubColumns" sortField="deployment.contextName" [paginator]="true" [rows]="25">
+            <ng-template pTemplate="header">
+              <tr>
+                <th *ngFor="let column of dbUserColumns" [colSpan]="column.colspan" [rowSpan]="1" width="{{column.width}}">
+                  {{column.header}}
+                </th>
+              </tr>
+              <tr>
+                <th *ngFor="let column of dbUserSubColumns" [pSortableColumn]="column.field" width="{{column.width}}">
+                  {{column.header}}
+                  <p-sortIcon [field]="column.field"></p-sortIcon>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-deploymentDatabase>
+              <tr>
+                <td>{{deploymentDatabase?.deployment.contextName}}</td>
+                <td>{{deploymentDatabase?.deployment.environment}}</td>
+                <td>{{getHostServerName(deploymentDatabase?.deployment.hostServerId)}}</td>
+                <td>{{deploymentDatabase?.database.name}}</td>
+                <td>{{deploymentDatabase?.database.environment}}</td>
+                <td>{{deploymentDatabase?.connectionUsername}}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        <ng-template #noDeploymentDatabases>
+          <div class="no-results-found">No results found</div>
+        </ng-template>
+      </div>
     </div>
     <div *ngIf="selectedTab === 2">
-      <div>!!!!!!!! TAB 3 !!!!!!!!</div>
-    </div>
-    <div *ngIf="selectedTab === 3">
-      <div>!!!!!!!! TAB 4 !!!!!!!!</div>
+      <div class="tab-title">
+        <p-autoComplete [suggestions]="portSuggestions" placeholder="Port"
+                        [(ngModel)]="selectedPort"
+                        (completeMethod)="processPortTypeAhead()"
+                        (onSelect)="selectPortSuggestion($event)" class="dashboard-autocomplete">
+          <ng-template let-suggestion pTemplate="item">
+            {{suggestion}}
+          </ng-template>
+        </p-autoComplete>
+        <button class="dependency-search-btn" (click)="performDatabaseUserSearch()">Search Partial Name</button>
+      </div>
+      <div>
+        <div class="tab-table" *ngIf="portDeployments?.length > 0; else noPortDeployments">
+          <p-table [value]="portDeployments" [columns]="portSearchColumns" sortField="deployment.contextName" [paginator]="true" [rows]="25">
+            <ng-template pTemplate="header">
+              <tr>
+                <th *ngFor="let column of portSearchColumns" [pSortableColumn]="column.field" width="{{column.width}}">
+                  {{column.header}}
+                  <p-sortIcon [field]="column.field"></p-sortIcon>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-portDeployment>
+              <tr>
+                <td>{{portDeployment?.contextName}}</td>
+                <td>{{portDeployment?.environment}}</td>
+                <td>{{getHostServerName(portDeployment?.hostServerId)}}</td>
+                <td>{{portDeployment?.port}}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        <ng-template #noPortDeployments>
+          <div class="no-results-found">No results found</div>
+        </ng-template>
+      </div>
     </div>
   </div>
 </div>

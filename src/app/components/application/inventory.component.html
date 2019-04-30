@@ -4,7 +4,8 @@
   </div>
 
   <apm-application-flyout-filter #applicationFiltersComponent [applications]="applications" [applicationTypes]="applicationTypes"
-                     (filter)="filters = $event; searchApplications() " (clear)="resetFilters()"></apm-application-flyout-filter>
+                                 [departments]="departments" (filter)="filters = $event; searchApplications() " (clear)="resetFilters()">
+  </apm-application-flyout-filter>
 
   <div class="applications-table">
     <p-table [value]="applications" [columns]="columns" sortField="mnemonic" [paginator]="true" [rows]="10">
@@ -21,6 +22,7 @@
           <td>
             <a (click)="prepareApplicationModal(application); openModal(APPLICATION_MODAL_ID);">{{application.mnemonic}}</a>
           </td>
+          <td>{{application.owningDepartment}}</td>
           <td>{{application.description}}</td>
           <td>{{getApplicationTypeDescription(application.applicationTypeId)}}</td>
         </tr>

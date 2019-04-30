@@ -10,112 +10,148 @@
       </div>
       <div class="modal-body container">
         <form ngForm="newApplicationForm">
-          <div class="apm-form-body">
-            <div class="apm-form-group">
-              <label class="win-label apm-label" for="applicationMnemonic">Mnemonic</label>
-              <div class="apm-input-group">
-                <input type="text" class="apm-input" id="applicationMnemonic" name="mnemonic" [(ngModel)]="model.mnemonic">
+          <p-panel header="General Info" [toggleable]="true" [collapsed]="false">
+            <div class="apm-form-body">
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="applicationMnemonic">Mnemonic</label>
+                <div class="apm-input-group">
+                  <input type="text" class="apm-input" id="applicationMnemonic" name="mnemonic" [(ngModel)]="model.mnemonic">
+                </div>
+              </div>
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="applicationDescription">Description</label>
+                <div class="apm-input-group">
+                  <input type="text" class="apm-input" id="applicationDescription" name="description" [(ngModel)]="model.description">
+                </div>
+              </div>
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="applicationType">Type</label>
+                <div class="apm-input-group">
+                  <select class="apm-input apm-select" id="applicationType" [(ngModel)]="model.applicationTypeId" name="type" #type="ngModel">
+                    <option *ngFor="let appType of applicationTypes" value="{{appType.id}}">
+                      {{appType.name}} {{appType.version}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="serviceApi">Is Service/API?</label>
+                <div class="apm-input-group">
+                  <select class="apm-input apm-select" id="serviceApi" [(ngModel)]="model.serviceApi" name="serviceApi" #type="ngModel">
+                    <option *ngFor="let choice of ['true', 'false']" value="{{choice}}">
+                      {{choice}}
+                    </option>
+                  </select>
+                </div>
               </div>
             </div>
-            <div class="apm-form-group">
-              <label class="win-label apm-label" for="applicationDescription">Description</label>
-              <div class="apm-input-group">
-                <input type="text" class="apm-input" id="applicationDescription" name="description" [(ngModel)]="model.description">
+          </p-panel>
+          <p-panel header="Source Code" [toggleable]="true" [collapsed]="true">
+            <div class="apm-form-body">
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="applicationRepository">Repository</label>
+                <div class="apm-input-group">
+                  <input type="text" class="apm-input" id="applicationRepository" name="repository" [(ngModel)]="model.repository">
+                </div>
+              </div>
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="applicationDefaultBranch">Default Branch</label>
+                <div class="apm-input-group">
+                  <input type="text" class="apm-input" id="applicationDefaultBranch" name="defaultBranch" [(ngModel)]="model.defaultBranch">
+                </div>
               </div>
             </div>
-            <div class="apm-form-group">
-              <label class="win-label apm-label" for="applicationType">Type</label>
-              <div class="apm-input-group">
-                <select class="apm-input apm-select" id="applicationType" [(ngModel)]="model.applicationTypeId" name="type" #type="ngModel">
-                  <option *ngFor="let appType of applicationTypes" value="{{appType.id}}">
-                    {{appType.name}} {{appType.version}}
-                  </option>
-                </select>
+          </p-panel>
+          <p-panel header="Contact Info" [toggleable]="true" [collapsed]="true">
+            <div class="apm-form-body">
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="owningDepartment">Owning Department</label>
+                <div class="apm-input-group">
+                  <input type="text" class="apm-input" id="owningDepartment" name="owningDepartment" [(ngModel)]="model.owningDepartment">
+                </div>
+              </div>
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="primaryContactName">Primary Contact Name</label>
+                <div class="apm-input-group">
+                  <input type="text" class="apm-input" id="primaryContactName" name="primaryContactName" [(ngModel)]="model.primaryContactName">
+                </div>
+              </div>
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="primaryContactEmail">Primary Contact Email</label>
+                <div class="apm-input-group">
+                  <input type="text" class="apm-input" id="primaryContactEmail" name="primaryContactEmail" [(ngModel)]="model.primaryContactEmail">
+                </div>
+              </div>
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="primaryContactPhone">Primary Contact Phone</label>
+                <div class="apm-input-group">
+                  <input type="text" class="apm-input" id="primaryContactPhone" name="primaryContactPhone" [(ngModel)]="model.primaryContactPhone">
+                </div>
               </div>
             </div>
-            <div class="apm-form-group">
-              <label class="win-label apm-label" for="applicationRepository">Source Repository</label>
-              <div class="apm-input-group">
-                <input type="text" class="apm-input" id="applicationRepository" name="repository" [(ngModel)]="model.repository">
+          </p-panel>
+          <p-panel header="Deployments" [toggleable]="true" [collapsed]="true">
+            <div class="child-table-div">
+              <div>
+                <button class="add-button" (click)="addDeployments()">
+                  <i class="fa fa-plus" aria-hidden="true"></i>
+                  <span>Add Deployments</span>
+                </button>
               </div>
-            </div>
-            <div class="apm-form-group">
-              <label class="win-label apm-label" for="applicationDefaultBranch">Source Default Branch</label>
-              <div class="apm-input-group">
-                <input type="text" class="apm-input" id="applicationDefaultBranch" name="defaultBranch" [(ngModel)]="model.defaultBranch">
+              <div class="child-table" *ngIf="deployments?.length > 0; else noDeployments">
+                <p-table [value]="deployments" [paginator]="false" dataKey="environment">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th style="width: 80px">Environment</th>
+                      <th style="width: 300px">Base URL</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-deployment>
+                    <tr>
+                      <td>{{deployment.environment}}</td>
+                      <td>{{getDeploymentBaseUrl(deployment)}}</td>
+                    </tr>
+                  </ng-template>
+                </p-table>
               </div>
+              <ng-template #noDeployments>
+                <div class="win-label">None</div>
+              </ng-template>
             </div>
-            <div class="apm-form-group">
-              <label class="win-label apm-label" for="serviceApi">Is Service/API?</label>
-              <div class="apm-input-group">
-                <select class="apm-input apm-select" id="serviceApi" [(ngModel)]="model.serviceApi" name="serviceApi" #type="ngModel">
-                  <option *ngFor="let choice of ['true', 'false']" value="{{choice}}">
-                    {{choice}}
-                  </option>
-                </select>
+          </p-panel>
+          <p-panel header="Dependencies" [toggleable]="true" [collapsed]="true">
+            <div class="child-table-div">
+              <div>
+                <button class="add-button"
+                        [disabled]="!passedApplication || !model.id || !(model.repository && model.defaultBranch)"
+                        (click)="refreshDependencies()">
+                  <i class="fa fa-plus" aria-hidden="true"></i>
+                  <span>Refresh Dependencies</span>
+                </button>
               </div>
+              <div class="child-table" *ngIf="dependencies?.length > 0; else noDependencies">
+                <p-table [value]="dependencies" [paginator]="true" [rows]="10">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th style="width: 2em">Name</th>
+                      <th style="width: 1em">Version</th>
+                      <th style="width: 4em">Reference</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-dependency>
+                    <tr>
+                      <td>{{dependency.name}}</td>
+                      <td>{{dependency.versionCode}}</td>
+                      <td>{{dependency.managerReference}}</td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+              <ng-template #noDependencies>
+                <div>None</div>
+              </ng-template>
             </div>
-          </div>
-          <div class="child-table-div">
-            <div>
-              <label class="win-label">Deployments</label>
-              <button class="add-button" (click)="addDeployments()">
-                <i class="fa fa-plus" aria-hidden="true"></i>
-                <span>Add Deployments</span>
-              </button>
-            </div>
-            <div class="child-table" *ngIf="deployments?.length > 0; else noDeployments">
-              <p-table [value]="deployments" [paginator]="false" dataKey="environment">
-                <ng-template pTemplate="header">
-                  <tr>
-                    <th style="width: 80px">Environment</th>
-                    <th style="width: 300px">Base URL</th>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-deployment>
-                  <tr>
-                    <td>{{deployment.environment}}</td>
-                    <td>{{getDeploymentBaseUrl(deployment)}}</td>
-                  </tr>
-                </ng-template>
-              </p-table>
-            </div>
-            <ng-template #noDeployments>
-              <div>None</div>
-            </ng-template>
-          </div>
-          <div class="child-table-div">
-            <div>
-              <label class="win-label">Dependencies</label>
-              <button class="add-button"
-                      [disabled]="!passedApplication || !model.id || !(model.repository && model.defaultBranch)"
-                      (click)="refreshDependencies()">
-                <i class="fa fa-plus" aria-hidden="true"></i>
-                <span>Refresh Dependencies</span>
-              </button>
-            </div>
-            <div class="child-table" *ngIf="dependencies?.length > 0; else noDependencies">
-              <p-table [value]="dependencies" [paginator]="true" [rows]="10">
-                <ng-template pTemplate="header">
-                  <tr>
-                    <th style="width: 2em">Name</th>
-                    <th style="width: 1em">Version</th>
-                    <th style="width: 4em">Reference</th>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-dependency>
-                  <tr>
-                    <td>{{dependency.name}}</td>
-                    <td>{{dependency.versionCode}}</td>
-                    <td>{{dependency.managerReference}}</td>
-                  </tr>
-                </ng-template>
-              </p-table>
-            </div>
-            <ng-template #noDependencies>
-              <div>None</div>
-            </ng-template>
-          </div>
+          </p-panel>
         </form>
       </div>
       <div class="modal-footer container">

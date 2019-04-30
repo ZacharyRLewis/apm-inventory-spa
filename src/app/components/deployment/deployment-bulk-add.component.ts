@@ -101,7 +101,9 @@ export class DeploymentBulkAddComponent {
   }
 
   public addToApplication(): void {
-    this.createDeploymentFromFields();
+    if (!this.fieldsHaveNotBeenChanged()) {
+      this.createDeploymentFromFields();
+    }
 
     const deployments: Deployment[] = Object.assign([], this.deployments);
     const application: Application = Object.assign({}, this.passedApplication);

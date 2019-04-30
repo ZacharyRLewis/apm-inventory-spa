@@ -128,13 +128,13 @@ export class DeploymentFlyoutFilterComponent {
     }
   }
 
-  public selectSuggestion(suggestion: Application) {
+  public selectAppMnemonicSuggestion(suggestion: Application) {
     this.selectedAppMnemonic = suggestion.mnemonic;
     this.filters.applicationId = suggestion.id;
     this.appMnemonicSuggestions = [];
   }
 
-  public processTypeAhead(): void {
+  public processAppMnemonicTypeAhead(): void {
     const results: Application[] = [];
 
     if (!this.selectedAppMnemonic || this.selectedAppMnemonic === '') {

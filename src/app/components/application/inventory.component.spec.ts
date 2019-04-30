@@ -7,11 +7,11 @@ import {ChipsComponentModule} from '@win-angular/chips-component';
 import {SelectComponentModule} from '@win-angular/select-component';
 import {ModalService, ShareDataService} from '@win-angular/services';
 import {cold, getTestScheduler} from 'jasmine-marbles';
-import {AutoCompleteModule, SidebarModule} from 'primeng/primeng';
+import {AutoCompleteModule, PanelModule, SidebarModule} from 'primeng/primeng';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {ApplicationComponent, DeploymentBulkAddComponent, InventoryComponent} from '..';
-import {Application, ApplicationFilters, Deployment, TestDomain, WinResponse} from '../../model';
+import {Application, ApplicationFilters, ApplicationType, Deployment, HostServer, TestDomain, WinResponse} from '../../model';
 import {
   ApplicationService,
   ApplicationTypeService,
@@ -28,6 +28,22 @@ class MockApplicationService extends ApplicationService {
   private response: WinResponse<Application[]> = {meta: null, data: [TestDomain.APPLICATION]};
 
   public findAll(): Observable<WinResponse<Application[]>> {
+    return cold('--x|', {x: this.response});
+  }
+}
+
+class MockApplicationTypeService extends ApplicationTypeService {
+  private response: WinResponse<ApplicationType[]> = {meta: null, data: [TestDomain.APPLICATION_TYPE]};
+
+  public findAll(): Observable<WinResponse<ApplicationType[]>> {
+    return cold('--x|', {x: this.response});
+  }
+}
+
+class MockHostServerService extends HostServerService {
+  private response: WinResponse<HostServer[]> = {meta: null, data: [TestDomain.HOST_SERVER]};
+
+  public findAll(): Observable<WinResponse<HostServer[]>> {
     return cold('--x|', {x: this.response});
   }
 }
@@ -54,19 +70,23 @@ describe('InventoryComponent', () => {
   let child: ApplicationComponent;
   let child2: DeploymentBulkAddComponent;
   let applicationService: ApplicationService;
+  let applicationTypeService: ApplicationTypeService;
+  let hostServerService: HostServerService;
   let modalService: ModalService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         AutoCompleteModule, BrowserAnimationsModule, ChipsComponentModule, FormsModule, HttpClientModule,
-        HttpClientTestingModule, SelectComponentModule, SidebarModule, TableModule
+        HttpClientTestingModule, PanelModule, SelectComponentModule, SidebarModule, TableModule
       ],
       declarations: [InventoryComponent, ApplicationComponent, ApplicationFlyoutFilterComponent, DeploymentBulkAddComponent],
       providers: [
         {provide: ApplicationService, useClass: MockApplicationService},
-        ApplicationTypeService, DatabaseService, DeploymentService, DeploymentDatabaseService,
-        DependencyService, HostServerService, MulesoftApiService,
+        {provide: ApplicationTypeService, useClass: MockApplicationTypeService},
+        {provide: HostServerService, useClass: MockHostServerService},
+        DatabaseService, DeploymentService, DeploymentDatabaseService,
+        DependencyService, MulesoftApiService,
         {provide: ModalService, useClass: MockModalService},
         {provide: ShareDataService, useClass: MockShareDataService},
       ]
@@ -80,6 +100,8 @@ describe('InventoryComponent', () => {
     child2 = component.deploymentBulkAddComponent;
     fixture.detectChanges();
     applicationService = TestBed.get(ApplicationService);
+    applicationTypeService = TestBed.get(ApplicationTypeService);
+    hostServerService = TestBed.get(HostServerService);
     modalService = TestBed.get(ModalService);
   });
 
@@ -92,6 +114,20 @@ describe('InventoryComponent', () => {
 
     expect(component.applications.length).toEqual(1);
     expect(component.applications).toContain(TestDomain.APPLICATION);
+  });
+
+  it('should fetch application types on init', () => {
+    getTestScheduler().flush();
+
+    expect(component.applicationTypes.length).toEqual(1);
+    expect(component.applicationTypes).toContain(TestDomain.APPLICATION_TYPE);
+  });
+
+  it('should fetch host servers on init', () => {
+    getTestScheduler().flush();
+
+    expect(component.hostServers.length).toEqual(1);
+    expect(component.hostServers).toContain(TestDomain.HOST_SERVER);
   });
 
   it('should reset application component when creating a new application', () => {
@@ -125,24 +161,24 @@ describe('InventoryComponent', () => {
   });
 
   it('should refresh applications on create event', () => {
-    spyOn(component, 'refreshApplications').and.callThrough();
+    spyOn(component, 'loadApplications').and.callThrough();
     component.handleCreate(TestDomain.APPLICATION);
 
-    expect(component.refreshApplications).toHaveBeenCalled();
+    expect(component.loadApplications).toHaveBeenCalled();
   });
 
   it('should refresh applications on delete event', () => {
-    spyOn(component, 'refreshApplications').and.callThrough();
+    spyOn(component, 'loadApplications').and.callThrough();
     component.handleDelete(TestDomain.APPLICATION);
 
-    expect(component.refreshApplications).toHaveBeenCalled();
+    expect(component.loadApplications).toHaveBeenCalled();
   });
 
   it('should refresh applications on update event', () => {
-    spyOn(component, 'refreshApplications').and.callThrough();
+    spyOn(component, 'loadApplications').and.callThrough();
     component.handleUpdate(TestDomain.APPLICATION);
 
-    expect(component.refreshApplications).toHaveBeenCalled();
+    expect(component.loadApplications).toHaveBeenCalled();
   });
 
   it('should handle deployment cancel event', () => {
@@ -173,9 +209,10 @@ describe('InventoryComponent', () => {
   it('should search applications with filters', () => {
     spyOn(applicationService, 'filterAll').and.callThrough();
 
-    const applicationFilters = new ApplicationFilters('test', true, '1');
+    const applicationFilters = new ApplicationFilters('test', 'test', true, '1');
     const params = [
       {name: 'mnemonic', value: 'test'},
+      {name: 'owningDepartment', value: 'test'},
       {name: 'isServiceApi', value: true},
       {name: 'applicationTypeId', value: '1'}
     ];
@@ -183,5 +220,36 @@ describe('InventoryComponent', () => {
     component.searchApplications();
 
     expect(applicationService.filterAll).toHaveBeenCalledWith(params);
+  });
+
+  it('should handle bulk deployment cancel', () => {
+    spyOn(component, 'prepareApplicationModal').and.callThrough();
+    spyOn(component, 'closeModal').and.callThrough();
+    spyOn(component, 'openModal').and.callThrough();
+
+    const application = TestDomain.APPLICATION;
+    component.handleBulkDeploymentCancel(application);
+
+    expect(component.prepareApplicationModal).toHaveBeenCalledWith(application);
+    expect(component.closeModal).toHaveBeenCalledTimes(1);
+    expect(component.openModal).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handle bulk deployment create without existing deployments', () => {
+    const application = TestDomain.APPLICATION;
+    const deployments = [new Deployment('1'), new Deployment('2')];
+    component.applicationComponent.deployments = [];
+    component.handleBulkDeploymentCreate({application, deployments});
+
+    expect(component.applicationComponent.deployments.length).toEqual(2);
+  });
+
+  it('should handle bulk deployment create with existing deployments', () => {
+    const application = TestDomain.APPLICATION;
+    const deployments = [new Deployment('1'), new Deployment('2')];
+    component.applicationComponent.deployments = [TestDomain.DEPLOYMENT];
+    component.handleBulkDeploymentCreate({application, deployments});
+
+    expect(component.applicationComponent.deployments.length).toEqual(3);
   });
 });

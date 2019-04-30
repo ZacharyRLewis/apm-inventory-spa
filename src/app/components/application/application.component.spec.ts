@@ -1,12 +1,14 @@
 import {HttpClientModule} from '@angular/common/http';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ModalService, ShareDataService} from '@win-angular/services';
 import {cold} from 'jasmine-marbles';
+import {PanelModule} from 'primeng/panel';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {ApplicationComponent} from '..';
-import {Application, Dependency, Deployment, TestDomain, WinResponse} from '../../model';
+import {Application, Dependency, Deployment, HostServer, TestDomain, WinResponse} from '../../model';
 import {ApplicationService, DependencyService, DeploymentService, HostServerService} from '../../services';
 
 class MockApplicationService extends ApplicationService {
@@ -60,13 +62,11 @@ describe('ApplicationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, HttpClientModule, TableModule],
+      imports: [BrowserAnimationsModule, FormsModule, HttpClientModule, PanelModule, TableModule],
       declarations: [ApplicationComponent],
       providers: [
         {provide: ApplicationService, useClass: MockApplicationService},
-        DependencyService,
-        DeploymentService,
-        HostServerService,
+        DependencyService, DeploymentService, HostServerService,
         {provide: ModalService, useClass: MockModalService},
         {provide: ShareDataService, useClass: MockShareDataService},
       ]

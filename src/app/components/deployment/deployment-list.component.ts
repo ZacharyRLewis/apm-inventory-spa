@@ -96,7 +96,6 @@ export class DeploymentListComponent implements OnInit  {
   public prepareDeploymentModal(deployment: Deployment): void {
     this.deploymentComponent.passedDeployment = Object.assign({}, deployment);
     this.deploymentComponent.model = Object.assign({}, deployment);
-    this.deploymentComponent.loadDatabases();
     this.deploymentComponent.loadDeploymentDatabases();
     this.deploymentComponent.loadApis(deployment.contextName);
   }

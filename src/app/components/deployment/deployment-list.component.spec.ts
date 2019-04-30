@@ -7,7 +7,7 @@ import {ChipsComponentModule} from '@win-angular/chips-component';
 import {SelectComponentModule} from '@win-angular/select-component';
 import {ModalService} from '@win-angular/services';
 import {cold, getTestScheduler} from 'jasmine-marbles';
-import {AutoCompleteModule, SidebarModule} from 'primeng/primeng';
+import {AutoCompleteModule, PanelModule, SidebarModule} from 'primeng/primeng';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {DeploymentComponent, DeploymentListComponent} from '..';
@@ -52,7 +52,7 @@ describe('DeploymentListComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         AutoCompleteModule, BrowserAnimationsModule, ChipsComponentModule, FormsModule, HttpClientModule,
-        HttpClientTestingModule, SelectComponentModule, SidebarModule, TableModule
+        HttpClientTestingModule, PanelModule, SelectComponentModule, SidebarModule, TableModule
       ],
       declarations: [DeploymentListComponent, DeploymentComponent, DeploymentDatabaseComponent, DeploymentFlyoutFilterComponent],
       providers: [

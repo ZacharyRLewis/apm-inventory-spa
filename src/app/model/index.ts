@@ -7,6 +7,7 @@ export {DeploymentDatabase} from './deployment-database';
 export {DeploymentFilters} from './deployment-filters';
 export {Database} from './database';
 export {DatabaseType} from './database-type';
+export {Department} from './department';
 export {Dependency} from './dependency';
 export {HostServer} from './host-server';
 export {MulesoftApi} from './mulesoft/mulesoft-api';

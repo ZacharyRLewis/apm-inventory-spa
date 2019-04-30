@@ -100,7 +100,7 @@ describe('DeploymentFlyoutFilterComponent', () => {
 
   it('should select a suggestion', () => {
     const application = TestDomain.APPLICATION;
-    component.selectSuggestion(application);
+    component.selectAppMnemonicSuggestion(application);
 
     expect(component.selectedAppMnemonic).toEqual(application.mnemonic);
     expect(component.filters.applicationId).toEqual(application.id);
@@ -111,20 +111,20 @@ describe('DeploymentFlyoutFilterComponent', () => {
     component.selectedAppMnemonic = 'test';
     component.applications = [TestDomain.APPLICATION];
 
-    component.processTypeAhead();
+    component.processAppMnemonicTypeAhead();
 
     expect(component.appMnemonicSuggestions.length).toEqual(1);
 
     component.selectedAppMnemonic = 'typeahead';
     component.applications = [TestDomain.APPLICATION];
 
-    component.processTypeAhead();
+    component.processAppMnemonicTypeAhead();
 
     expect(component.appMnemonicSuggestions.length).toEqual(0);
 
     component.selectedAppMnemonic = '';
 
-    component.processTypeAhead();
+    component.processAppMnemonicTypeAhead();
 
     expect(component.appMnemonicSuggestions.length).toEqual(0);
   });

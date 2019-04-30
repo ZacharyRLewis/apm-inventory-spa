@@ -10,132 +10,134 @@
       </div>
       <div class="modal-body container">
         <form ngForm="newDeploymentForm">
-          <div class="apm-form-body">
-            <div class="apm-form-group">
-              <label class="win-label apm-label" for="applicationId">Application Mnemonic</label>
-              <div class="apm-input-group">
-                <select class="apm-input apm-select" id="applicationId" [(ngModel)]="model.applicationId" name="applicationId" #applicationId="ngModel">
-                  <option *ngFor="let app of applications" value="{{app.id}}">
-                    {{app.mnemonic}}
-                  </option>
-                </select>
+          <p-panel header="General Info" [toggleable]="true" [collapsed]="false">
+            <div class="apm-form-body">
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="applicationId">Application Mnemonic</label>
+                <div class="apm-input-group">
+                  <select class="apm-input apm-select" id="applicationId" [(ngModel)]="model.applicationId" name="applicationId" #applicationId="ngModel">
+                    <option *ngFor="let app of applications" value="{{app.id}}">
+                      {{app.mnemonic}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="environment">Environment</label>
+                <div class="apm-input-group">
+                  <select class="apm-input apm-select" id="environment" [(ngModel)]="model.environment" name="environment" #environment="ngModel">
+                    <option *ngFor="let env of environments">
+                      {{env}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="directory">Deployment Directory</label>
+                <div class="apm-input-group">
+                  <input type="text" class="apm-input" id="directory" name="directory" [(ngModel)]="model.directory">
+                </div>
+              </div>
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="https">Is HTTPS?</label>
+                <div class="apm-input-group">
+                  <select class="apm-input apm-select" id="https" [(ngModel)]="model.https" name="https" #https="ngModel">
+                    <option *ngFor="let choice of ['true', 'false']" value="{{choice}}">
+                      {{choice}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="hostServerId">Host Server</label>
+                <div class="apm-input-group">
+                  <select class="apm-input apm-select" id="hostServerId" [(ngModel)]="model.hostServerId" name="hostServerId" #hostServerId="ngModel">
+                    <option *ngFor="let hostServer of hostServers" value="{{hostServer.id}}">
+                      {{hostServer.name}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="port">Port</label>
+                <div class="apm-input-group">
+                  <input type="text" class="apm-input" id="port" name="port" [(ngModel)]="model.port">
+                </div>
+              </div>
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="contextName">Context Name</label>
+                <div class="apm-input-group">
+                  <input type="text" class="apm-input" id="contextName" name="contextName" [(ngModel)]="model.contextName">
+                </div>
+              </div>
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="baseUrl">Base URL</label>
+                <div class="apm-input-group">
+                  <div class="apm-input base-url" id="baseUrl">{{getDeploymentBaseUrl(model)}}</div>
+                </div>
               </div>
             </div>
-            <div class="apm-form-group">
-              <label class="win-label apm-label" for="environment">Environment</label>
-              <div class="apm-input-group">
-                <select class="apm-input apm-select" id="environment" [(ngModel)]="model.environment" name="environment" #environment="ngModel">
-                  <option *ngFor="let env of environments">
-                    {{env}}
-                  </option>
-                </select>
+          </p-panel>
+          <p-panel header="Databases" [toggleable]="true" [collapsed]="true">
+            <div class="child-table-div">
+              <div>
+                <button class="add-button" [disabled]="!passedDeployment || !model.id" (click)="addDatabase()">
+                  <i class="fa fa-plus" aria-hidden="true"></i>
+                  <span>Add Database</span>
+                </button>
               </div>
-            </div>
-            <div class="apm-form-group">
-              <label class="win-label apm-label" for="directory">Deployment Directory</label>
-              <div class="apm-input-group">
-                <input type="text" class="apm-input" id="directory" name="directory" [(ngModel)]="model.directory">
+              <div class="child-table" *ngIf="deploymentDatabases?.length > 0; else noDatabases">
+                <p-table [value]="deploymentDatabases" [paginator]="false" dataKey="id">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th style="width: 200px">Database Name</th>
+                      <th style="width: 200px">Database Host</th>
+                      <th style="width: 150px">Connection Username</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-database>
+                    <tr>
+                      <td>{{getDatabaseName(database.databaseId)}}</td>
+                      <td>{{getDatabaseHost(database.databaseId)}}</td>
+                      <td>{{database.connectionUsername}}</td>
+                    </tr>
+                  </ng-template>
+                </p-table>
               </div>
-            </div>
-            <div class="apm-form-group">
-              <label class="win-label apm-label" for="https">Is HTTPS?</label>
-              <div class="apm-input-group">
-                <select class="apm-input apm-select" id="https" [(ngModel)]="model.https" name="https" #https="ngModel">
-                  <option *ngFor="let choice of ['true', 'false']" value="{{choice}}">
-                    {{choice}}
-                  </option>
-                </select>
-              </div>
-            </div>
-            <div class="apm-form-group">
-              <label class="win-label apm-label" for="hostServerId">Host Server</label>
-              <div class="apm-input-group">
-                <select class="apm-input apm-select" id="hostServerId" [(ngModel)]="model.hostServerId" name="hostServerId" #hostServerId="ngModel">
-                  <option *ngFor="let hostServer of hostServers" value="{{hostServer.id}}">
-                    {{hostServer.name}}
-                  </option>
-                </select>
-              </div>
-            </div>
-            <div class="apm-form-group">
-              <label class="win-label apm-label" for="port">Port</label>
-              <div class="apm-input-group">
-                <input type="text" class="apm-input" id="port" name="port" [(ngModel)]="model.port">
-              </div>
-            </div>
-            <div class="apm-form-group">
-              <label class="win-label apm-label" for="contextName">Context Name</label>
-              <div class="apm-input-group">
-                <input type="text" class="apm-input" id="contextName" name="contextName" [(ngModel)]="model.contextName">
-              </div>
-            </div>
-            <div class="apm-form-group">
-              <label class="win-label apm-label" for="baseUrl">Base URL</label>
-              <div class="apm-input-group">
-                <div class="apm-input base-url" id="baseUrl">{{getDeploymentBaseUrl(model)}}</div>
-              </div>
-            </div>
-          </div>
-          <div class="child-table-div">
-            <div>
-              <label class="win-label">Databases</label>
-              <button class="add-button" [disabled]="!passedDeployment || !model.id" (click)="addDatabase()">
-                <i class="fa fa-plus" aria-hidden="true"></i>
-                <span>Add Database</span>
-              </button>
-            </div>
-            <div class="child-table" *ngIf="deploymentDatabases?.length > 0; else noDatabases">
-            <p-table [value]="deploymentDatabases" [paginator]="false" dataKey="id">
-              <ng-template pTemplate="header">
-                <tr>
-                  <th style="width: 200px">Database Name</th>
-                  <th style="width: 200px">Database Host</th>
-                  <th style="width: 150px">Connection Username</th>
-                </tr>
+              <ng-template #noDatabases>
+                <div class="win-label">None</div>
               </ng-template>
-              <ng-template pTemplate="body" let-database>
-                <tr>
-                  <td>{{getDatabaseName(database.databaseId)}}</td>
-                  <td>{{getDatabaseHost(database.databaseId)}}</td>
-                  <td>{{database.connectionUsername}}</td>
-                </tr>
+            </div>
+          </p-panel>
+          <p-panel header="MuleSoft API's" [toggleable]="true" [collapsed]="true">
+            <div class="child-table-div">
+              <div class="child-table" *ngIf="apis?.length > 0; else noApis">
+                <p-table [value]="apis" [paginator]="false" dataKey="id">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th style="width: 150px">Name</th>
+                      <th style="width: 60px">Environment</th>
+                      <th style="width: 50px">Version</th>
+                      <th style="width: 50px">Asset Version</th>
+                      <th style="width: 250px">URL</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-api>
+                    <tr>
+                      <td>{{api.assetId}}</td>
+                      <td>{{api.deploymentEnvironment}}</td>
+                      <td>{{api.productVersion}}</td>
+                      <td>{{api.assetVersion}}</td>
+                      <td>{{formatApiUrl(api)}}</td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+              <ng-template #noApis>
+                <div class="win-label">None</div>
               </ng-template>
-              </p-table>
             </div>
-            <ng-template #noDatabases>
-              <div>None</div>
-            </ng-template>
-          </div>
-          <div class="child-table-div">
-            <div>
-              <label class="win-label">MuleSoft API's</label>
-            </div>
-            <div class="child-table" *ngIf="apis?.length > 0; else noApis">
-              <p-table [value]="apis" [paginator]="false" dataKey="id">
-                <ng-template pTemplate="header">
-                  <tr>
-                    <th style="width: 150px">Name</th>
-                    <th style="width: 60px">Environment</th>
-                    <th style="width: 50px">Version</th>
-                    <th style="width: 50px">Asset Version</th>
-                    <th style="width: 250px">URL</th>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-api>
-                  <tr>
-                    <td>{{api.assetId}}</td>
-                    <td>{{api.deploymentEnvironment}}</td>
-                    <td>{{api.productVersion}}</td>
-                    <td>{{api.assetVersion}}</td>
-                    <td>{{formatApiUrl(api)}}</td>
-                  </tr>
-                </ng-template>
-              </p-table>
-            </div>
-            <ng-template #noApis>
-              <div>None</div>
-            </ng-template>
-          </div>
+          </p-panel>
         </form>
       </div>
       <div class="modal-footer container">

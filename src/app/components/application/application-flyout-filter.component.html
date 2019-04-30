@@ -12,9 +12,17 @@
         <label for="mnemonic" class="win-label">Application Mnemonic</label>
         <div class="autocomplete-div">
           <p-autoComplete id="mnemonic" [suggestions]="appMnemonicSuggestions" [(ngModel)]="filters.mnemonic"
-                          (completeMethod)="processTypeAhead()" (onSelect)="selectSuggestion($event)" class="flyout-autocomplete">
+                          (completeMethod)="processAppMnemonicTypeAhead()" (onSelect)="selectAppMnemonicSuggestion($event)" class="flyout-autocomplete">
           </p-autoComplete>
         </div>
+      </div>
+    </div>
+
+    <div class="input-field">
+      <div class="form-group">
+        <label for="owningDepartment" class="win-label">Department</label>
+        <win-select id="owningDepartment" [options]="departments" labelKey="name" valueKey="name"
+                    [(ngModel)]="filters.owningDepartment" defaultOption=" "></win-select>
       </div>
     </div>
 

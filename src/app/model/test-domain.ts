@@ -1,4 +1,5 @@
 import {Application} from './application';
+import {ApplicationDependency} from './application-dependency';
 import {ApplicationType} from './application-type';
 import {Database} from './database';
 import {DatabaseType} from './database-type';
@@ -9,7 +10,8 @@ import {HostServer} from './host-server';
 import {MulesoftApi} from './mulesoft/mulesoft-api';
 
 export class TestDomain {
-  public static APPLICATION: Application = new Application('123', 'Test', 'test', 'Test', '', '', false, null, [], []);
+  public static APPLICATION: Application = new Application('123', 'Test', 'test', 'Test', '', '', false, null, null, null, null, null, [], []);
+  public static APPLICATION_DEPENDENCY: ApplicationDependency = new ApplicationDependency('1', '2', '3');
   public static APPLICATION_TYPE: ApplicationType = new ApplicationType('123', 'Java', 'JDK 1.8', 'Java 8 Application');
   public static DEPLOYMENT: Deployment = new Deployment('123', '123', 'DEV', 'localhost', '/tmp', 'test-service', '1234', false);
   public static DEPLOYMENT_DATABASE = new DeploymentDatabase('123', '1', '1', 'TEST');

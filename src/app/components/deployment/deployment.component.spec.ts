@@ -1,12 +1,14 @@
 import {HttpClientModule} from '@angular/common/http';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ModalService} from '@win-angular/services';
-import {cold} from 'jasmine-marbles';
+import {cold, getTestScheduler} from 'jasmine-marbles';
+import {PanelModule} from 'primeng/panel';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {DeploymentComponent} from '..';
-import {Deployment, HostServer, MulesoftApi, TestDomain, WinResponse} from '../../model';
+import {Database, Deployment, DeploymentDatabase, HostServer, MulesoftApi, TestDomain, WinResponse} from '../../model';
 import {DatabaseService, DeploymentDatabaseService, DeploymentService, MulesoftApiService} from '../../services';
 
 class MockDeploymentService extends DeploymentService {
@@ -25,6 +27,34 @@ class MockDeploymentService extends DeploymentService {
   }
 }
 
+class MockDatabaseService extends DatabaseService {
+  private response: WinResponse<Database[]> = {meta: null, data: [TestDomain.DATABASE]};
+
+  public findAll(): Observable<WinResponse<Database[]>> {
+    return cold('--x|', {x: this.response});
+  }
+}
+
+class MockDeploymentDatabaseService extends DeploymentDatabaseService {
+  private response: WinResponse<DeploymentDatabase[]> = {meta: null, data: [TestDomain.DEPLOYMENT_DATABASE]};
+
+  public findAllByDeploymentId(deploymentId: string): Observable<WinResponse<DeploymentDatabase[]>> {
+    return cold('--x|', {x: this.response});
+  }
+}
+
+class MockMulesoftApiService extends MulesoftApiService {
+  private response: WinResponse<MulesoftApi[]> = {meta: null, data: [TestDomain.MULESOFT_API]};
+
+  public findAll(): Observable<WinResponse<MulesoftApi[]>> {
+    return cold('--x|', {x: this.response});
+  }
+
+  public filterAll(params: {name: any; value: any}[]): Observable<WinResponse<MulesoftApi[]>> {
+    return cold('--x|', {x: this.response});
+  }
+}
+
 class MockModalService extends ModalService {
   openModal(modalId: string, hideFocus?: boolean) {
     console.log('open modal');
@@ -38,18 +68,22 @@ class MockModalService extends ModalService {
 describe('DeploymentComponent', () => {
   let component: DeploymentComponent;
   let fixture: ComponentFixture<DeploymentComponent>;
+  let deploymentDatabaseService: DeploymentDatabaseService;
   let deploymentService: DeploymentService;
   let databaseService: DatabaseService;
+  let mulesoftApiService: MulesoftApiService;
   let modalService: ModalService;
   let deployment: Deployment;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, HttpClientModule, TableModule],
+      imports: [BrowserAnimationsModule, FormsModule, HttpClientModule, PanelModule, TableModule],
       declarations: [DeploymentComponent],
       providers: [
+        {provide: DatabaseService, useClass: MockDatabaseService},
         {provide: DeploymentService, useClass: MockDeploymentService},
-        DatabaseService, DeploymentDatabaseService, MulesoftApiService,
+        {provide: DeploymentDatabaseService, useClass: MockDeploymentDatabaseService},
+        {provide: MulesoftApiService, useClass: MockMulesoftApiService},
         {provide: ModalService, useClass: MockModalService}
       ]
     }).compileComponents();
@@ -59,8 +93,10 @@ describe('DeploymentComponent', () => {
     fixture = TestBed.createComponent(DeploymentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    deploymentDatabaseService = TestBed.get(DeploymentDatabaseService);
     deploymentService = TestBed.get(DeploymentService);
     databaseService = TestBed.get(DatabaseService);
+    mulesoftApiService = TestBed.get(MulesoftApiService);
     modalService = TestBed.get(ModalService);
     component.modalId = 'test';
     deployment = TestDomain.DEPLOYMENT;
@@ -95,12 +131,29 @@ describe('DeploymentComponent', () => {
     expect(modalService.closeModal).toHaveBeenCalled();
   });
 
-  it('should load databases', () => {
-    spyOn(databaseService, 'findAll').and.callThrough();
+  it('should fetch databases on init', () => {
+    getTestScheduler().flush();
 
-    component.loadDatabases();
+    expect(component.databases.length).toEqual(1);
+    expect(component.databases).toContain(TestDomain.DATABASE);
+  });
 
-    expect(databaseService.findAll).toHaveBeenCalled();
+  it('should load deployment databases', () => {
+    spyOn(deploymentDatabaseService, 'findAllByDeploymentId').and.callThrough();
+
+    component.passedDeployment = Object.assign({}, deployment);
+    component.loadDeploymentDatabases();
+
+    expect(deploymentDatabaseService.findAllByDeploymentId).toHaveBeenCalled();
+  });
+
+  it('should load MuleSoft APIs', () => {
+    spyOn(mulesoftApiService, 'filterAll').and.callThrough();
+
+    const params = [{name: 'assetId', value: 'test'}];
+    component.loadApis('test');
+
+    expect(mulesoftApiService.filterAll).toHaveBeenCalledWith(params);
   });
 
   it('should call update deployment when passedDeployment exists', () => {
