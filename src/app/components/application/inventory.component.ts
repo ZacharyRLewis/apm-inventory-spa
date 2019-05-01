@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ModalService} from '@win-angular/services';
-import {Application, ApplicationType, DeploymentDatabase, HostServer} from '../../model';
+import {ModalService, ShareDataService} from '@win-angular/services';
+import {Application, ApplicationType, HostServer} from '../../model';
 import {ApplicationFilters} from '../../model/application-filters';
 import {Department} from '../../model/department';
 import {HostServerService} from '../../services';
@@ -39,7 +39,7 @@ export class InventoryComponent implements OnInit  {
   deploymentBulkAddComponent: DeploymentBulkAddComponent;
 
   constructor(private applicationService: ApplicationService, private applicationTypeService: ApplicationTypeService,
-              private modalService: ModalService, private hostServerService: HostServerService) {
+              private modalService: ModalService, private hostServerService: HostServerService, private shareDataService: ShareDataService) {
   }
 
   ngOnInit() {
@@ -146,17 +146,17 @@ export class InventoryComponent implements OnInit  {
   }
 
   public handleCreate(application: Application): void {
-    console.log('Application ' + application.mnemonic + ' successfully created');
+    this.shareDataService.showStatus([{severity: 'success', summary: 'Application ' + application.mnemonic + ' successfully created'}]);
     this.loadApplications();
   }
 
   public handleDelete(application: Application): void {
-    console.log('Application ' + application.mnemonic + ' successfully deleted');
+    this.shareDataService.showStatus([{severity: 'success', summary: 'Application ' + application.mnemonic + ' successfully deleted'}]);
     this.loadApplications();
   }
 
   public handleUpdate(application: Application): void {
-    console.log('Application ' + application.mnemonic + ' successfully updated');
+    this.shareDataService.showStatus([{severity: 'success', summary: 'Application ' + application.mnemonic + ' successfully updated'}]);
     this.loadApplications();
   }
 

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ModalService} from '@win-angular/services';
+import {ModalService, ShareDataService} from '@win-angular/services';
 import {Application, Database, Deployment, DeploymentDatabase, HostServer, MulesoftApi} from '../../model';
 import {DatabaseService, DeploymentDatabaseService, DeploymentService, MulesoftApiService} from '../../services';
 
@@ -28,7 +28,8 @@ export class DeploymentComponent implements OnInit {
   public apis: MulesoftApi[] = [];
 
   constructor(private deploymentService: DeploymentService, private modalService: ModalService, private databaseService: DatabaseService,
-              private deploymentDatabaseService: DeploymentDatabaseService, private mulesoftAssetService: MulesoftApiService) {
+              private deploymentDatabaseService: DeploymentDatabaseService, private mulesoftAssetService: MulesoftApiService,
+              private shareDataService: ShareDataService) {
     this.setDefaultValues();
   }
 
@@ -106,7 +107,7 @@ export class DeploymentComponent implements OnInit {
           this.createEvent.emit(created);
         },
         err => {
-          console.log('ERR:(create deployment) >> ' + err.message);
+          this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(create deployment) >> ' + err.message}]);
         });
   }
 
@@ -120,7 +121,7 @@ export class DeploymentComponent implements OnInit {
           this.updateEvent.emit(updated);
         },
         err => {
-          console.log('ERR:(update deployment) >> ' + err.message);
+          this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(update deployment) >> ' + err.message}]);
         });
   }
 
@@ -134,7 +135,7 @@ export class DeploymentComponent implements OnInit {
           this.deleteEvent.emit(deleted);
         },
         err => {
-          console.log('ERR:(delete deployment) >> ' + err.message);
+          this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(delete deployment) >> ' + err.message}]);
         });
   }
 
@@ -181,7 +182,7 @@ export class DeploymentComponent implements OnInit {
       return '';
     }
     for (const database of this.databases) {
-      if (database.id === databaseId) {
+      if (database.id == databaseId) {
         return database.name;
       }
     }
@@ -193,7 +194,7 @@ export class DeploymentComponent implements OnInit {
       return '';
     }
     for (const database of this.databases) {
-      if (database.id === databaseId) {
+      if (database.id == databaseId) {
         return database.hostName;
       }
     }

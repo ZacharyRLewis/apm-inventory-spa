@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ModalService} from '@win-angular/services';
+import {ModalService, ShareDataService} from '@win-angular/services';
 import {Application, Deployment, HostServer} from '../../model';
 import {DeploymentFilters} from '../../model/deployment-filters';
 import {ApplicationService, HostServerService} from '../../services';
@@ -36,7 +36,7 @@ export class DeploymentListComponent implements OnInit  {
   deploymentDatabaseComponent: DeploymentDatabaseComponent;
 
   constructor(private applicationService: ApplicationService, private deploymentService: DeploymentService,
-              private hostServerService: HostServerService, private modalService: ModalService) {
+              private hostServerService: HostServerService, private modalService: ModalService, private shareDataService: ShareDataService) {
     this.refreshDeployments();
   }
 
@@ -113,17 +113,17 @@ export class DeploymentListComponent implements OnInit  {
   }
 
   public handleCreate(deployment: Deployment): void {
-    console.log('Deployment ' + deployment.contextName + ' successfully created');
+    this.shareDataService.showStatus([{severity: 'success', summary: 'Deployment ' + deployment.contextName + ' successfully created'}]);
     this.refreshDeployments();
   }
 
   public handleDelete(deployment: Deployment): void {
-    console.log('Deployment ' + deployment.contextName + ' successfully deleted');
+    this.shareDataService.showStatus([{severity: 'success', summary: 'Deployment ' + deployment.contextName + ' successfully deleted'}]);
     this.refreshDeployments();
   }
 
   public handleUpdate(deployment: Deployment): void {
-    console.log('Deployment ' + deployment.contextName + ' successfully updated');
+    this.shareDataService.showStatus([{severity: 'success', summary: 'Deployment ' + deployment.contextName + ' successfully updated'}]);
     this.refreshDeployments();
   }
 

@@ -5,7 +5,7 @@ import {ModalService} from '@win-angular/services';
 import {cold} from 'jasmine-marbles';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
-import {Database, DeploymentDatabase, HostServer, TestDomain, WinResponse} from '../../model';
+import {Database, DeploymentDatabase, TestDomain, WinResponse} from '../../model';
 import {DatabaseService, DeploymentDatabaseService} from '../../services';
 import {DeploymentDatabaseComponent} from './deployment-database.component';
 

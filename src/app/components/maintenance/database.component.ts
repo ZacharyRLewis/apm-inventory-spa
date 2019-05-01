@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ModalService} from '@win-angular/services';
+import {ModalService, ShareDataService} from '@win-angular/services';
 import {Database, DatabaseType} from '../../model';
 import {DatabaseService} from '../../services';
 
@@ -20,7 +20,7 @@ export class DatabaseComponent {
   passedDatabase: Database;
   environments: string[] = ['DEV', 'QA', 'PROD'];
 
-  constructor(private databaseService: DatabaseService, private modalService: ModalService) {
+  constructor(private databaseService: DatabaseService, private modalService: ModalService, private shareDataService: ShareDataService) {
     this.setDefaultValues();
   }
 
@@ -56,7 +56,7 @@ export class DatabaseComponent {
           this.createEvent.emit(created);
         },
         err => {
-          console.log('ERR:(create database) >> ' + err.message);
+          this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(create database) >> ' + err.message}]);
         });
   }
 
@@ -70,7 +70,7 @@ export class DatabaseComponent {
           this.updateEvent.emit(updated);
         },
         err => {
-          console.log('ERR:(update database) >> ' + err.message);
+          this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(update database) >> ' + err.message}]);
         });
   }
 
@@ -84,7 +84,7 @@ export class DatabaseComponent {
           this.deleteEvent.emit(deleted);
         },
         err => {
-          console.log('ERR:(delete database) >> ' + err.message);
+          this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(delete database) >> ' + err.message}]);
         });
   }
 }

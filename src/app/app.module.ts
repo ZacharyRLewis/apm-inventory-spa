@@ -4,6 +4,7 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ServicesModule, ShareDataService} from '@win-angular/services';
+import {GrowlModule} from 'primeng/growl';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {ComponentsModule} from './components/components.module';
@@ -30,6 +31,7 @@ import {ApplicationDependencyService} from './services/application-dependency/ap
     BrowserAnimationsModule,
     CommonModule,
     ComponentsModule,
+    GrowlModule,
     HttpClientModule
   ],
   exports: [

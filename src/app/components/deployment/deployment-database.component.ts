@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ModalService} from '@win-angular/services';
+import {ModalService, ShareDataService} from '@win-angular/services';
 import {Database, Deployment, DeploymentDatabase} from '../../model';
 import {DatabaseService, DeploymentDatabaseService} from '../../services';
 
@@ -19,7 +19,7 @@ export class DeploymentDatabaseComponent {
   databases: Database[] = [];
 
   constructor(private deploymentDatabaseService: DeploymentDatabaseService, private databaseService: DatabaseService,
-              private modalService: ModalService) {
+              private modalService: ModalService, private shareDataService: ShareDataService) {
     this.setDefaultValues();
   }
 
@@ -53,7 +53,7 @@ export class DeploymentDatabaseComponent {
           this.setDefaultValues();
         },
         err => {
-          console.log('ERR:(create deployment database) >> ' + err.message);
+          this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(create deployment database) >> ' + err.message}]);
         });
   }
 

@@ -10,11 +10,11 @@ import {ApplicationFlyoutFilterComponent} from './application/application-flyout
 import {ApplicationComponent} from './application/application.component';
 import {InventoryComponent} from './application/inventory.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
+import {DeploymentBulkAddComponent} from './deployment/deployment-bulk-add.component';
 import {DeploymentDatabaseComponent} from './deployment/deployment-database.component';
 import {DeploymentFlyoutFilterComponent} from './deployment/deployment-flyout-filter.component';
 import {DeploymentListComponent} from './deployment/deployment-list.component';
 import {DeploymentComponent} from './deployment/deployment.component';
-import {DeploymentBulkAddComponent} from './deployment/deployment-bulk-add.component';
 import {ApplicationTypeComponent} from './maintenance/application-type.component';
 import {DatabaseTypeComponent} from './maintenance/database-type.component';
 import {DatabaseComponent} from './maintenance/database.component';

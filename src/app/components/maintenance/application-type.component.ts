@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ModalService} from '@win-angular/services';
+import {ModalService, ShareDataService} from '@win-angular/services';
 import {ApplicationType} from '../../model';
 import {ApplicationTypeService} from '../../services';
 
@@ -18,7 +18,8 @@ export class ApplicationTypeComponent {
   model: ApplicationType = new ApplicationType();
   passedApplicationType: ApplicationType;
 
-  constructor(private applicationTypeService: ApplicationTypeService, private modalService: ModalService) {
+  constructor(private applicationTypeService: ApplicationTypeService, private modalService: ModalService,
+              private shareDataService: ShareDataService) {
     this.setDefaultValues();
   }
 
@@ -51,7 +52,7 @@ export class ApplicationTypeComponent {
           this.createEvent.emit(created);
         },
         err => {
-          console.log('ERR:(create applicationType) >> ' + err.message);
+          this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(create applicationType) >> ' + err.message}]);
         });
   }
 
@@ -65,7 +66,7 @@ export class ApplicationTypeComponent {
           this.updateEvent.emit(updated);
         },
         err => {
-          console.log('ERR:(update applicationType) >> ' + err.message);
+          this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(update applicationType) >> ' + err.message}]);
         });
   }
 
@@ -79,7 +80,7 @@ export class ApplicationTypeComponent {
           this.deleteEvent.emit(deleted);
         },
         err => {
-          console.log('ERR:(delete applicationType) >> ' + err.message);
+          this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(delete applicationType) >> ' + err.message}]);
         });
   }
 }

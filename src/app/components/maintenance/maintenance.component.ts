@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ModalService} from '@win-angular/services';
+import {ModalService, ShareDataService} from '@win-angular/services';
 import {ApplicationType, Database, DatabaseType, HostServer} from '../../model';
 import {ApplicationTypeService, DatabaseService, DatabaseTypeService, HostServerService} from '../../services';
 import {DatabaseComponent} from '../maintenance/database.component';
@@ -67,7 +67,8 @@ export class MaintenanceComponent implements OnInit {
   hostServerComponent: HostServerComponent;
 
   constructor(private applicationTypeService: ApplicationTypeService, private databaseTypeService: DatabaseTypeService,
-              private databaseService: DatabaseService, private hostServerService: HostServerService, private modalService: ModalService) {
+              private databaseService: DatabaseService, private hostServerService: HostServerService,
+              private modalService: ModalService, private shareDataService: ShareDataService) {
     this.refreshApplicationTypes();
     this.refreshDatabaseTypes();
     this.refreshDatabases();
@@ -158,62 +159,62 @@ export class MaintenanceComponent implements OnInit {
   }
 
   public handleApplicationTypeCreate(applicationType: ApplicationType): void {
-    console.log('Application Type ' + applicationType.name + ' successfully created');
+    this.shareDataService.showStatus([{severity: 'success', summary: 'Application Type ' + applicationType.name + ' successfully created'}]);
     this.refreshApplicationTypes();
   }
 
   public handleApplicationTypeDelete(applicationType: ApplicationType): void {
-    console.log('Application Type ' + applicationType.name + ' successfully deleted');
+    this.shareDataService.showStatus([{severity: 'success', summary: 'Application Type ' + applicationType.name + ' successfully deleted'}]);
     this.refreshApplicationTypes();
   }
 
   public handleApplicationTypeUpdate(applicationType: ApplicationType): void {
-    console.log('Application Type ' + applicationType.name + ' successfully updated');
+    this.shareDataService.showStatus([{severity: 'success', summary: 'Application Type ' + applicationType.name + ' successfully updated'}]);
     this.refreshApplicationTypes();
   }
 
   public handleDatabaseTypeCreate(databaseType: DatabaseType): void {
-    console.log('Database Type ' + databaseType.name + ' successfully created');
+    this.shareDataService.showStatus([{severity: 'success', summary: 'Database Type ' + databaseType.name + ' successfully created'}]);
     this.refreshDatabaseTypes();
   }
 
   public handleDatabaseTypeDelete(databaseType: DatabaseType): void {
-    console.log('Database Type ' + databaseType.name + ' successfully deleted');
+    this.shareDataService.showStatus([{severity: 'success', summary: 'Database Type ' + databaseType.name + ' successfully deleted'}]);
     this.refreshDatabaseTypes();
   }
 
   public handleDatabaseTypeUpdate(databaseType: DatabaseType): void {
-    console.log('Database Type ' + databaseType.name + ' successfully updated');
+    this.shareDataService.showStatus([{severity: 'success', summary: 'Database Type ' + databaseType.name + ' successfully updated'}]);
     this.refreshDatabaseTypes();
   }
 
   public handleDatabaseCreate(database: Database): void {
-    console.log('Database ' + database.name + ' successfully created');
+    this.shareDataService.showStatus([{severity: 'success', summary: 'Database ' + database.name + ' successfully created'}]);
     this.refreshDatabases();
   }
 
   public handleDatabaseDelete(database: Database): void {
-    console.log('Database ' + database.name + ' successfully deleted');
+    this.shareDataService.showStatus([{severity: 'success', summary: 'Database ' + database.name + ' successfully deleted'}]);
     this.refreshDatabases();
   }
 
   public handleDatabaseUpdate(database: Database): void {
-    console.log('Database ' + database.name + ' successfully updated');
+    this.shareDataService.showStatus([{severity: 'success', summary: 'Database ' + database.name + ' successfully updated'}]);
     this.refreshDatabases();
   }
 
   public handleHostServerCreate(hostServer: HostServer): void {
-    console.log('Host Server ' + hostServer.name + ' successfully created');
+    this.shareDataService.showStatus([{severity: 'success', summary: 'Host Server ' + hostServer.name + ' successfully created'}]);
     this.refreshHostServers();
   }
 
   public handleHostServerDelete(hostServer: HostServer): void {
-    console.log('Host Server ' + hostServer.name + ' successfully deleted');
+    this.shareDataService.showStatus([{severity: 'success', summary: 'Host Server ' + hostServer.name + ' successfully deleted'}]);
     this.refreshHostServers();
   }
 
   public handleHostServerUpdate(hostServer: HostServer): void {
-    console.log('Host Server ' + hostServer.name + ' successfully updated');
+    this.shareDataService.showStatus([{severity: 'success', summary: 'Host Server ' + hostServer.name + ' successfully updated'}]);
     this.refreshHostServers();
   }
 }

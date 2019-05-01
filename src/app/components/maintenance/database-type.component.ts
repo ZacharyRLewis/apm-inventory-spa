@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ModalService} from '@win-angular/services';
+import {ModalService, ShareDataService} from '@win-angular/services';
 import {DatabaseType} from '../../model';
 import {DatabaseTypeService} from '../../services';
 
@@ -18,7 +18,7 @@ export class DatabaseTypeComponent {
   model: DatabaseType = new DatabaseType();
   passedDatabaseType: DatabaseType;
 
-  constructor(private databaseTypeService: DatabaseTypeService, private modalService: ModalService) {
+  constructor(private databaseTypeService: DatabaseTypeService, private modalService: ModalService, private shareDataService: ShareDataService) {
     this.setDefaultValues();
   }
 
@@ -49,7 +49,7 @@ export class DatabaseTypeComponent {
           this.createEvent.emit(created);
         },
         err => {
-          console.log('ERR:(create databaseType) >> ' + err.message);
+          this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(create databaseType) >> ' + err.message}]);
         });
   }
 
@@ -63,7 +63,7 @@ export class DatabaseTypeComponent {
           this.updateEvent.emit(updated);
         },
         err => {
-          console.log('ERR:(update databaseType) >> ' + err.message);
+          this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(update databaseType) >> ' + err.message}]);
         });
   }
 
@@ -77,7 +77,7 @@ export class DatabaseTypeComponent {
           this.deleteEvent.emit(deleted);
         },
         err => {
-          console.log('ERR:(delete databaseType) >> ' + err.message);
+          this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(delete databaseType) >> ' + err.message}]);
         });
   }
 }

@@ -7,15 +7,8 @@ import {cold, getTestScheduler} from 'jasmine-marbles';
 import {AutoCompleteModule} from 'primeng/primeng';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
-import {Database, Dependency, Deployment, DeploymentDatabase, HostServer, TestDomain, WinResponse} from '../../model';
-import {
-  ApplicationDependencyService,
-  DatabaseService,
-  DependencyService,
-  DeploymentDatabaseService,
-  DeploymentService,
-  HostServerService
-} from '../../services';
+import {Dependency, Deployment, DeploymentDatabase, HostServer, TestDomain, WinResponse} from '../../model';
+import {ApplicationDependencyService, DependencyService, DeploymentDatabaseService, DeploymentService, HostServerService} from '../../services';
 
 import {DashboardComponent} from './dashboard.component';
 

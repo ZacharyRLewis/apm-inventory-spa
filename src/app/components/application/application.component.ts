@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
 import {Application, ApplicationType, Dependency, Deployment, HostServer} from '../../model';
-import {ApplicationService, DependencyService, DeploymentService, HostServerService} from '../../services';
+import {ApplicationService, DependencyService, DeploymentService} from '../../services';
 
 @Component({
   selector: 'apm-application',
@@ -26,7 +26,7 @@ export class ApplicationComponent {
 
   constructor(private applicationService: ApplicationService, private deploymentService: DeploymentService,
               private modalService: ModalService, private dependencyService: DependencyService,
-              private shareDataService: ShareDataService, private hostServerService: HostServerService) {
+              private shareDataService: ShareDataService) {
     this.setDefaultValues();
   }
 
@@ -101,7 +101,7 @@ export class ApplicationComponent {
           this.deployments = [];
         },
         err => {
-          console.log('ERR:(create application) >> ' + err.message);
+          this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(create application) >> ' + err.message}]);
         });
   }
 
@@ -124,7 +124,7 @@ export class ApplicationComponent {
           this.deployments = [];
         },
         err => {
-          console.log('ERR:(update application) >> ' + err.message);
+          this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(update application) >> ' + err.message}]);
         });
   }
 
@@ -138,7 +138,7 @@ export class ApplicationComponent {
           this.deleteEvent.emit(deleted);
         },
         err => {
-          console.log('ERR:(delete application) >> ' + err.message);
+          this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(delete application) >> ' + err.message}]);
         });
   }
 
@@ -174,7 +174,7 @@ export class ApplicationComponent {
         this.dependencies = response.data;
         this.shareDataService.blockUI(false);
       }, err => {
-        console.log('ERR:(refresh application dependencies) >> ' + err.message);
+        this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(refresh application dependencies) >> ' + err.message}]);
         this.shareDataService.blockUI(false);
       });
   }
@@ -185,10 +185,10 @@ export class ApplicationComponent {
     this.deploymentService.create(deployment)
       .subscribe(res => {
           const created: Deployment = res.data;
-          console.log('Successfully added deployment to application: ' + JSON.stringify(created));
+          this.shareDataService.showStatus([{severity: 'success', summary: 'Successfully added deployment: ' + JSON.stringify(created)}]);
         },
         err => {
-          console.log('ERR:(create deployment) >> ' + err.message);
+          this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(create deployment) >> ' + err.message}]);
         });
   }
 }

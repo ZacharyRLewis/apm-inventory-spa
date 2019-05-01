@@ -8,7 +8,7 @@ import {PanelModule} from 'primeng/panel';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {ApplicationComponent} from '..';
-import {Application, Dependency, Deployment, HostServer, TestDomain, WinResponse} from '../../model';
+import {Application, Dependency, Deployment, TestDomain, WinResponse} from '../../model';
 import {ApplicationService, DependencyService, DeploymentService, HostServerService} from '../../services';
 
 class MockApplicationService extends ApplicationService {

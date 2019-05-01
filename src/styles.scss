@@ -471,14 +471,10 @@ button:disabled {
 
 // PrimeNG Collapsible Panels
 
-.ui-widget-content {
+.ui-panel {
   border: none !important;
   background-color: inherit !important;
   padding-bottom: 20px;
-}
-
-.ui-widget-header {
-  background: none !important;
 }
 
 .ui-panel-titlebar {
@@ -488,9 +484,46 @@ button:disabled {
   border: none !important;
   border-bottom: 1px solid $win-chroma-3 !important;
   margin-bottom: 20px;
+  background: none !important;
 }
 
 .ui-panel-titlebar-icon {
   color: $win-primary !important;
   border-color: $win-primary !important;
+}
+
+// PrimeNG Growl Messages
+
+.ui-growl.ui-widget {
+  z-index: 1051 !important;
+}
+
+.win-growl {
+  .ui-growl {
+    width: 35%;
+  }
+
+  .ui-growl-title {
+    padding-bottom: 0px;
+    margin-left: 2.5em;
+    font-size: 12px;
+  }
+
+  .ui-growl-message {
+    margin-left: 0px;
+  }
+
+  .ui-growl-icon-close {
+    font-size: 2em;
+  }
+
+  .ui-growl-item-container.ui-state-highlight.ui-growl-message-success {
+    background-color: $win-success;
+    border-color: $win-success;
+  }
+
+  .ui-growl-item-container.ui-state-highlight.ui-growl-message-error {
+    background-color: $win-error;
+    border-color: $win-error;
+  }
 }

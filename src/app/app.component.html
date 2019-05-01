@@ -1,5 +1,8 @@
 <apm-sidenav></apm-sidenav>
 
+<p-growl class="win-growl" [(value)]="growlSuccessMessages" [life]="5000" [hidden]="!growlSuccessMessageShow"></p-growl>
+<p-growl class="win-growl" [(value)]="growlErrorMessages" [sticky]="true" *ngIf="growlErrorMessageShow"></p-growl>
+
 <p-blockUI class="win-block-ui" [blocked]="isBlockedUI">
   <i class="fa fa-spinner win-spinner"></i>
 </p-blockUI>

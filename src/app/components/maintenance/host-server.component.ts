@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ModalService} from '@win-angular/services';
+import {ModalService, ShareDataService} from '@win-angular/services';
 import {HostServer} from '../../model';
 import {HostServerService} from '../../services';
 
@@ -20,7 +20,7 @@ export class HostServerComponent {
   environments: string[] = ['DEV', 'QA', 'PROD'];
   operatingSystems: string[] = ['AS400', 'LINUX', 'WINDOWS'];
 
-  constructor(private hostServerService: HostServerService, private modalService: ModalService) {
+  constructor(private hostServerService: HostServerService, private modalService: ModalService, private shareDataService: ShareDataService) {
     this.setDefaultValues();
   }
 
@@ -53,7 +53,7 @@ export class HostServerComponent {
           this.createEvent.emit(created);
         },
         err => {
-          console.log('ERR:(create hostServer) >> ' + err.message);
+          this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(create hostServer) >> ' + err.message}]);
         });
   }
 
@@ -67,7 +67,7 @@ export class HostServerComponent {
           this.updateEvent.emit(updated);
         },
         err => {
-          console.log('ERR:(update hostServer) >> ' + err.message);
+          this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(update hostServer) >> ' + err.message}]);
         });
   }
 
@@ -81,7 +81,7 @@ export class HostServerComponent {
           this.deleteEvent.emit(deleted);
         },
         err => {
-          console.log('ERR:(delete hostServer) >> ' + err.message);
+          this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(delete hostServer) >> ' + err.message}]);
         });
   }
 }
