@@ -2,7 +2,8 @@ import {HttpClientModule} from '@angular/common/http';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {ShareDataService} from '@win-angular/services';
+import {SelectComponentModule} from '@win-angular/select-component';
+import {ModalService, ShareDataService} from '@win-angular/services';
 import {cold, getTestScheduler} from 'jasmine-marbles';
 import {AutoCompleteModule} from 'primeng/primeng';
 import {TableModule} from 'primeng/table';
@@ -11,6 +12,7 @@ import {Dependency, Deployment, DeploymentDatabase, HostServer, TestDomain, WinR
 import {ApplicationDependencyService, DependencyService, DeploymentDatabaseService, DeploymentService, HostServerService} from '../../services';
 
 import {DashboardComponent} from './dashboard.component';
+import {FindAvailablePortComponent} from './find-available-port.component';
 
 class MockShareDataService extends ShareDataService {
   blockUI(isBlockUI: boolean) {
@@ -50,6 +52,16 @@ class MockHostServerService extends HostServerService {
   }
 }
 
+class MockModalService extends ModalService {
+  openModal(modalId: string, hideFocus?: boolean) {
+    console.log('open modal');
+  }
+
+  closeModal(modalId: string) {
+    console.log('close modal');
+  }
+}
+
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
@@ -62,14 +74,15 @@ describe('DashboardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [AutoCompleteModule, FormsModule, HttpClientModule, HttpClientTestingModule, TableModule],
-      declarations: [DashboardComponent],
+      imports: [AutoCompleteModule, FormsModule, HttpClientModule, HttpClientTestingModule, SelectComponentModule, TableModule],
+      declarations: [DashboardComponent, FindAvailablePortComponent],
       providers: [
         ApplicationDependencyService,
         {provide: DeploymentDatabaseService, useClass: MockDeploymentDatabaseService},
         {provide: DependencyService, useClass: MockDependencyService},
         {provide: DeploymentService, useClass: MockDeploymentService},
         {provide: HostServerService, useClass: MockHostServerService},
+        {provide: ModalService, useClass: MockModalService},
         {provide: ShareDataService, useClass: MockShareDataService}
       ]
     })

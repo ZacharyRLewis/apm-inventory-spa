@@ -1,7 +1,7 @@
 import {HttpClientModule} from '@angular/common/http';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {ModalService} from '@win-angular/services';
+import {ModalService, ShareDataService} from '@win-angular/services';
 import {cold} from 'jasmine-marbles';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
@@ -41,7 +41,8 @@ describe('DeploymentDatabaseComponent', () => {
       providers: [
         DatabaseService,
         {provide: DeploymentDatabaseService, useClass: MockDeploymentDatabaseService},
-        {provide: ModalService, useClass: MockModalService}
+        {provide: ModalService, useClass: MockModalService},
+        ShareDataService
       ]
     }).compileComponents();
   }));

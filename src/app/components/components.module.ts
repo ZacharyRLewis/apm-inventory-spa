@@ -4,12 +4,13 @@ import {FormsModule} from '@angular/forms';
 import {ChipsComponentModule} from '@win-angular/chips-component';
 import {SelectComponentModule} from '@win-angular/select-component';
 import {ModalService, ServicesModule, ShareDataService} from '@win-angular/services';
-import {AutoCompleteModule, BlockUIModule, PanelModule, SidebarModule} from 'primeng/primeng';
+import {AutoCompleteModule, BlockUIModule, ChipsModule, PanelModule, SidebarModule} from 'primeng/primeng';
 import {TableModule} from 'primeng/table';
 import {ApplicationFlyoutFilterComponent} from './application/application-flyout-filter.component';
 import {ApplicationComponent} from './application/application.component';
 import {InventoryComponent} from './application/inventory.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
+import {FindAvailablePortComponent} from './dashboard/find-available-port.component';
 import {DeploymentBulkAddComponent} from './deployment/deployment-bulk-add.component';
 import {DeploymentDatabaseComponent} from './deployment/deployment-database.component';
 import {DeploymentFlyoutFilterComponent} from './deployment/deployment-flyout-filter.component';
@@ -36,6 +37,7 @@ import {SidenavComponent} from './sidenav/sidenav.component';
     DeploymentDatabaseComponent,
     DeploymentFlyoutFilterComponent,
     DeploymentListComponent,
+    FindAvailablePortComponent,
     HostServerComponent,
     InventoryComponent,
     MaintenanceComponent,
@@ -45,6 +47,7 @@ import {SidenavComponent} from './sidenav/sidenav.component';
   imports: [
     AutoCompleteModule,
     ChipsComponentModule,
+    ChipsModule,
     CommonModule,
     FormsModule,
     PanelModule,

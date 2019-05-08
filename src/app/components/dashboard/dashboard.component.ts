@@ -1,7 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {ShareDataService} from '@win-angular/services';
-import {ApplicationDependency, Dependency, Deployment, DeploymentDatabase, HostServer} from '../../model';
-import {ApplicationDependencyService, DependencyService, DeploymentDatabaseService, DeploymentService, HostServerService} from '../../services';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {ModalService, ShareDataService} from '@win-angular/services';
+import {Application, ApplicationDependency, Dependency, Deployment, DeploymentDatabase, HostServer} from '../../model';
+import {
+  ApplicationDependencyService,
+  ApplicationService,
+  DependencyService,
+  DeploymentDatabaseService,
+  DeploymentService,
+  HostServerService
+} from '../../services';
+import {FindAvailablePortComponent} from './find-available-port.component';
 
 @Component({
   selector: 'apm-dashboard',
@@ -13,27 +21,32 @@ export class DashboardComponent implements OnInit {
   private readonly TYPE_AHEAD_SIZE: number = 10;
 
   // Lookup lists
+  public applications: Application[] = [];
   public dependencies: Dependency[] = [];
   public deployments: Deployment[] = [];
+  public hostServers: HostServer[] = [];
   public databaseUsers: string[] = [];
   public portsInUse: string[] = [];
-  public hostServers: HostServer[] = [];
+  public tagsInUse: string[] = [];
 
   // Result lists
   public applicationDependencies: ApplicationDependency[] = [];
   public deploymentDatabases: DeploymentDatabase[] = [];
   public portDeployments: Deployment[] = [];
+  public tagApplications: Application[] = [];
 
   // Suggestion lists
   public dependencySuggestions: Dependency[] = [];
   public databaseUserSuggestions: string[] = [];
   public portSuggestions: string[] = [];
+  public tagSuggestions: string[] = [];
 
   public selectedTab = 0;
-  public tabNames = ['Dependency Search', 'DB User Search', 'Port Search'];
+  public tabNames = ['Dependency Search', 'DB User Search', 'Port Search', 'Tag Search'];
   public selectedDependencyReference = '';
   public selectedDatabaseUser = '';
   public selectedPort = '';
+  public selectedTag = '';
 
   public dependencySearchColumns = [
     {field: 'application.mnemonic', header: 'Application Mnemonic', width: '200px'},
@@ -58,19 +71,39 @@ export class DashboardComponent implements OnInit {
     {field: 'contextName', header: 'Application Context Name', width: '250px'},
     {field: 'environment', header: 'Environment', width: '100px'},
     {field: 'hostServerId', header: 'Host Server', width: '250px'},
-    {field: 'port', header: 'Port', width: '100px'},
+    {field: 'port', header: 'Port', width: '100px'}
   ];
 
-  constructor(private applicationDependencyService: ApplicationDependencyService, private dependencyService: DependencyService,
-              private deploymentService: DeploymentService, private deploymentDatabaseService: DeploymentDatabaseService,
-              private hostServerService: HostServerService, private shareDataService: ShareDataService) {
+  public tagSearchColumns = [
+    {field: 'mnemonic', header: 'Application Mnemonic', width: '200px'},
+    {field: 'tags', header: 'Tags', width: '300px'},
+  ];
+
+  public FIND_AVAILABLE_PORT_MODAL_ID = 'find-available-port-modal';
+
+  @ViewChild('findAvailablePortComponent')
+  public findAvailablePortComponent: FindAvailablePortComponent;
+
+  constructor(private applicationService: ApplicationService, private applicationDependencyService: ApplicationDependencyService,
+              private dependencyService: DependencyService, private deploymentService: DeploymentService,
+              private deploymentDatabaseService: DeploymentDatabaseService, private hostServerService: HostServerService,
+              private modalService: ModalService, private shareDataService: ShareDataService) {
   }
 
   ngOnInit() {
+    this.loadApplications();
     this.loadDependencies();
     this.loadDeployments();
     this.loadDatabaseUsers();
     this.loadHostServers();
+  }
+
+  public loadApplications = () => {
+    this.applicationService.findAll()
+      .subscribe(response => {
+        this.applications = response.data;
+        this.loadTagsInUse();
+      });
   }
 
   public loadDependencies = () => {
@@ -134,6 +167,34 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  public loadTagsInUse = () => {
+    for (const application of this.applications) {
+      for (const appTag of application.tags) {
+
+        let existsInList = false;
+
+        for (const tag of this.tagsInUse) {
+          if (appTag === tag) {
+            existsInList = true;
+            break;
+          }
+        }
+
+        if (appTag && !existsInList) {
+          this.tagsInUse.push(appTag);
+        }
+      }
+    }
+}
+
+  public openModal(modalId: string): void {
+    this.modalService.openModal(modalId);
+  }
+
+  public closeModal(modalId: string): void {
+    this.modalService.closeModal(modalId);
+  }
+
   /**
    * Switch tabs. Also, clear all searches when switching.
    *
@@ -143,6 +204,7 @@ export class DashboardComponent implements OnInit {
     this.applicationDependencies = [];
     this.deploymentDatabases = [];
     this.portDeployments = [];
+    this.tagApplications = [];
     this.selectedTab = tab;
   }
 
@@ -199,6 +261,21 @@ export class DashboardComponent implements OnInit {
     this.deploymentService.filterAll(params)
       .subscribe(response => {
         this.portDeployments = response.data;
+        this.shareDataService.blockUI(false);
+      });
+  }
+
+  public findApplicationsByTag() {
+    if (!this.selectedTag) {
+      return;
+    }
+
+    const params = [{name: 'tag', value: this.selectedTag}];
+    this.shareDataService.blockUI(true);
+
+    this.applicationService.filterAll(params)
+      .subscribe(response => {
+        this.tagApplications = response.data;
         this.shareDataService.blockUI(false);
       });
   }
@@ -272,6 +349,29 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  public processTagTypeAhead(): void {
+    const results: string[] = [];
+
+    if (!this.selectedTag) {
+      return;
+    }
+
+    for (const tag of this.tagsInUse) {
+      if (results.length < this.TYPE_AHEAD_SIZE) {
+        const check1 = tag.toLowerCase();
+        const check2 = this.selectedTag.toLowerCase();
+
+        if (check1.indexOf(check2) >= 0) {
+          results.push(tag);
+        }
+      } else {
+        break;
+      }
+
+      this.tagSuggestions = results;
+    }
+  }
+
   public selectDependencySuggestion(suggestion: Dependency) {
     this.selectedDependencyReference = suggestion.managerReference;
     this.performDependencySearch();
@@ -285,6 +385,11 @@ export class DashboardComponent implements OnInit {
   public selectPortSuggestion(suggestion: string) {
     this.selectedPort = suggestion;
     this.performPortSearch();
+  }
+
+  public selectTagSuggestion(suggestion: string) {
+    this.selectedTag = suggestion;
+    this.performTagSearch();
   }
 
   public performDependencySearch(): void {
@@ -303,5 +408,15 @@ export class DashboardComponent implements OnInit {
     this.findDeploymentsByPort();
     this.selectedPort = '';
     this.portSuggestions = [];
+  }
+
+  public performTagSearch(): void {
+    this.findApplicationsByTag();
+    this.selectedTag = '';
+    this.tagSuggestions = [];
+  }
+
+  public resetFindAvailablePortComponent(): void {
+    this.findAvailablePortComponent.setDefaultValues();
   }
 }

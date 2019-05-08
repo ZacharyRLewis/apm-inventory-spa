@@ -10,10 +10,10 @@ import {HostServer} from './host-server';
 import {MulesoftApi} from './mulesoft/mulesoft-api';
 
 export class TestDomain {
-  public static APPLICATION: Application = new Application('123', 'Test', 'test', 'Test', '', '', false, null, null, null, null, null, [], []);
+  public static APPLICATION: Application = new Application('123', 'Test', 'test', 'Test', '', '', false, null, null, null, null, null, [], [], []);
   public static APPLICATION_DEPENDENCY: ApplicationDependency = new ApplicationDependency('1', '2', '3');
   public static APPLICATION_TYPE: ApplicationType = new ApplicationType('123', 'Java', 'JDK 1.8', 'Java 8 Application');
-  public static DEPLOYMENT: Deployment = new Deployment('123', '123', 'DEV', 'localhost', '/tmp', 'test-service', '1234', false);
+  public static DEPLOYMENT: Deployment = new Deployment('123', '123', 'DEV', '123', '/tmp', 'test-service', '1234', false);
   public static DEPLOYMENT_DATABASE = new DeploymentDatabase('123', '1', '1', 'TEST');
   public static DATABASE: Database = new Database('123', 'testdb', 'localhost', '5432', null, 'DEV');
   public static DATABASE_TYPE: DatabaseType = new DatabaseType('123', 'postgres');

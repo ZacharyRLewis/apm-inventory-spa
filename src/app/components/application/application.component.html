@@ -46,6 +46,9 @@
               </div>
             </div>
           </p-panel>
+          <p-panel header="Tags" [toggleable]="true" [collapsed]="true">
+            <p-chips [(ngModel)]="model.tags" name="tags" [allowDuplicate]="false" [addOnTab]="true" [addOnBlur]="true"></p-chips>
+          </p-panel>
           <p-panel header="Source Code" [toggleable]="true" [collapsed]="true">
             <div class="apm-form-body">
               <div class="apm-form-group">

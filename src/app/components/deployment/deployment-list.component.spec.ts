@@ -5,7 +5,7 @@ import {FormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ChipsComponentModule} from '@win-angular/chips-component';
 import {SelectComponentModule} from '@win-angular/select-component';
-import {ModalService} from '@win-angular/services';
+import {ModalService, ShareDataService} from '@win-angular/services';
 import {cold, getTestScheduler} from 'jasmine-marbles';
 import {AutoCompleteModule, PanelModule, SidebarModule} from 'primeng/primeng';
 import {TableModule} from 'primeng/table';
@@ -58,7 +58,8 @@ describe('DeploymentListComponent', () => {
       providers: [
         {provide: DeploymentService, useClass: MockDeploymentService},
         ApplicationService, DatabaseService, DeploymentDatabaseService, HostServerService, MulesoftApiService,
-        {provide: ModalService, useClass: MockModalService}
+        {provide: ModalService, useClass: MockModalService},
+        ShareDataService
       ]
     }).compileComponents();
   }));

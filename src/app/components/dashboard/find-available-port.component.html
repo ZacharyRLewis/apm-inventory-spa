@@ -1,0 +1,72 @@
+<div class="modal fade win-modal-small in" [id]="modalId">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span><i class="fa fa-times"></i></span></button>
+        <h2 class="modal-title" id="modalLabel">Find an Available Port</h2>
+      </div>
+      <div class="modal-body">
+        <form ngForm="newDeploymentDatabaseForm">
+          <div class="apm-form-body">
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="hostServerId">Server</label>
+              <div class="apm-input-group">
+                <win-select id="hostServerId" name="hostServerId" [options]="hostServers" labelKey="name" valueKey="id"
+                            [(ngModel)]="hostServerId" defaultOption=" "></win-select>
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="serverNamePattern">Server Name Pattern</label>
+              <div class="apm-input-group">
+                <input type="text" class="apm-input" id="serverNamePattern" name="serverNamePattern" placeholder="i.e. wservice" [(ngModel)]="serverNamePattern">
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="rangeStart">Port Range Start</label>
+              <div class="apm-input-group">
+                <input type="text" class="apm-input" id="rangeStart" name="rangeStart" [(ngModel)]="rangeStart">
+              </div>
+            </div>
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="rangeEnd">Port Range End</label>
+              <div class="apm-input-group">
+                <input type="text" class="apm-input" id="rangeEnd" name="rangeEnd" [(ngModel)]="rangeEnd">
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="child-table-div" *ngIf="deploymentsInPortRange?.length > 0">
+          <label class="win-label apm-label left">Deployments in Port Range</label>
+          <div class="child-table">
+            <p-table [value]="deploymentsInPortRange" [paginator]="false" dataKey="environment">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th style="width: 50px">Port</th>
+                  <th style="width: 150px">Server</th>
+                  <th style="width: 125px">Application</th>
+                  <th style="width: 50px">Env</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-deployment>
+                <tr>
+                  <td>{{deployment.port}}</td>
+                  <td>{{getHostServerName(deployment.hostServerId)}}</td>
+                  <td>{{deployment.contextName}}</td>
+                  <td>{{deployment.environment}}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+        <div class="suggested-ports-div" *ngIf="ports && ports.length > 0">
+          <span class="suggested-ports-label">Suggested Ports: </span>
+          <span class="suggested-port" *ngFor="let port of ports">{{port}}</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn win-button win-button-big win-button-secondary left" (click)="closeModal()">Done</button>
+        <button class="btn win-button win-button-big win-button-primary right" (click)="findPorts()">Find</button>
+      </div>
+    </div>
+  </div>
+</div>

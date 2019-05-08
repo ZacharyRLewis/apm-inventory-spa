@@ -7,7 +7,7 @@ import {ChipsComponentModule} from '@win-angular/chips-component';
 import {SelectComponentModule} from '@win-angular/select-component';
 import {ModalService, ShareDataService} from '@win-angular/services';
 import {cold, getTestScheduler} from 'jasmine-marbles';
-import {AutoCompleteModule, PanelModule, SidebarModule} from 'primeng/primeng';
+import {AutoCompleteModule, ChipsModule, PanelModule, SidebarModule} from 'primeng/primeng';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {ApplicationComponent, DeploymentBulkAddComponent, InventoryComponent} from '..';
@@ -77,7 +77,7 @@ describe('InventoryComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        AutoCompleteModule, BrowserAnimationsModule, ChipsComponentModule, FormsModule, HttpClientModule,
+        AutoCompleteModule, BrowserAnimationsModule, ChipsComponentModule, ChipsModule, FormsModule, HttpClientModule,
         HttpClientTestingModule, PanelModule, SelectComponentModule, SidebarModule, TableModule
       ],
       declarations: [InventoryComponent, ApplicationComponent, ApplicationFlyoutFilterComponent, DeploymentBulkAddComponent],

@@ -1,8 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
-import {Application, ApplicationType, HostServer} from '../../model';
+import {Application, ApplicationType, HostServer, SelectOption} from '../../model';
 import {ApplicationFilters} from '../../model/application-filters';
-import {Department} from '../../model/department';
 import {HostServerService} from '../../services';
 import {ApplicationTypeService} from '../../services/application-type/application-type.service';
 import {ApplicationService} from '../../services/application/application.service';
@@ -14,12 +13,12 @@ import {DeploymentBulkAddComponent} from '../deployment/deployment-bulk-add.comp
   templateUrl: './inventory.component.html',
   styleUrls: ['./inventory.component.scss']
 })
-export class InventoryComponent implements OnInit  {
+export class InventoryComponent implements OnInit {
 
   public applications: Application[] = [];
   public applicationTypes: ApplicationType[] = [];
   public hostServers: HostServer[] = [];
-  public departments: Department[] = [];
+  public departments: SelectOption[] = [];
   public filters = new ApplicationFilters();
 
   public APPLICATION_MODAL_ID = 'application-modal';
@@ -75,14 +74,14 @@ export class InventoryComponent implements OnInit  {
       let existsInList = false;
 
       for (const department of this.departments) {
-        if (application.owningDepartment === department.name) {
+        if (application.owningDepartment === department.key) {
           existsInList = true;
           break;
         }
       }
 
       if (application.owningDepartment && !existsInList) {
-        this.departments.push(new Department(application.owningDepartment));
+        this.departments.push(new SelectOption(application.owningDepartment, application.owningDepartment));
       }
     }
   }

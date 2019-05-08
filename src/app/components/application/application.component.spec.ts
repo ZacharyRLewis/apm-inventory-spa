@@ -4,6 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ModalService, ShareDataService} from '@win-angular/services';
 import {cold} from 'jasmine-marbles';
+import {ChipsModule} from 'primeng/chips';
 import {PanelModule} from 'primeng/panel';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
@@ -62,7 +63,7 @@ describe('ApplicationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule, FormsModule, HttpClientModule, PanelModule, TableModule],
+      imports: [BrowserAnimationsModule, ChipsModule, FormsModule, HttpClientModule, PanelModule, TableModule],
       declarations: [ApplicationComponent],
       providers: [
         {provide: ApplicationService, useClass: MockApplicationService},
@@ -99,6 +100,7 @@ describe('ApplicationComponent', () => {
     expect(component.model.repository).toEqual('');
     expect(component.model.defaultBranch).toEqual('');
     expect(component.model.applicationTypeId).toEqual('');
+    expect(component.model.tags).toEqual([]);
     expect(component.model.deployments).toEqual([]);
     expect(component.model.dependencies).toEqual([]);
     expect(component.deployments).toEqual([]);

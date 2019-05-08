@@ -7,6 +7,7 @@ export {DeploymentComponent} from './deployment/deployment.component';
 export {DeploymentBulkAddComponent} from './deployment/deployment-bulk-add.component';
 export {DeploymentDatabaseComponent} from './deployment/deployment-database.component';
 export {DeploymentListComponent} from './deployment/deployment-list.component';
+export {FindAvailablePortComponent} from './dashboard/find-available-port.component';
 export {HostServerComponent} from './maintenance/host-server.component';
 export {InventoryComponent} from './application/inventory.component';
 export {MaintenanceComponent} from './maintenance/maintenance.component';

@@ -30,10 +30,10 @@ export class DeploymentListComponent implements OnInit  {
   ];
 
   @ViewChild('deploymentComponent')
-  deploymentComponent: DeploymentComponent;
+  public deploymentComponent: DeploymentComponent;
 
   @ViewChild('deploymentDatabaseComponent')
-  deploymentDatabaseComponent: DeploymentDatabaseComponent;
+  public deploymentDatabaseComponent: DeploymentDatabaseComponent;
 
   constructor(private applicationService: ApplicationService, private deploymentService: DeploymentService,
               private hostServerService: HostServerService, private modalService: ModalService, private shareDataService: ShareDataService) {

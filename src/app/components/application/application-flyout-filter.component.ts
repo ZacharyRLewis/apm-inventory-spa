@@ -1,6 +1,6 @@
 import {Component, ElementRef, EventEmitter, HostListener, Input, Output, Renderer2, ViewChild} from '@angular/core';
 import {ApplicationFilters} from '../../model/application-filters';
-import {Application, ApplicationType} from '../../model/index';
+import {Application, ApplicationType, SelectOption} from '../../model/index';
 
 @Component({
   selector: 'apm-application-flyout-filter',
@@ -18,7 +18,7 @@ export class ApplicationFlyoutFilterComponent {
   public applicationTypes: ApplicationType[];
 
   @Input()
-  public departments: string[];
+  public departments: SelectOption[];
 
   @Output('filter')
   public filter: EventEmitter<any> = new EventEmitter();

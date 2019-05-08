@@ -2,7 +2,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ModalService} from '@win-angular/services';
+import {ModalService, ShareDataService} from '@win-angular/services';
 import {cold, getTestScheduler} from 'jasmine-marbles';
 import {PanelModule} from 'primeng/panel';
 import {TableModule} from 'primeng/table';
@@ -84,7 +84,8 @@ describe('DeploymentComponent', () => {
         {provide: DeploymentService, useClass: MockDeploymentService},
         {provide: DeploymentDatabaseService, useClass: MockDeploymentDatabaseService},
         {provide: MulesoftApiService, useClass: MockMulesoftApiService},
-        {provide: ModalService, useClass: MockModalService}
+        {provide: ModalService, useClass: MockModalService},
+        ShareDataService
       ]
     }).compileComponents();
   }));

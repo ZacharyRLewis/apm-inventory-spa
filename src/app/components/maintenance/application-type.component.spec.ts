@@ -1,7 +1,7 @@
 import {HttpClientModule} from '@angular/common/http';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {ModalService} from '@win-angular/services';
+import {ModalService, ShareDataService} from '@win-angular/services';
 import {cold} from 'jasmine-marbles';
 import {Observable} from 'rxjs';
 import {ApplicationTypeComponent} from '..';
@@ -45,7 +45,11 @@ describe('ApplicationTypeComponent', () => {
     TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientModule],
       declarations: [ApplicationTypeComponent],
-      providers: [{provide: ApplicationTypeService, useClass: MockApplicationTypeService}, {provide: ModalService, useClass: MockModalService}]
+      providers: [
+        {provide: ApplicationTypeService, useClass: MockApplicationTypeService},
+        {provide: ModalService, useClass: MockModalService},
+        ShareDataService
+      ]
     }).compileComponents();
   }));
 

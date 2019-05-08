@@ -38,6 +38,7 @@ export class ApplicationComponent {
     this.model.repository = '';
     this.model.defaultBranch = '';
     this.model.applicationTypeId = '';
+    this.model.tags = [];
     this.model.deployments = [];
     this.model.dependencies = [];
     this.deployments = [];
