@@ -37,6 +37,10 @@ export class ApplicationComponent {
     this.model.description = '';
     this.model.repository = '';
     this.model.defaultBranch = '';
+    this.model.owningDepartment = '';
+    this.model.primaryContactName = '';
+    this.model.primaryContactEmail = '';
+    this.model.primaryContactPhone = '';
     this.model.applicationTypeId = '';
     this.model.tags = [];
     this.model.deployments = [];

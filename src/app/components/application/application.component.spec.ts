@@ -99,6 +99,10 @@ describe('ApplicationComponent', () => {
     expect(component.model.description).toEqual('');
     expect(component.model.repository).toEqual('');
     expect(component.model.defaultBranch).toEqual('');
+    expect(component.model.owningDepartment).toEqual('');
+    expect(component.model.primaryContactName).toEqual('');
+    expect(component.model.primaryContactEmail).toEqual('');
+    expect(component.model.primaryContactPhone).toEqual('');
     expect(component.model.applicationTypeId).toEqual('');
     expect(component.model.tags).toEqual([]);
     expect(component.model.deployments).toEqual([]);

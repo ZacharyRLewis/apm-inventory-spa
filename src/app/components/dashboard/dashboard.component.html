@@ -28,7 +28,7 @@
             {{suggestion.managerReference}}
           </ng-template>
         </p-autoComplete>
-        <button class="dependency-search-btn" (click)="performDependencySearch()">Search Partial Name</button>
+        <button class="dashboard-search-btn" (click)="performDependencySearch()">Search Partial Name</button>
       </div>
       <div>
         <div class="tab-table" *ngIf="applicationDependencies?.length > 0; else noApplicationDependencies">
@@ -64,7 +64,7 @@
             {{suggestion}}
           </ng-template>
         </p-autoComplete>
-        <button class="dependency-search-btn" (click)="performDatabaseUserSearch()">Search Partial Name</button>
+        <button class="dashboard-search-btn" (click)="performDatabaseUserSearch()">Search Partial Name</button>
       </div>
       <div>
         <div class="tab-table" *ngIf="deploymentDatabases?.length > 0; else noDeploymentDatabases">
@@ -109,7 +109,7 @@
             {{suggestion}}
           </ng-template>
         </p-autoComplete>
-        <button class="dependency-search-btn" (click)="performPortSearch()">Search Partial Name</button>
+        <button class="dashboard-search-btn" (click)="performPortSearch()">Search Partial Port</button>
       </div>
       <div>
         <div class="tab-table" *ngIf="portDeployments?.length > 0; else noPortDeployments">
@@ -147,7 +147,7 @@
             {{suggestion}}
           </ng-template>
         </p-autoComplete>
-        <button class="dependency-search-btn" (click)="performTagSearch()">Search Partial Name</button>
+        <button class="dashboard-search-btn" (click)="performTagSearch()">Search Partial Tag</button>
       </div>
       <div>
         <div class="tab-table" *ngIf="tagApplications?.length > 0; else noTagApplications">
