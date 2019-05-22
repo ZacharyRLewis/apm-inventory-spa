@@ -7,7 +7,7 @@ import {ServiceInterface} from '../service.interface';
 
 @Injectable()
 export class ApplicationDependencyService implements ServiceInterface<ApplicationDependency> {
-  private _path = '/application-dependencies';
+  private _path = '/applicationDependencies';
   public url: string;
   private _options: {
     headers: HttpHeaders

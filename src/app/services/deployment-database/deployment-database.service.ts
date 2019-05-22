@@ -7,7 +7,7 @@ import {ServiceInterface} from '../service.interface';
 
 @Injectable()
 export class DeploymentDatabaseService implements ServiceInterface<DeploymentDatabase> {
-  private _path = '/deployment-databases';
+  private _path = '/deploymentDatabases';
   public url: string;
   private _options: {
     headers: HttpHeaders
