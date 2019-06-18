@@ -1,4 +1,5 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {NgxPermissionsConfigurationStore, NgxPermissionsModule, NgxPermissionsStore, NgxRolesStore} from 'ngx-permissions';
 import {SidenavComponent} from '..';
 
 describe('SidenavComponent', () => {
@@ -7,7 +8,9 @@ describe('SidenavComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SidenavComponent]
+      imports: [NgxPermissionsModule.forChild()],
+      declarations: [SidenavComponent],
+      providers: [NgxPermissionsStore, NgxPermissionsConfigurationStore, NgxRolesStore]
     })
       .compileComponents();
   }));

@@ -4,6 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {ChipsComponentModule} from '@win-angular/chips-component';
 import {SelectComponentModule} from '@win-angular/select-component';
 import {ModalService, ServicesModule, ShareDataService} from '@win-angular/services';
+import {NgxPermissionsModule} from 'ngx-permissions';
 import {AutoCompleteModule, BlockUIModule, ChipsModule, PanelModule, SidebarModule} from 'primeng/primeng';
 import {TableModule} from 'primeng/table';
 import {ApplicationFlyoutFilterComponent} from './application/application-flyout-filter.component';
@@ -50,6 +51,7 @@ import {SidenavComponent} from './sidenav/sidenav.component';
     ChipsModule,
     CommonModule,
     FormsModule,
+    NgxPermissionsModule.forChild(),
     PanelModule,
     SelectComponentModule,
     ServicesModule,

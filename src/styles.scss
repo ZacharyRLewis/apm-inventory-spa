@@ -28,6 +28,11 @@ button:disabled {
   border-radius: 4px !important;
 }
 
+// Form Validation
+.invalid {
+  border-color: $win-error !important;
+}
+
 // Modals
 
 .win-modal-big {

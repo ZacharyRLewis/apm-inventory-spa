@@ -16,6 +16,7 @@ export class Application {
               public primaryContactEmail?: string,
               public primaryContactPhone?: string,
               public tags?: string[],
+              public owners?: string[],
               public deployments?: Deployment[],
               public dependencies?: Dependency[]) {
   }

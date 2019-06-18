@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
 import {Application, ApplicationType, Dependency, Deployment, HostServer} from '../../model';
 import {ApplicationService, DependencyService, DeploymentService} from '../../services';
@@ -24,6 +24,17 @@ export class ApplicationComponent {
   public deployments: Deployment[] = [];
   public dependencies: Dependency[] = [];
 
+  // Panel controls
+  public collapseGeneralInfoPanel = false;
+  public collapseTagsPanel = true;
+  public collapseSourceCodePanel = true;
+  public collapseOwnershipPanel = true;
+  public collapseDeploymentsPanel = true;
+  public collapseDependenciesPanel = true;
+
+  @ViewChild('newApplicationForm')
+  public newApplicationForm;
+
   constructor(private applicationService: ApplicationService, private deploymentService: DeploymentService,
               private modalService: ModalService, private dependencyService: DependencyService,
               private shareDataService: ShareDataService) {
@@ -43,10 +54,17 @@ export class ApplicationComponent {
     this.model.primaryContactPhone = '';
     this.model.applicationTypeId = '';
     this.model.tags = [];
+    this.model.owners = [];
     this.model.deployments = [];
     this.model.dependencies = [];
     this.deployments = [];
     this.dependencies = [];
+    this.collapseGeneralInfoPanel = false;
+    this.collapseTagsPanel = true;
+    this.collapseSourceCodePanel = true;
+    this.collapseOwnershipPanel = true;
+    this.collapseDeploymentsPanel = true;
+    this.collapseDependenciesPanel = true;
   }
 
   public loadDeployments = () => {
@@ -77,6 +95,8 @@ export class ApplicationComponent {
 
   public closeModal(): void {
     this.modalService.closeModal(this.modalId);
+    this.newApplicationForm.resetForm();
+    this.setDefaultValues();
   }
 
   public saveApplication(): void {
@@ -101,7 +121,6 @@ export class ApplicationComponent {
           });
 
           this.closeModal();
-          this.setDefaultValues();
           this.createEvent.emit(created);
           this.deployments = [];
         },
@@ -124,7 +143,6 @@ export class ApplicationComponent {
           });
 
           this.closeModal();
-          this.setDefaultValues();
           this.updateEvent.emit(updated);
           this.deployments = [];
         },
@@ -139,7 +157,6 @@ export class ApplicationComponent {
     this.applicationService.delete(deleted)
       .subscribe(res => {
           this.closeModal();
-          this.setDefaultValues();
           this.deleteEvent.emit(deleted);
         },
         err => {
@@ -195,5 +212,13 @@ export class ApplicationComponent {
         err => {
           this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(create deployment) >> ' + err.message}]);
         });
+  }
+
+  private inputValidationClass(inputField: any): string {
+    let returnVal = '';
+    if (inputField && (inputField.touched || inputField.dirty)) {
+      returnVal = inputField.valid ? 'is-valid' : 'is-invalid';
+    }
+    return returnVal;
   }
 }

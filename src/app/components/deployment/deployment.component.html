@@ -9,13 +9,16 @@
         </button>
       </div>
       <div class="modal-body container">
-        <form ngForm="newDeploymentForm">
-          <p-panel header="General Info" [toggleable]="true" [collapsed]="false">
+        <form id="newDeploymentForm" #newDeploymentForm="ngForm">
+          <p-panel header="General Info" [toggleable]="true" [(collapsed)]="collapseGeneralInfoPanel">
             <div class="apm-form-body">
               <div class="apm-form-group">
-                <label class="win-label apm-label" for="applicationId">Application Mnemonic</label>
+                <label class="win-label apm-label" for="applicationId">Application Mnemonic*</label>
                 <div class="apm-input-group">
-                  <select class="apm-input apm-select" id="applicationId" [(ngModel)]="model.applicationId" name="applicationId" #applicationId="ngModel">
+                  <select class="apm-input apm-select" id="applicationId" [(ngModel)]="model.applicationId" name="applicationId"
+                          #applicationId="ngModel" required
+                          [class.invalid]="(applicationId.touched || applicationId.dirty) && applicationId.invalid">
+                    <option value=""></option>
                     <option *ngFor="let app of applications" value="{{app.id}}">
                       {{app.mnemonic}}
                     </option>
@@ -23,9 +26,11 @@
                 </div>
               </div>
               <div class="apm-form-group">
-                <label class="win-label apm-label" for="environment">Environment</label>
+                <label class="win-label apm-label" for="environment">Environment*</label>
                 <div class="apm-input-group">
-                  <select class="apm-input apm-select" id="environment" [(ngModel)]="model.environment" name="environment" #environment="ngModel">
+                  <select class="apm-input apm-select" id="environment" [(ngModel)]="model.environment" name="environment"
+                          #environment="ngModel" required
+                          [class.invalid]="(environment.touched || environment.dirty) && environment.invalid">
                     <option *ngFor="let env of environments">
                       {{env}}
                     </option>
@@ -39,9 +44,11 @@
                 </div>
               </div>
               <div class="apm-form-group">
-                <label class="win-label apm-label" for="https">Is HTTPS?</label>
+                <label class="win-label apm-label" for="https">Is HTTPS?*</label>
                 <div class="apm-input-group">
-                  <select class="apm-input apm-select" id="https" [(ngModel)]="model.https" name="https" #https="ngModel">
+                  <select class="apm-input apm-select" id="https" [(ngModel)]="model.https" name="https"
+                          #https="ngModel" required
+                          [class.invalid]="(https.touched || https.dirty) && https.invalid">
                     <option *ngFor="let choice of ['true', 'false']" value="{{choice}}">
                       {{choice}}
                     </option>
@@ -49,9 +56,11 @@
                 </div>
               </div>
               <div class="apm-form-group">
-                <label class="win-label apm-label" for="hostServerId">Host Server</label>
+                <label class="win-label apm-label" for="hostServerId">Host Server*</label>
                 <div class="apm-input-group">
-                  <select class="apm-input apm-select" id="hostServerId" [(ngModel)]="model.hostServerId" name="hostServerId" #hostServerId="ngModel">
+                  <select class="apm-input apm-select" id="hostServerId" [(ngModel)]="model.hostServerId" name="hostServerId"
+                          #hostServerId="ngModel" required
+                          [class.invalid]="(hostServerId.touched || hostServerId.dirty) && hostServerId.invalid">
                     <option *ngFor="let hostServer of hostServers" value="{{hostServer.id}}">
                       {{hostServer.name}}
                     </option>
@@ -65,9 +74,11 @@
                 </div>
               </div>
               <div class="apm-form-group">
-                <label class="win-label apm-label" for="contextName">Context Name</label>
+                <label class="win-label apm-label" for="contextName">Context Name*</label>
                 <div class="apm-input-group">
-                  <input type="text" class="apm-input" id="contextName" name="contextName" [(ngModel)]="model.contextName">
+                  <input type="text" class="apm-input" id="contextName" name="contextName" required minlength="2"
+                         [(ngModel)]="model.contextName" #contextName="ngModel"
+                         [class.invalid]="(contextName.touched || contextName.dirty) && contextName.invalid">
                 </div>
               </div>
               <div class="apm-form-group">
@@ -78,7 +89,7 @@
               </div>
             </div>
           </p-panel>
-          <p-panel header="Databases" [toggleable]="true" [collapsed]="true">
+          <p-panel header="Databases" [toggleable]="true" [(collapsed)]="collapseDatabasesPanel">
             <div class="child-table-div">
               <div>
                 <button class="add-button" [disabled]="!passedDeployment || !model.id" (click)="addDatabase()">
@@ -109,7 +120,7 @@
               </ng-template>
             </div>
           </p-panel>
-          <p-panel header="MuleSoft API's" [toggleable]="true" [collapsed]="true">
+          <p-panel header="MuleSoft API's" [toggleable]="true" [(collapsed)]="collapseApisPanel">
             <div class="child-table-div">
               <div class="child-table" *ngIf="apis?.length > 0; else noApis">
                 <p-table [value]="apis" [paginator]="false" dataKey="id">
@@ -144,8 +155,9 @@
         <button type="button" class="win-button win-button-secondary btn left" *ngIf="passedDeployment" (click)="deleteDeployment()">
           <span>Delete Deployment</span>
         </button>
-        <button type="button" class="win-button win-button-primary btn right" (click)="saveDeployment()">
-          <span>Save Deployment</span>
+        <button type="button" class="win-button win-button-primary btn right" (click)="saveDeployment()"
+                [disabled]="!newDeploymentForm || !newDeploymentForm.form.valid || !newDeploymentForm.form.dirty">
+        <span>Save Deployment</span>
         </button>
       </div>
     </div>

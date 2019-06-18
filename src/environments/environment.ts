@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   env: 'local',
-  serviceUrl: 'http://localhost:8181/apm-inventory-service',
+  serviceUrl: 'http://localhost:8182/apm-process-api',
   mulesoftClientId: 'test',
   mulesoftClientSecret: 'test'
 };

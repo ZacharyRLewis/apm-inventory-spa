@@ -8,8 +8,15 @@ import {cold, getTestScheduler} from 'jasmine-marbles';
 import {AutoCompleteModule} from 'primeng/primeng';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
-import {Dependency, Deployment, DeploymentDatabase, HostServer, TestDomain, WinResponse} from '../../model';
-import {ApplicationDependencyService, DependencyService, DeploymentDatabaseService, DeploymentService, HostServerService} from '../../services';
+import {Application, Dependency, Deployment, DeploymentDatabase, HostServer, TestDomain, WinResponse} from '../../model';
+import {
+  ApplicationDependencyService,
+  ApplicationService,
+  DependencyService,
+  DeploymentDatabaseService,
+  DeploymentService,
+  HostServerService
+} from '../../services';
 
 import {DashboardComponent} from './dashboard.component';
 import {FindAvailablePortComponent} from './find-available-port.component';
@@ -17,6 +24,14 @@ import {FindAvailablePortComponent} from './find-available-port.component';
 class MockShareDataService extends ShareDataService {
   blockUI(isBlockUI: boolean) {
     console.log('block ui = ' + isBlockUI);
+  }
+}
+
+class MockApplicationService extends ApplicationService {
+  private response: WinResponse<Application[]> = {meta: null, data: [TestDomain.APPLICATION]};
+
+  public findAll(): Observable<WinResponse<Application[]>> {
+    return cold('--x|', {x: this.response});
   }
 }
 
@@ -65,6 +80,7 @@ class MockModalService extends ModalService {
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
+  let applicationService: ApplicationService;
   let applicationDependencyService: ApplicationDependencyService;
   let dependencyService: DependencyService;
   let deploymentDatabaseService: DeploymentDatabaseService;
@@ -78,6 +94,7 @@ describe('DashboardComponent', () => {
       declarations: [DashboardComponent, FindAvailablePortComponent],
       providers: [
         ApplicationDependencyService,
+        {provide: ApplicationService, useClass: MockApplicationService},
         {provide: DeploymentDatabaseService, useClass: MockDeploymentDatabaseService},
         {provide: DependencyService, useClass: MockDependencyService},
         {provide: DeploymentService, useClass: MockDeploymentService},
@@ -93,6 +110,7 @@ describe('DashboardComponent', () => {
     fixture = TestBed.createComponent(DashboardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    applicationService = TestBed.get(ApplicationService);
     applicationDependencyService = TestBed.get(ApplicationDependencyService);
     dependencyService = TestBed.get(DependencyService);
     deploymentDatabaseService = TestBed.get(DeploymentDatabaseService);
@@ -103,6 +121,13 @@ describe('DashboardComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should fetch applications on init', () => {
+    getTestScheduler().flush();
+
+    expect(component.applications.length).toEqual(1);
+    expect(component.applications).toContain(TestDomain.APPLICATION);
   });
 
   it('should fetch dependencies on init', () => {

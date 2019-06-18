@@ -16,6 +16,10 @@ class MockDeploymentService extends DeploymentService {
   public findAll(): Observable<WinResponse<Deployment[]>> {
     return cold('--x|', {x: this.response});
   }
+
+  public filterAll(params: {name: any; value: any}[]): Observable<WinResponse<Deployment[]>> {
+    return cold('--x|', {x: this.response});
+  }
 }
 
 class MockModalService extends ModalService {

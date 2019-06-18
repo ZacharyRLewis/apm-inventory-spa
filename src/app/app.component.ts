@@ -1,13 +1,16 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ShareDataService} from '@win-angular/services';
+import {NgxPermissionsService} from 'ngx-permissions';
 import {Message} from 'primeng/api';
+import {Permissions} from './model/permissions';
+import {PermissionsService} from './services/permission/permission.service';
 
 @Component({
   selector: 'apm-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   private growlSuccessMessages: Message[] = [];
   private growlErrorMessages: Message[] = [];
 
@@ -15,7 +18,17 @@ export class AppComponent {
   public growlErrorMessageShow = false;
   public growlSuccessMessageShow = false;
 
-  constructor(private shareDataService: ShareDataService) {
+  private permissions: Permissions;
+
+  ngOnInit(): void {
+    this.permissionsService.findUserPermissions()
+      .subscribe(response => {
+        this.permissions = response.data;
+        this.ngx.loadPermissions(this.permissions.groups);
+      });
+  }
+
+  constructor(private shareDataService: ShareDataService, private permissionsService: PermissionsService, private ngx: NgxPermissionsService) {
     const self = this;
 
     this.shareDataService.blockUISource.subscribe(

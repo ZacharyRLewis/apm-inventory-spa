@@ -122,6 +122,9 @@ describe('DeploymentComponent', () => {
     expect(component.model.services).toEqual([]);
     expect(component.databases).toEqual([]);
     expect(component.deploymentDatabases).toEqual([]);
+    expect(component.collapseGeneralInfoPanel).toBeFalsy();
+    expect(component.collapseDatabasesPanel).toBeTruthy();
+    expect(component.collapseApisPanel).toBeTruthy();
   });
 
   it('should close modal', () => {

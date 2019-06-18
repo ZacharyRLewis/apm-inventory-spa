@@ -1,9 +1,10 @@
 import {CommonModule} from '@angular/common';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ServicesModule, ShareDataService} from '@win-angular/services';
+import {NgxPermissionsModule} from 'ngx-permissions';
 import {GrowlModule} from 'primeng/growl';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -20,6 +21,8 @@ import {
   MulesoftApiService
 } from './services';
 import {ApplicationDependencyService} from './services/application-dependency/application-dependency.service';
+import {PermissionsService} from './services/permission/permission.service';
+import {ServiceInterceptor} from './services/service.interceptor';
 
 @NgModule({
   declarations: [
@@ -32,12 +35,14 @@ import {ApplicationDependencyService} from './services/application-dependency/ap
     CommonModule,
     ComponentsModule,
     GrowlModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxPermissionsModule.forRoot()
   ],
   exports: [
     CommonModule,
     ComponentsModule,
     HttpClientModule,
+    NgxPermissionsModule,
     ServicesModule
   ],
   providers: [
@@ -51,7 +56,13 @@ import {ApplicationDependencyService} from './services/application-dependency/ap
     DeploymentDatabaseService,
     HostServerService,
     MulesoftApiService,
-    ShareDataService
+    PermissionsService,
+    ShareDataService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ServiceInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

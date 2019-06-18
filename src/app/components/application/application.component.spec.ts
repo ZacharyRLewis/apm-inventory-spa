@@ -105,10 +105,17 @@ describe('ApplicationComponent', () => {
     expect(component.model.primaryContactPhone).toEqual('');
     expect(component.model.applicationTypeId).toEqual('');
     expect(component.model.tags).toEqual([]);
+    expect(component.model.owners).toEqual([]);
     expect(component.model.deployments).toEqual([]);
     expect(component.model.dependencies).toEqual([]);
     expect(component.deployments).toEqual([]);
     expect(component.dependencies).toEqual([]);
+    expect(component.collapseGeneralInfoPanel).toBeFalsy();
+    expect(component.collapseTagsPanel).toBeTruthy();
+    expect(component.collapseSourceCodePanel).toBeTruthy();
+    expect(component.collapseOwnershipPanel).toBeTruthy();
+    expect(component.collapseDeploymentsPanel).toBeTruthy();
+    expect(component.collapseDependenciesPanel).toBeTruthy();
   });
 
   it('should close modal', () => {

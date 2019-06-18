@@ -9,13 +9,15 @@
         </button>
       </div>
       <div class="modal-body container">
-        <form ngForm="newApplicationForm">
-          <p-panel header="General Info" [toggleable]="true" [collapsed]="false">
+        <form id="newApplicationForm" #newApplicationForm="ngForm">
+          <p-panel header="General Info" [toggleable]="true" [(collapsed)]="collapseGeneralInfoPanel">
             <div class="apm-form-body">
               <div class="apm-form-group">
-                <label class="win-label apm-label" for="applicationMnemonic">Mnemonic</label>
+                <label class="win-label apm-label" for="applicationMnemonic">Mnemonic*</label>
                 <div class="apm-input-group">
-                  <input type="text" class="apm-input" id="applicationMnemonic" name="mnemonic" [(ngModel)]="model.mnemonic">
+                  <input type="text" class="apm-input" id="applicationMnemonic" name="mnemonic" required minlength="2"
+                         [(ngModel)]="model.mnemonic" #mnemonic="ngModel"
+                         [class.invalid]="(mnemonic.touched || mnemonic.dirty) && mnemonic.invalid">
                 </div>
               </div>
               <div class="apm-form-group">
@@ -25,9 +27,12 @@
                 </div>
               </div>
               <div class="apm-form-group">
-                <label class="win-label apm-label" for="applicationType">Type</label>
+                <label class="win-label apm-label" for="applicationType">Type*</label>
                 <div class="apm-input-group">
-                  <select class="apm-input apm-select" id="applicationType" [(ngModel)]="model.applicationTypeId" name="type" #type="ngModel">
+                  <select class="apm-input apm-select" id="applicationType" [(ngModel)]="model.applicationTypeId" name="applicationType"
+                          #applicationType="ngModel" required
+                          [class.invalid]="(applicationType.touched || applicationType.dirty) && applicationType.invalid">
+                    <option value=""></option>
                     <option *ngFor="let appType of applicationTypes" value="{{appType.id}}">
                       {{appType.name}} {{appType.version}}
                     </option>
@@ -46,43 +51,57 @@
               </div>
             </div>
           </p-panel>
-          <p-panel header="Tags" [toggleable]="true" [collapsed]="true">
+          <p-panel header="Tags" [toggleable]="true" [(collapsed)]="collapseTagsPanel">
             <p-chips [(ngModel)]="model.tags" name="tags" [allowDuplicate]="false" [addOnTab]="true" [addOnBlur]="true"></p-chips>
           </p-panel>
-          <p-panel header="Source Code" [toggleable]="true" [collapsed]="true">
+          <p-panel header="Source Code" [toggleable]="true" [(collapsed)]="collapseSourceCodePanel">
             <div class="apm-form-body">
               <div class="apm-form-group">
-                <label class="win-label apm-label" for="applicationRepository">Repository</label>
+                <label class="win-label apm-label" for="applicationRepository">Repository*</label>
                 <div class="apm-input-group">
-                  <input type="text" class="apm-input" id="applicationRepository" name="repository" [(ngModel)]="model.repository">
+                  <input type="text" class="apm-input" id="applicationRepository" name="repository" required minlength="20"
+                         [(ngModel)]="model.repository" #repository="ngModel"
+                         [class.invalid]="(repository.touched || repository.dirty) && repository.invalid">
                 </div>
               </div>
               <div class="apm-form-group">
-                <label class="win-label apm-label" for="applicationDefaultBranch">Default Branch</label>
+                <label class="win-label apm-label" for="applicationDefaultBranch">Default Branch*</label>
                 <div class="apm-input-group">
-                  <input type="text" class="apm-input" id="applicationDefaultBranch" name="defaultBranch" [(ngModel)]="model.defaultBranch">
+                  <input type="text" class="apm-input" id="applicationDefaultBranch" name="defaultBranch" required minlength="2"
+                         [(ngModel)]="model.defaultBranch" #defaultBranch="ngModel"
+                         [class.invalid]="(defaultBranch.touched || defaultBranch.dirty) && defaultBranch.invalid">
                 </div>
               </div>
             </div>
           </p-panel>
-          <p-panel header="Contact Info" [toggleable]="true" [collapsed]="true">
+          <p-panel header="Ownership" [toggleable]="true" [(collapsed)]="collapseOwnershipPanel">
+            <div class="owners-div">
+              <label class="win-label apm-label" for="owners">Authorized Application Owners</label>
+              <p-chips [(ngModel)]="model.owners" id="owners" name="owners" [allowDuplicate]="false" [addOnTab]="true" [addOnBlur]="true"></p-chips>
+            </div>
             <div class="apm-form-body">
               <div class="apm-form-group">
-                <label class="win-label apm-label" for="owningDepartment">Owning Department</label>
+                <label class="win-label apm-label" for="owningDepartment">Owning Department*</label>
                 <div class="apm-input-group">
-                  <input type="text" class="apm-input" id="owningDepartment" name="owningDepartment" [(ngModel)]="model.owningDepartment">
+                  <input type="text" class="apm-input" id="owningDepartment" name="owningDepartment" required minlength="2"
+                         [(ngModel)]="model.owningDepartment" #owningDepartment="ngModel"
+                         [class.invalid]="(owningDepartment.touched || owningDepartment.dirty) && owningDepartment.invalid">
                 </div>
               </div>
               <div class="apm-form-group">
-                <label class="win-label apm-label" for="primaryContactName">Primary Contact Name</label>
+                <label class="win-label apm-label" for="primaryContactName">Primary Contact Name*</label>
                 <div class="apm-input-group">
-                  <input type="text" class="apm-input" id="primaryContactName" name="primaryContactName" [(ngModel)]="model.primaryContactName">
+                  <input type="text" class="apm-input" id="primaryContactName" name="primaryContactName" required minlength="2"
+                         [(ngModel)]="model.primaryContactName" #primaryContactName="ngModel"
+                         [class.invalid]="(primaryContactName.touched || primaryContactName.dirty) && primaryContactName.invalid">
                 </div>
               </div>
               <div class="apm-form-group">
-                <label class="win-label apm-label" for="primaryContactEmail">Primary Contact Email</label>
+                <label class="win-label apm-label" for="primaryContactEmail">Primary Contact Email*</label>
                 <div class="apm-input-group">
-                  <input type="text" class="apm-input" id="primaryContactEmail" name="primaryContactEmail" [(ngModel)]="model.primaryContactEmail">
+                  <input type="text" class="apm-input" id="primaryContactEmail" name="primaryContactEmail" required minlength="2"
+                         [(ngModel)]="model.primaryContactEmail" #primaryContactEmail="ngModel"
+                         [class.invalid]="(primaryContactEmail.touched || primaryContactEmail.dirty) && primaryContactEmail.invalid">
                 </div>
               </div>
               <div class="apm-form-group">
@@ -93,7 +112,7 @@
               </div>
             </div>
           </p-panel>
-          <p-panel header="Deployments" [toggleable]="true" [collapsed]="true">
+          <p-panel header="Deployments" [toggleable]="true" [(collapsed)]="collapseDeploymentsPanel">
             <div class="child-table-div">
               <div>
                 <button class="add-button" (click)="addDeployments()">
@@ -122,14 +141,15 @@
               </ng-template>
             </div>
           </p-panel>
-          <p-panel header="Dependencies" [toggleable]="true" [collapsed]="true">
+          <p-panel header="Dependencies" [toggleable]="true" [(collapsed)]="collapseDependenciesPanel">
             <div class="child-table-div">
               <div>
-                <button class="add-button"
+                <button class="add-button refresh-btn"
                         [disabled]="!passedApplication || !model.id || !(model.repository && model.defaultBranch)"
                         (click)="refreshDependencies()">
                   <i class="fa fa-plus" aria-hidden="true"></i>
                   <span>Refresh Dependencies</span>
+                  <span *ngIf="!(model.repository && model.defaultBranch)" class="refresh-info-tooltip">You must supply source code info to refresh dependencies.</span>
                 </button>
               </div>
               <div class="child-table" *ngIf="dependencies?.length > 0; else noDependencies">
@@ -161,8 +181,9 @@
         <button type="button" class="win-button win-button-secondary btn left" *ngIf="passedApplication" (click)="deleteApplication()">
           <span>Delete Application</span>
         </button>
-        <button type="button" class="win-button win-button-primary btn right" (click)="saveApplication()">
-          <span>Save Application</span>
+        <button type="button" class="win-button win-button-primary btn right" (click)="saveApplication()"
+                [disabled]="!newApplicationForm || !newApplicationForm.form.valid || !newApplicationForm.form.dirty">
+        <span>Save Application</span>
         </button>
       </div>
     </div>

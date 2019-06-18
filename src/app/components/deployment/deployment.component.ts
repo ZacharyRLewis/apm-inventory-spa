@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
 import {Application, Database, Deployment, DeploymentDatabase, HostServer, MulesoftApi} from '../../model';
 import {DatabaseService, DeploymentDatabaseService, DeploymentService, MulesoftApiService} from '../../services';
@@ -27,6 +27,14 @@ export class DeploymentComponent implements OnInit {
   public deploymentDatabases: DeploymentDatabase[] = [];
   public apis: MulesoftApi[] = [];
 
+  // Panel controls
+  public collapseGeneralInfoPanel = false;
+  public collapseDatabasesPanel = true;
+  public collapseApisPanel = true;
+
+  @ViewChild('newDeploymentForm')
+  public newDeploymentForm;
+
   constructor(private deploymentService: DeploymentService, private modalService: ModalService, private databaseService: DatabaseService,
               private deploymentDatabaseService: DeploymentDatabaseService, private mulesoftAssetService: MulesoftApiService,
               private shareDataService: ShareDataService) {
@@ -47,6 +55,9 @@ export class DeploymentComponent implements OnInit {
     this.databases = [];
     this.deploymentDatabases = [];
     this.apis = [];
+    this.collapseGeneralInfoPanel = false;
+    this.collapseDatabasesPanel = true;
+    this.collapseApisPanel = true;
   }
 
   ngOnInit() {
@@ -86,6 +97,7 @@ export class DeploymentComponent implements OnInit {
 
   public closeModal(): void {
     this.modalService.closeModal(this.modalId);
+    this.newDeploymentForm.resetForm();
     this.setDefaultValues();
   }
 
@@ -103,7 +115,6 @@ export class DeploymentComponent implements OnInit {
     this.deploymentService.create(created)
       .subscribe(res => {
           this.closeModal();
-          this.setDefaultValues();
           this.createEvent.emit(created);
         },
         err => {
@@ -117,7 +128,6 @@ export class DeploymentComponent implements OnInit {
     this.deploymentService.update(updated)
       .subscribe(res => {
           this.closeModal();
-          this.setDefaultValues();
           this.updateEvent.emit(updated);
         },
         err => {
@@ -131,7 +141,6 @@ export class DeploymentComponent implements OnInit {
     this.deploymentService.delete(deleted)
       .subscribe(res => {
           this.closeModal();
-          this.setDefaultValues();
           this.deleteEvent.emit(deleted);
         },
         err => {

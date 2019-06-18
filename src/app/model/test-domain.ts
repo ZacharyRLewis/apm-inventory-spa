@@ -8,6 +8,7 @@ import {Deployment} from './deployment';
 import {DeploymentDatabase} from './deployment-database';
 import {HostServer} from './host-server';
 import {MulesoftApi} from './mulesoft/mulesoft-api';
+import {Permissions} from './permissions';
 
 export class TestDomain {
   public static APPLICATION: Application = new Application('123', 'Test', 'test', 'Test', '', '', false, null, null, null, null, null, [], [], []);
@@ -20,4 +21,5 @@ export class TestDomain {
   public static DEPENDENCY: Dependency = new Dependency('123', 'test', 'test@1.0', '1.0');
   public static HOST_SERVER: HostServer = new HostServer('123', 'localhost', 'DEV', 'LINUX');
   public static MULESOFT_API: MulesoftApi = new MulesoftApi(123, '2019-03-01', '2019-03-02');
+  public static PERMISSIONS: Permissions = new Permissions(['test']);
 }
