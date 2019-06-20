@@ -11,8 +11,8 @@ import {PermissionsService} from './services/permission/permission.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  private growlSuccessMessages: Message[] = [];
-  private growlErrorMessages: Message[] = [];
+  public growlSuccessMessages: Message[] = [];
+  public growlErrorMessages: Message[] = [];
 
   public isBlockedUI = false;
   public growlErrorMessageShow = false;
