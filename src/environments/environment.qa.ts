@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   env: 'qa',
-  serviceUrl: 'http://wserviceqa.winwholesale.com:8182/apm-process-api',
+  serviceUrl: 'https://qaagws1.winwholesale.com/apm-process-api',
   mulesoftClientId: 'TODO',
   mulesoftClientSecret: 'TODO'
 };
