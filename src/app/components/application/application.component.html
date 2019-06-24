@@ -149,7 +149,9 @@
                         (click)="refreshDependencies()">
                   <i class="fa fa-plus" aria-hidden="true"></i>
                   <span>Refresh Dependencies</span>
-                  <span *ngIf="!(model.repository && model.defaultBranch)" class="refresh-info-tooltip">You must supply source code info to refresh dependencies.</span>
+                  <span *ngIf="!(model.repository && model.defaultBranch)" class="refresh-info-tooltip">
+                    You must supply source code info to refresh dependencies.
+                  </span>
                 </button>
               </div>
               <div class="child-table" *ngIf="dependencies?.length > 0; else noDependencies">
@@ -182,8 +184,9 @@
           <span>Delete Application</span>
         </button>
         <button type="button" class="win-button win-button-primary btn right" (click)="saveApplication()"
-                [disabled]="!newApplicationForm || !newApplicationForm.form.valid || !newApplicationForm.form.dirty">
-        <span>Save Application</span>
+                [disabled]="(!newApplicationForm || !newApplicationForm.form.valid || !newApplicationForm.form.dirty)
+                && !deploymentsAdded && !dependenciesRefreshed">
+          <span>Save Application</span>
         </button>
       </div>
     </div>

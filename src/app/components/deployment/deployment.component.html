@@ -156,8 +156,8 @@
           <span>Delete Deployment</span>
         </button>
         <button type="button" class="win-button win-button-primary btn right" (click)="saveDeployment()"
-                [disabled]="!newDeploymentForm || !newDeploymentForm.form.valid || !newDeploymentForm.form.dirty">
-        <span>Save Deployment</span>
+                [disabled]="(!newDeploymentForm || !newDeploymentForm.form.valid || !newDeploymentForm.form.dirty) && !databasesAdded">
+          <span>Save Deployment</span>
         </button>
       </div>
     </div>

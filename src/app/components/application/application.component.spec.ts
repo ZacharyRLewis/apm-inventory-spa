@@ -110,6 +110,8 @@ describe('ApplicationComponent', () => {
     expect(component.model.dependencies).toEqual([]);
     expect(component.deployments).toEqual([]);
     expect(component.dependencies).toEqual([]);
+    expect(component.deploymentsAdded).toBeFalsy();
+    expect(component.dependenciesRefreshed).toBeFalsy();
     expect(component.collapseGeneralInfoPanel).toBeFalsy();
     expect(component.collapseTagsPanel).toBeTruthy();
     expect(component.collapseSourceCodePanel).toBeTruthy();
