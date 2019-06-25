@@ -135,6 +135,7 @@ export class DeploymentListComponent implements OnInit  {
 
   public handleDeploymentDatabaseCreate(deployment: Deployment): void {
     this.prepareDeploymentModal(deployment);
+    this.deploymentComponent.databasesAdded = true;
     this.closeModal(this.DEPLOYMENT_DATABASE_MODAL_ID);
     this.openModal(this.DEPLOYMENT_MODAL_ID);
   }

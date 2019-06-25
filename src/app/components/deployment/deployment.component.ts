@@ -26,6 +26,7 @@ export class DeploymentComponent implements OnInit {
   public databases: Database[] = [];
   public deploymentDatabases: DeploymentDatabase[] = [];
   public apis: MulesoftApi[] = [];
+  public databasesAdded = false;
 
   // Panel controls
   public collapseGeneralInfoPanel = false;
@@ -55,6 +56,7 @@ export class DeploymentComponent implements OnInit {
     this.databases = [];
     this.deploymentDatabases = [];
     this.apis = [];
+    this.databasesAdded = false;
     this.collapseGeneralInfoPanel = false;
     this.collapseDatabasesPanel = true;
     this.collapseApisPanel = true;

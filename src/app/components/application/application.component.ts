@@ -23,6 +23,8 @@ export class ApplicationComponent {
   public passedApplication: Application;
   public deployments: Deployment[] = [];
   public dependencies: Dependency[] = [];
+  public deploymentsAdded = false;
+  public dependenciesRefreshed = false;
 
   // Panel controls
   public collapseGeneralInfoPanel = false;
@@ -59,6 +61,8 @@ export class ApplicationComponent {
     this.model.dependencies = [];
     this.deployments = [];
     this.dependencies = [];
+    this.deploymentsAdded = false;
+    this.dependenciesRefreshed = false;
     this.collapseGeneralInfoPanel = false;
     this.collapseTagsPanel = true;
     this.collapseSourceCodePanel = true;
@@ -195,6 +199,7 @@ export class ApplicationComponent {
       .subscribe(response => {
         this.dependencies = response.data;
         this.shareDataService.blockUI(false);
+        this.dependenciesRefreshed = true;
       }, err => {
         this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(refresh application dependencies) >> ' + err.message}]);
         this.shareDataService.blockUI(false);

@@ -174,6 +174,7 @@ export class InventoryComponent implements OnInit {
       this.applicationComponent.deployments = [...this.applicationComponent.deployments, ...deployments];
     }
 
+    this.applicationComponent.deploymentsAdded = true;
     this.closeModal(this.DEPLOYMENT_BULK_ADD_MODAL_ID);
     this.openModal(this.APPLICATION_MODAL_ID);
   }
