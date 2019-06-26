@@ -35,7 +35,7 @@ describe('PermissionsService', () => {
     it('should return expected permissions', () => {
       permissionsService.findUserPermissions()
         .subscribe(res => {
-          expect(res.data.groups[0]).toEqual('test', 'should return expected permissions');
+          expect(res.data.permissions[0]).toEqual('test', 'should return expected permissions');
         });
 
       const req = httpTester.expectOne(permissionsService.url);
