@@ -10,6 +10,7 @@ import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {ApplicationComponent} from '..';
 import {Application, Dependency, Deployment, TestDomain, WinResponse} from '../../model';
+import {DependencyRefresh} from '../../model/dependency-refresh';
 import {ApplicationService, DependencyService, DeploymentService, HostServerService} from '../../services';
 
 class MockApplicationService extends ApplicationService {
@@ -31,7 +32,7 @@ class MockApplicationService extends ApplicationService {
 class MockDependencyService extends DependencyService {
   private response: WinResponse<Dependency[]> = {meta: null, data: [TestDomain.DEPENDENCY]};
 
-  public refreshDependencies(applicationId: string): Observable<WinResponse<Dependency[]>> {
+  public refreshDependencies(refresh: DependencyRefresh): Observable<WinResponse<Dependency[]>> {
     return cold('--x|', {x: this.response});
   }
 }

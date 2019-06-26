@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
 import {Application, ApplicationType, Dependency, Deployment, HostServer} from '../../model';
+import {DependencyRefresh} from '../../model/dependency-refresh';
 import {ApplicationService, DependencyService, DeploymentService} from '../../services';
 
 @Component({
@@ -195,7 +196,7 @@ export class ApplicationComponent {
   public refreshDependencies(): void {
     this.shareDataService.blockUI(true);
 
-    this.dependencyService.refreshDependencies(this.passedApplication.id)
+    this.dependencyService.refreshDependencies(new DependencyRefresh(this.passedApplication.id))
       .subscribe(response => {
         this.dependencies = response.data;
         this.shareDataService.blockUI(false);

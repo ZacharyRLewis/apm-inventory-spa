@@ -8,6 +8,7 @@ export {DeploymentFilters} from './deployment-filters';
 export {Database} from './database';
 export {DatabaseType} from './database-type';
 export {Dependency} from './dependency';
+export {DependencyRefresh} from './dependency-refresh';
 export {HostServer} from './host-server';
 export {MulesoftApi} from './mulesoft/mulesoft-api';
 export {SelectOption} from './select-option';

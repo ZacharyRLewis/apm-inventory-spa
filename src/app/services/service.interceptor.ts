@@ -15,7 +15,7 @@ export class ServiceInterceptor implements HttpInterceptor {
 
   private devHeaders = new HttpHeaders({
     'iv-user': 'test',
-    'iv-groups': '"CN=apm_admin,OU=ApplicationGroup,OU=Groups,DC=winwholesale,DC=com", "Test"',
+    'iv-groups': '"apm_admin", "Test"',
     'client_id': environment.mulesoftClientId,
     'client_secret': environment.mulesoftClientSecret
   });

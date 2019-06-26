@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {Dependency, WinResponse} from '../../model';
+import {DependencyRefresh} from '../../model/dependency-refresh';
 import {ServiceInterface} from '../service.interface';
 
 @Injectable()
@@ -47,7 +48,7 @@ export class DependencyService implements ServiceInterface<Dependency> {
     return this.http.delete<WinResponse<Dependency>>(this.url + '/' + dependency.id, this._options);
   }
 
-  public refreshDependencies(applicationId: string): Observable<WinResponse<Dependency[]>> {
-    return this.http.get<WinResponse<Dependency[]>>(this.url + '/refresh?applicationId=' + applicationId, this._options);
+  public refreshDependencies(refresh: DependencyRefresh): Observable<WinResponse<Dependency[]>> {
+    return this.http.post<WinResponse<Dependency[]>>(this.url + '/refreshes', refresh, this._options);
   }
 }
