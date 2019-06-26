@@ -1,6 +1,6 @@
 export class Permissions {
 
-  constructor(public groups: string[]) {
+  constructor(public permissions: string[]) {
   }
 
 }

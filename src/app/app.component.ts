@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
     this.permissionsService.findUserPermissions()
       .subscribe(response => {
         this.permissions = response.data;
-        this.ngx.loadPermissions(this.permissions.groups);
+        this.ngx.loadPermissions(this.permissions.permissions);
       });
   }
 
