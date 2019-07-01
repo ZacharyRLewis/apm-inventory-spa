@@ -7,7 +7,7 @@ const routes: Routes = [
   {path: 'deployments', component: DeploymentListComponent},
   {path: 'inventory', component: InventoryComponent},
   {path: 'maintenance', component: MaintenanceComponent},
-  {path: '', redirectTo: 'dashboard', pathMatch: 'full'}
+  {path: '', redirectTo: 'inventory', pathMatch: 'full'}
 ];
 
 @NgModule({
