@@ -9,13 +9,13 @@
   <div class="scroll-pane" (keydown.enter)="isFormClear() && applyFilters()">
     <div class="input-field">
       <div class="form-group">
-        <label for="mnemonic" class="win-label">Application Mnemonic</label>
+        <label for="applicationName" class="win-label">Application Name</label>
         <div class="autocomplete-div">
-          <p-autoComplete id="mnemonic" [suggestions]="appMnemonicSuggestions" [(ngModel)]="selectedAppMnemonic"
-                          (completeMethod)="processAppMnemonicTypeAhead()"
-                          (onSelect)="selectAppMnemonicSuggestion($event)" class="flyout-autocomplete">
+          <p-autoComplete id="applicationName" [suggestions]="appNameSuggestions" [(ngModel)]="selectedAppName"
+                          (completeMethod)="processAppNameTypeAhead()"
+                          (onSelect)="selectAppNameSuggestion($event)" class="flyout-autocomplete">
             <ng-template let-suggestion pTemplate="item">
-              {{suggestion.mnemonic}}
+              {{suggestion.name}}
             </ng-template>
           </p-autoComplete>
         </div>

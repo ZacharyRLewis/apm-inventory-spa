@@ -37,11 +37,11 @@ export class ApplicationFlyoutFilterComponent {
   public booleanChoices = [{key: 'true', value: true}, {key: 'false', value: false}];
   public chipList = [];
   public filterFields;
-  public appMnemonicSuggestions: string[] = [];
+  public appNameSuggestions: string[] = [];
 
   constructor(private renderer: Renderer2) {
     this.filterFields = {
-      mnemonic: 'Application Mnemonic',
+      name: 'Application Name',
       owningDepartment: 'Department',
       isServiceApi: 'Is Service/API',
       applicationTypeId: 'Application Type'
@@ -124,32 +124,32 @@ export class ApplicationFlyoutFilterComponent {
     }
   }
 
-  public selectAppMnemonicSuggestion(suggestion: string) {
-    this.filters.mnemonic = suggestion;
-    this.appMnemonicSuggestions = [];
+  public selectAppNameSuggestion(suggestion: string) {
+    this.filters.name = suggestion;
+    this.appNameSuggestions = [];
   }
 
-  public processAppMnemonicTypeAhead(): void {
+  public processAppNameTypeAhead(): void {
     const results: string[] = [];
 
-    if (!this.filters.mnemonic || this.filters.mnemonic === '') {
-      this.appMnemonicSuggestions = results;
+    if (!this.filters.name || this.filters.name === '') {
+      this.appNameSuggestions = results;
       return;
     }
 
     for (const application of this.applications) {
       if (results.length < this.TYPE_AHEAD_SIZE) {
-        const check1 = application.mnemonic.toLowerCase();
-        const check2 = this.filters.mnemonic.toLowerCase();
+        const check1 = application.name.toLowerCase();
+        const check2 = this.filters.name.toLowerCase();
 
         if (check1.indexOf(check2) >= 0) {
-          results.push(application.mnemonic);
+          results.push(application.name);
         }
       } else {
         break;
       }
 
-      this.appMnemonicSuggestions = results;
+      this.appNameSuggestions = results;
     }
   }
 }

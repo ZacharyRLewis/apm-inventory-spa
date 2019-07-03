@@ -507,6 +507,9 @@ button:disabled {
 .ui-panel-titlebar-icon {
   color: $win-primary !important;
   border-color: $win-primary !important;
+  font-size: 18px !important;
+  width: 24px !important;
+  text-align: center;
 }
 
 // PrimeNG Growl Messages

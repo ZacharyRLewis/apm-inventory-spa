@@ -25,7 +25,7 @@ export class InventoryComponent implements OnInit {
   public DEPLOYMENT_BULK_ADD_MODAL_ID = 'deployment-bulk-add-modal';
 
   public columns = [
-    {field: 'mnemonic', header: 'Mnemonic', width: '100px'},
+    {field: 'name', header: 'Name', width: '100px'},
     {field: 'owningDepartment', header: 'Department', width: '100px'},
     {field: 'description', header: 'Description', width: '150px'},
     {field: 'applicationTypeId', header: 'Type', width: '100px'}
@@ -84,13 +84,17 @@ export class InventoryComponent implements OnInit {
         this.departments.push(new SelectOption(application.owningDepartment, application.owningDepartment));
       }
     }
+
+    this.departments = this.departments.sort((a, b) => {
+      return a.value.localeCompare(b.value);
+    });
   }
 
   public searchApplications(): void {
     const params = [];
 
-    if (this.filters.mnemonic) {
-      params.push({name: 'mnemonic', value: this.filters.mnemonic});
+    if (this.filters.name) {
+      params.push({name: 'name', value: this.filters.name});
     }
 
     if (this.filters.owningDepartment) {
@@ -145,17 +149,17 @@ export class InventoryComponent implements OnInit {
   }
 
   public handleCreate(application: Application): void {
-    this.shareDataService.showStatus([{severity: 'success', summary: 'Application ' + application.mnemonic + ' successfully created'}]);
+    this.shareDataService.showStatus([{severity: 'success', summary: 'Application ' + application.name + ' successfully created'}]);
     this.loadApplications();
   }
 
   public handleDelete(application: Application): void {
-    this.shareDataService.showStatus([{severity: 'success', summary: 'Application ' + application.mnemonic + ' successfully deleted'}]);
+    this.shareDataService.showStatus([{severity: 'success', summary: 'Application ' + application.name + ' successfully deleted'}]);
     this.loadApplications();
   }
 
   public handleUpdate(application: Application): void {
-    this.shareDataService.showStatus([{severity: 'success', summary: 'Application ' + application.mnemonic + ' successfully updated'}]);
+    this.shareDataService.showStatus([{severity: 'success', summary: 'Application ' + application.name + ' successfully updated'}]);
     this.loadApplications();
   }
 
@@ -193,7 +197,7 @@ export class InventoryComponent implements OnInit {
 
   public resetFilters(event?): void {
     this.filters = new ApplicationFilters();
-    this.filters.mnemonic = '';
+    this.filters.name = '';
     this.filters.owningDepartment = '';
     this.filters.isServiceApi = false;
     this.filters.applicationTypeId = '';

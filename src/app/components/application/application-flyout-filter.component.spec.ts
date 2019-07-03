@@ -49,7 +49,7 @@ describe('ApplicationFlyoutFilterComponent', () => {
 
     const applicationFilters = new ApplicationFilters('test');
     component.filters = applicationFilters;
-    component.filterFields = {mnemonic: 'Application Mnemonic'};
+    component.filterFields = {name: 'Application Name'};
     component.applyFilters();
 
     expect(component.chipList.length).toEqual(1);
@@ -61,18 +61,18 @@ describe('ApplicationFlyoutFilterComponent', () => {
     component.filters = applicationFilters;
     component.clearFilters();
 
-    expect(component.filters.mnemonic).toEqual('');
+    expect(component.filters.name).toEqual('');
     expect(component.filters.isServiceApi).toBeFalsy();
     expect(component.filters.applicationTypeId).toEqual('');
   });
 
   it('should remove one filter', () => {
     const applicationFilters = new ApplicationFilters('test', 'test', true, '1');
-    const event = 'mnemonic';
+    const event = 'name';
     component.filters = applicationFilters;
     component.removeFilter(event);
 
-    expect(component.filters.mnemonic).toEqual('');
+    expect(component.filters.name).toEqual('');
     expect(component.filters.isServiceApi).toBeTruthy();
     expect(component.filters.applicationTypeId).toEqual('1');
   });
@@ -82,7 +82,7 @@ describe('ApplicationFlyoutFilterComponent', () => {
     component.filters = applicationFilters;
     component.removeFilter();
 
-    expect(component.filters.mnemonic).toEqual('');
+    expect(component.filters.name).toEqual('');
     expect(component.filters.isServiceApi).toBeFalsy();
     expect(component.filters.applicationTypeId).toEqual('');
   });
@@ -99,10 +99,10 @@ describe('ApplicationFlyoutFilterComponent', () => {
   });
 
   it('should select a suggestion', () => {
-    component.selectAppMnemonicSuggestion('selectedSuggestion');
+    component.selectAppNameSuggestion('selectedSuggestion');
 
-    expect(component.filters.mnemonic).toEqual('selectedSuggestion');
-    expect(component.appMnemonicSuggestions.length).toEqual(0);
+    expect(component.filters.name).toEqual('selectedSuggestion');
+    expect(component.appNameSuggestions.length).toEqual(0);
   });
 
   it('should process typeaheads correctly', () => {
@@ -110,23 +110,23 @@ describe('ApplicationFlyoutFilterComponent', () => {
     component.filters = applicationFilters1;
     component.applications = [TestDomain.APPLICATION];
 
-    component.processAppMnemonicTypeAhead();
+    component.processAppNameTypeAhead();
 
-    expect(component.appMnemonicSuggestions.length).toEqual(1);
+    expect(component.appNameSuggestions.length).toEqual(1);
 
     const applicationFilters2 = new ApplicationFilters('typeahead');
     component.filters = applicationFilters2;
     component.applications = [TestDomain.APPLICATION];
 
-    component.processAppMnemonicTypeAhead();
+    component.processAppNameTypeAhead();
 
-    expect(component.appMnemonicSuggestions.length).toEqual(0);
+    expect(component.appNameSuggestions.length).toEqual(0);
 
     const applicationFilters3 = new ApplicationFilters();
     component.filters = applicationFilters3;
 
-    component.processAppMnemonicTypeAhead();
+    component.processAppNameTypeAhead();
 
-    expect(component.appMnemonicSuggestions.length).toEqual(0);
+    expect(component.appNameSuggestions.length).toEqual(0);
   });
 });

@@ -21,7 +21,7 @@
           <td>
             <a (click)="prepareDeploymentModal(deployment); openModal(DEPLOYMENT_MODAL_ID);">{{deployment.id}}</a>
           </td>
-          <td>{{getAppMnemonic(deployment.applicationId)}}</td>
+          <td>{{getAppName(deployment.applicationId)}}</td>
           <td>{{deployment.environment}}</td>
           <td>{{getDeploymentBaseUrl(deployment)}}</td>
         </tr>

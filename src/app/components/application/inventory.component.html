@@ -8,7 +8,7 @@
   </apm-application-flyout-filter>
 
   <div class="applications-table">
-    <p-table [value]="applications" [columns]="columns" sortField="mnemonic" [paginator]="true" [rows]="10">
+    <p-table [value]="applications" [columns]="columns" sortField="name" [paginator]="true" [rows]="10">
       <ng-template pTemplate="header">
         <tr>
           <th *ngFor="let column of columns" [pSortableColumn]="column.field" width="{{column.width}}">
@@ -20,7 +20,7 @@
       <ng-template pTemplate="body" let-application>
         <tr>
           <td>
-            <a (click)="prepareApplicationModal(application); openModal(APPLICATION_MODAL_ID);">{{application.mnemonic}}</a>
+            <a (click)="prepareApplicationModal(application); openModal(APPLICATION_MODAL_ID);">{{application.name}}</a>
           </td>
           <td>{{application.owningDepartment}}</td>
           <td>{{application.description}}</td>

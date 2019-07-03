@@ -96,7 +96,7 @@ describe('ApplicationComponent', () => {
 
     expect(component.model.id).toEqual(null);
     expect(component.model.name).toEqual('');
-    expect(component.model.mnemonic).toEqual('');
+    expect(component.model.longName).toEqual('');
     expect(component.model.description).toEqual('');
     expect(component.model.repository).toEqual('');
     expect(component.model.defaultBranch).toEqual('');
@@ -161,7 +161,7 @@ describe('ApplicationComponent', () => {
 
     component.createEvent.subscribe(created => {
       expect(created.id).toEqual('123');
-      expect(created.mnemonic).toEqual('test');
+      expect(created.name).toEqual('Test');
     });
   });
 
@@ -176,7 +176,7 @@ describe('ApplicationComponent', () => {
 
     component.deleteEvent.subscribe(deleted => {
       expect(deleted.id).toEqual(application.id);
-      expect(deleted.mnemonic).toEqual(application.mnemonic);
+      expect(deleted.name).toEqual(application.name);
     });
   });
 
@@ -192,7 +192,7 @@ describe('ApplicationComponent', () => {
 
     component.updateEvent.subscribe(updated => {
       expect(updated.id).toEqual(application.id);
-      expect(updated.mnemonic).toEqual(application.mnemonic);
+      expect(updated.name).toEqual(application.name);
     });
   });
 

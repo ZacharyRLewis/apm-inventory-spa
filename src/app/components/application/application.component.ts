@@ -47,7 +47,7 @@ export class ApplicationComponent {
   public setDefaultValues(): void {
     this.model.id = null;
     this.model.name = '';
-    this.model.mnemonic = '';
+    this.model.longName = '';
     this.model.description = '';
     this.model.repository = '';
     this.model.defaultBranch = '';
@@ -226,5 +226,25 @@ export class ApplicationComponent {
       returnVal = inputField.valid ? 'is-valid' : 'is-invalid';
     }
     return returnVal;
+  }
+
+  private dependenciesSupportedForAppType(applicationTypeId: string): boolean {
+    if (!this.applicationTypes || !applicationTypeId) {
+      return false;
+    }
+    for (const applicationType of this.applicationTypes) {
+      if (applicationType.id == applicationTypeId) {
+        switch (applicationType.name) {
+          case 'Angular':
+          case 'AngularJS':
+          case 'Grails':
+          case 'Spring Boot':
+            return true;
+          default:
+            return false;
+        }
+      }
+    }
+    return false;
   }
 }

@@ -30,7 +30,8 @@ export class MaintenanceComponent implements OnInit {
   public applicationTypeColumns = [
     {field: 'id', header: 'Id', width: '50px'},
     {field: 'name', header: 'Name', width: '100px'},
-    {field: 'version', header: 'Version', width: '100px'}
+    {field: 'version', header: 'Version', width: '100px'},
+    {field: 'description', header: 'Description', width: '150px'}
   ];
 
   public databaseTypeColumns = [

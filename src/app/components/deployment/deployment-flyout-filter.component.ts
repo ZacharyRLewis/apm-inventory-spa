@@ -34,8 +34,8 @@ export class DeploymentFlyoutFilterComponent {
   public environmentChoices = [{key: 'DEV', value: 'DEV'}, {key: 'QA', value: 'QA'}, {key: 'PROD', value: 'PROD'}];
   public chipList = [];
   public filterFields;
-  public appMnemonicSuggestions: Application[] = [];
-  public selectedAppMnemonic = '';
+  public appNameSuggestions: Application[] = [];
+  public selectedAppName = '';
 
   constructor(private renderer: Renderer2) {
     this.filterFields = {
@@ -82,7 +82,7 @@ export class DeploymentFlyoutFilterComponent {
     keys.forEach(function (key) {
       self.filters[key] = '';
     });
-    this.selectedAppMnemonic = '';
+    this.selectedAppName = '';
     this.chipList = [];
     this.clear.emit();
   }
@@ -91,11 +91,11 @@ export class DeploymentFlyoutFilterComponent {
     if (event) {
       this.filters[event] = '';
       if (event === 'applicationId') {
-        this.selectedAppMnemonic = '';
+        this.selectedAppName = '';
       }
     } else {
       this.clearFilters();
-      this.selectedAppMnemonic = '';
+      this.selectedAppName = '';
     }
 
     this.applyFilters();
@@ -128,24 +128,24 @@ export class DeploymentFlyoutFilterComponent {
     }
   }
 
-  public selectAppMnemonicSuggestion(suggestion: Application) {
-    this.selectedAppMnemonic = suggestion.mnemonic;
+  public selectAppNameSuggestion(suggestion: Application) {
+    this.selectedAppName = suggestion.name;
     this.filters.applicationId = suggestion.id;
-    this.appMnemonicSuggestions = [];
+    this.appNameSuggestions = [];
   }
 
-  public processAppMnemonicTypeAhead(): void {
+  public processAppNameTypeAhead(): void {
     const results: Application[] = [];
 
-    if (!this.selectedAppMnemonic || this.selectedAppMnemonic === '') {
-      this.appMnemonicSuggestions = results;
+    if (!this.selectedAppName || this.selectedAppName === '') {
+      this.appNameSuggestions = results;
       return;
     }
 
     for (const application of this.applications) {
       if (results.length < this.TYPE_AHEAD_SIZE) {
-        const check1 = application.mnemonic.toLowerCase();
-        const check2 = this.selectedAppMnemonic.toLowerCase();
+        const check1 = application.name.toLowerCase();
+        const check2 = this.selectedAppName.toLowerCase();
 
         if (check1.indexOf(check2) >= 0) {
           results.push(application);
@@ -154,7 +154,7 @@ export class DeploymentFlyoutFilterComponent {
         break;
       }
 
-      this.appMnemonicSuggestions = results;
+      this.appNameSuggestions = results;
     }
   }
 }

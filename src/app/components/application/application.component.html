@@ -13,11 +13,11 @@
           <p-panel header="General Info" [toggleable]="true" [(collapsed)]="collapseGeneralInfoPanel">
             <div class="apm-form-body">
               <div class="apm-form-group">
-                <label class="win-label apm-label" for="applicationMnemonic">Mnemonic*</label>
+                <label class="win-label apm-label" for="applicationName">Name*</label>
                 <div class="apm-input-group">
-                  <input type="text" class="apm-input" id="applicationMnemonic" name="mnemonic" required minlength="2"
-                         [(ngModel)]="model.mnemonic" #mnemonic="ngModel"
-                         [class.invalid]="(mnemonic.touched || mnemonic.dirty) && mnemonic.invalid">
+                  <input type="text" class="apm-input" id="applicationName" name="name" required minlength="2"
+                         [(ngModel)]="model.name" #applicationName="ngModel"
+                         [class.invalid]="(applicationName.touched || applicationName.dirty) && applicationName.invalid">
                 </div>
               </div>
               <div class="apm-form-group">
@@ -145,13 +145,19 @@
             <div class="child-table-div">
               <div>
                 <button class="add-button refresh-btn"
-                        [disabled]="!passedApplication || !model.id || !(model.repository && model.defaultBranch)"
+                        [disabled]="!passedApplication || !model.id || !dependenciesSupportedForAppType(model.applicationTypeId)
+                        || !(model.repository && model.defaultBranch)"
                         (click)="refreshDependencies()">
                   <i class="fa fa-plus" aria-hidden="true"></i>
                   <span>Refresh Dependencies</span>
-                  <span *ngIf="!(model.repository && model.defaultBranch)" class="refresh-info-tooltip">
-                    You must supply source code info to refresh dependencies.
+                  <span *ngIf="!dependenciesSupportedForAppType(model.applicationTypeId); else elseIf" class="refresh-info-tooltip">
+                    The refresh functionality currently only supports dependencies that are NPM or Gradle based.
                   </span>
+                  <ng-template #elseIf>
+                    <span *ngIf="!(model.repository && model.defaultBranch)" class="refresh-info-tooltip">
+                      You must supply source code info to refresh dependencies.
+                    </span>
+                  </ng-template>
                 </button>
               </div>
               <div class="child-table" *ngIf="dependencies?.length > 0; else noDependencies">

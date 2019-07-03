@@ -13,14 +13,14 @@
           <p-panel header="General Info" [toggleable]="true" [(collapsed)]="collapseGeneralInfoPanel">
             <div class="apm-form-body">
               <div class="apm-form-group">
-                <label class="win-label apm-label" for="applicationId">Application Mnemonic*</label>
+                <label class="win-label apm-label" for="applicationId">Application Name*</label>
                 <div class="apm-input-group">
                   <select class="apm-input apm-select" id="applicationId" [(ngModel)]="model.applicationId" name="applicationId"
                           #applicationId="ngModel" required
                           [class.invalid]="(applicationId.touched || applicationId.dirty) && applicationId.invalid">
                     <option value=""></option>
                     <option *ngFor="let app of applications" value="{{app.id}}">
-                      {{app.mnemonic}}
+                      {{app.name}}
                     </option>
                   </select>
                 </div>

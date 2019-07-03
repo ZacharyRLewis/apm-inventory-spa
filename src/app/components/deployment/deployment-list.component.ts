@@ -24,7 +24,7 @@ export class DeploymentListComponent implements OnInit  {
 
   public columns = [
     {field: 'id', header: 'Id', width: '30px'},
-    {field: 'applicationId', header: 'Application Mnemonic', width: '100px'},
+    {field: 'applicationId', header: 'Application Name', width: '100px'},
     {field: 'environment', header: 'Environment', width: '60px'},
     {field: 'hostServerId', header: 'Base URL', width: '200px'}
   ];
@@ -96,6 +96,7 @@ export class DeploymentListComponent implements OnInit  {
   public prepareDeploymentModal(deployment: Deployment): void {
     this.deploymentComponent.passedDeployment = Object.assign({}, deployment);
     this.deploymentComponent.model = Object.assign({}, deployment);
+    this.deploymentComponent.loadDatabases();
     this.deploymentComponent.loadDeploymentDatabases();
     this.deploymentComponent.loadApis(deployment.contextName);
   }
@@ -147,13 +148,13 @@ export class DeploymentListComponent implements OnInit  {
     this.openModal(this.DEPLOYMENT_DATABASE_MODAL_ID);
   }
 
-  public getAppMnemonic(applicationId: string): string {
+  public getAppName(applicationId: string): string {
     if (!this.applications || !applicationId) {
       return '';
     }
     for (const application of this.applications) {
       if (application.id === applicationId) {
-        return application.mnemonic;
+        return application.name;
       }
     }
     return null;

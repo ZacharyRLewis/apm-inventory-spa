@@ -100,32 +100,32 @@ describe('DeploymentFlyoutFilterComponent', () => {
 
   it('should select a suggestion', () => {
     const application = TestDomain.APPLICATION;
-    component.selectAppMnemonicSuggestion(application);
+    component.selectAppNameSuggestion(application);
 
-    expect(component.selectedAppMnemonic).toEqual(application.mnemonic);
+    expect(component.selectedAppName).toEqual(application.name);
     expect(component.filters.applicationId).toEqual(application.id);
-    expect(component.appMnemonicSuggestions.length).toEqual(0);
+    expect(component.appNameSuggestions.length).toEqual(0);
   });
 
   it('should process typeaheads correctly', () => {
-    component.selectedAppMnemonic = 'test';
+    component.selectedAppName = 'test';
     component.applications = [TestDomain.APPLICATION];
 
-    component.processAppMnemonicTypeAhead();
+    component.processAppNameTypeAhead();
 
-    expect(component.appMnemonicSuggestions.length).toEqual(1);
+    expect(component.appNameSuggestions.length).toEqual(1);
 
-    component.selectedAppMnemonic = 'typeahead';
+    component.selectedAppName = 'typeahead';
     component.applications = [TestDomain.APPLICATION];
 
-    component.processAppMnemonicTypeAhead();
+    component.processAppNameTypeAhead();
 
-    expect(component.appMnemonicSuggestions.length).toEqual(0);
+    expect(component.appNameSuggestions.length).toEqual(0);
 
-    component.selectedAppMnemonic = '';
+    component.selectedAppName = '';
 
-    component.processAppMnemonicTypeAhead();
+    component.processAppNameTypeAhead();
 
-    expect(component.appMnemonicSuggestions.length).toEqual(0);
+    expect(component.appNameSuggestions.length).toEqual(0);
   });
 });

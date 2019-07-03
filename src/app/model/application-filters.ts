@@ -1,6 +1,6 @@
 export class ApplicationFilters {
 
-  constructor(public mnemonic?: string,
+  constructor(public name?: string,
               public owningDepartment?: string,
               public isServiceApi?: boolean,
               public applicationTypeId?: string) {

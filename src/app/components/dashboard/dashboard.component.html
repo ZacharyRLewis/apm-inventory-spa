@@ -32,7 +32,7 @@
       </div>
       <div>
         <div class="tab-table" *ngIf="applicationDependencies?.length > 0; else noApplicationDependencies">
-          <p-table [value]="applicationDependencies" [columns]="dependencySearchColumns" sortField="application.mnemonic" [paginator]="true" [rows]="25">
+          <p-table [value]="applicationDependencies" [columns]="dependencySearchColumns" sortField="application.name" [paginator]="true" [rows]="25">
             <ng-template pTemplate="header">
               <tr>
                 <th *ngFor="let column of dependencySearchColumns" [pSortableColumn]="column.field" width="{{column.width}}">
@@ -43,7 +43,7 @@
             </ng-template>
             <ng-template pTemplate="body" let-applicationDependency>
               <tr>
-                <td>{{applicationDependency?.application.mnemonic}}</td>
+                <td>{{applicationDependency?.application.name}}</td>
                 <td>{{applicationDependency?.dependency.managerReference}}</td>
               </tr>
             </ng-template>
@@ -151,7 +151,7 @@
       </div>
       <div>
         <div class="tab-table" *ngIf="tagApplications?.length > 0; else noTagApplications">
-          <p-table [value]="tagApplications" [columns]="tagSearchColumns" sortField="mnemonic" [paginator]="true" [rows]="25">
+          <p-table [value]="tagApplications" [columns]="tagSearchColumns" sortField="name" [paginator]="true" [rows]="25">
             <ng-template pTemplate="header">
               <tr>
                 <th *ngFor="let column of tagSearchColumns" [pSortableColumn]="column.field" width="{{column.width}}">
@@ -162,7 +162,7 @@
             </ng-template>
             <ng-template pTemplate="body" let-tagApplication>
               <tr>
-                <td>{{tagApplication?.mnemonic}}</td>
+                <td>{{tagApplication?.name}}</td>
                 <td>{{tagApplication?.tags}}</td>
               </tr>
             </ng-template>

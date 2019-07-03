@@ -49,7 +49,7 @@ export class DashboardComponent implements OnInit {
   public selectedTag = '';
 
   public dependencySearchColumns = [
-    {field: 'application.mnemonic', header: 'Application Mnemonic', width: '200px'},
+    {field: 'application.name', header: 'Application Name', width: '200px'},
     {field: 'dependency.managerReference', header: 'Dependency Reference', width: '200px'}
   ];
 
@@ -75,7 +75,7 @@ export class DashboardComponent implements OnInit {
   ];
 
   public tagSearchColumns = [
-    {field: 'mnemonic', header: 'Application Mnemonic', width: '200px'},
+    {field: 'name', header: 'Application Name', width: '200px'},
     {field: 'tags', header: 'Tags', width: '300px'},
   ];
 

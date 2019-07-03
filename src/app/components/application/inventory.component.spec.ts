@@ -211,7 +211,7 @@ describe('InventoryComponent', () => {
 
     const applicationFilters = new ApplicationFilters('test', 'test', true, '1');
     const params = [
-      {name: 'mnemonic', value: 'test'},
+      {name: 'name', value: 'test'},
       {name: 'owningDepartment', value: 'test'},
       {name: 'isServiceApi', value: true},
       {name: 'applicationTypeId', value: '1'}

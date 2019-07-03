@@ -156,21 +156,21 @@ describe('DeploymentListComponent', () => {
     expect(modalService.openModal).toHaveBeenCalledWith(component.DEPLOYMENT_MODAL_ID);
   });
 
-  it('should get app mnemonic correctly', () => {
+  it('should get app name correctly', () => {
     component.applications = null;
-    const appMnemonic1: string = component.getAppMnemonic('123');
+    const appName1: string = component.getAppName('123');
 
-    expect(appMnemonic1).toEqual('');
-
-    component.applications = [TestDomain.APPLICATION];
-    const appMnemonic2: string = component.getAppMnemonic(null);
-
-    expect(appMnemonic2).toEqual('');
+    expect(appName1).toEqual('');
 
     component.applications = [TestDomain.APPLICATION];
-    const appMnemonic3: string = component.getAppMnemonic('123');
+    const appName2: string = component.getAppName(null);
 
-    expect(appMnemonic3).toEqual('test');
+    expect(appName2).toEqual('');
+
+    component.applications = [TestDomain.APPLICATION];
+    const appName3: string = component.getAppName('123');
+
+    expect(appName3).toEqual('Test');
   });
 
   it('should get host server name correctly', () => {

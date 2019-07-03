@@ -5,7 +5,7 @@ export class Application {
 
   constructor(public id?: string,
               public name?: string,
-              public mnemonic?: string,
+              public longName?: string,
               public description?: string,
               public repository?: string,
               public defaultBranch?: string,
