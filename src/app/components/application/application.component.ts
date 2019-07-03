@@ -220,7 +220,7 @@ export class ApplicationComponent {
         });
   }
 
-  private inputValidationClass(inputField: any): string {
+  public inputValidationClass(inputField: any): string {
     let returnVal = '';
     if (inputField && (inputField.touched || inputField.dirty)) {
       returnVal = inputField.valid ? 'is-valid' : 'is-invalid';
@@ -228,7 +228,7 @@ export class ApplicationComponent {
     return returnVal;
   }
 
-  private dependenciesSupportedForAppType(applicationTypeId: string): boolean {
+  public dependenciesSupportedForAppType(applicationTypeId: string): boolean {
     if (!this.applicationTypes || !applicationTypeId) {
       return false;
     }
