@@ -42,8 +42,7 @@ export class DeploymentBulkAddComponent {
   }
 
   public closeModal(): void {
-    this.modalService.closeModal(this.modalId);
-    this.setDefaultValues();
+    this.backToApplication();
   }
 
   public getHostServerName(hostServerId: string): string {

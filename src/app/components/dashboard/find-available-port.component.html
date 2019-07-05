@@ -1,9 +1,11 @@
 <div class="modal fade win-modal-small in" [id]="modalId">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span><i class="fa fa-times"></i></span></button>
-        <h2 class="modal-title" id="modalLabel">Find an Available Port</h2>
+      <div class="modal-header container">
+        <h2 class="modal-title">Find an Available Port</h2>
+        <button type="button" class="close" (click)="closeModal()">
+          <span><i class="fa fa-times"></i></span>
+        </button>
       </div>
       <div class="modal-body">
         <form ngForm="newDeploymentDatabaseForm">

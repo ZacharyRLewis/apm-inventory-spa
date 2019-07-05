@@ -25,6 +25,12 @@ export class DeploymentDatabaseComponent {
 
   public setDefaultValues(): void {
     this.passedDeployment = new Deployment('');
+    this.model.id = null;
+    this.model.databaseId = null;
+    this.model.deploymentId = null;
+    this.model.deployment = null;
+    this.model.database = null;
+    this.model.connectionUsername = '';
   }
 
   public loadDatabases = () => {
@@ -35,8 +41,7 @@ export class DeploymentDatabaseComponent {
   }
 
   public closeModal(): void {
-    this.modalService.closeModal(this.modalId);
-    this.passedDeployment = null;
+    this.backToDeployment();
   }
 
   public addToDeployment(): void {
@@ -61,6 +66,7 @@ export class DeploymentDatabaseComponent {
     const deployment: Deployment = Object.assign({}, this.passedDeployment);
 
     this.cancelAddDatabaseEvent.emit(deployment);
+    this.setDefaultValues();
   }
 
   public getDatabaseHost(deploymentDatabase: DeploymentDatabase): string {
