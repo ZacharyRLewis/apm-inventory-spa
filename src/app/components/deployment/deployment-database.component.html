@@ -1,19 +1,23 @@
-<div class="modal fade win-modal-small in" [id]="modalId">
+<div class="modal fade win-modal-big in" [id]="modalId">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header container">
-        <h2 class="modal-title">Add DB to Deployment</h2>
+        <h2 class="modal-title" *ngIf="!passedDeploymentDatabase">Add Database to Deployment</h2>
+        <h2 class="modal-title" *ngIf="passedDeploymentDatabase">Update Deployment Database</h2>
         <button type="button" class="close" (click)="closeModal()">
           <span><i class="fa fa-times"></i></span>
         </button>
       </div>
-      <div class="modal-body">
-        <form ngForm="newDeploymentDatabaseForm">
+      <div class="modal-body container">
+        <form id="newDeploymentDatabaseForm" #newDeploymentDatabaseForm="ngForm">
           <div class="apm-form-body">
             <div class="apm-form-group">
               <label class="win-label apm-label" for="databaseId">Database</label>
               <div class="apm-input-group">
-                <select class="apm-input apm-select" id="databaseId" [(ngModel)]="model.databaseId" name="databaseId" #databaseId="ngModel">
+                <select class="apm-input apm-select" id="databaseId" [(ngModel)]="model.databaseId" name="databaseId"
+                        #databaseId="ngModel" required
+                        [class.invalid]="(databaseId.touched || databaseId.dirty) && databaseId.invalid">
+                  <option value=""></option>
                   <option *ngFor="let db of databases" value="{{db.id}}">
                     {{db.name}}
                   </option>
@@ -23,7 +27,9 @@
             <div class="apm-form-group">
               <label class="win-label apm-label" for="connectionUsername">Connection Username</label>
               <div class="apm-input-group">
-                <input type="text" class="apm-input" id="connectionUsername" name="connectionUsername" [(ngModel)]="model.connectionUsername">
+                <input type="text" class="apm-input" id="connectionUsername" name="connectionUsername" required minlength="2"
+                       [(ngModel)]="model.connectionUsername" #connectionUsername="ngModel"
+                       [class.invalid]="(connectionUsername.touched || connectionUsername.dirty) && connectionUsername.invalid">
               </div>
             </div>
             <div class="apm-form-group">
@@ -41,9 +47,14 @@
           </div>
         </form>
       </div>
-      <div class="modal-footer">
-        <button class="btn win-button win-button-big win-button-secondary left" (click)="backToDeployment()">Cancel</button>
-        <button class="btn win-button win-button-big win-button-primary right" (click)="addToDeployment()">Add</button>
+      <div class="modal-footer container">
+        <button type="button" class="win-button win-button-secondary btn left" *ngIf="passedDeploymentDatabase" (click)="deleteDeploymentDatabase()">
+          <span>Delete Deployment Database</span>
+        </button>
+        <button type="button" class="win-button win-button-primary btn right" (click)="saveDeploymentDatabase()"
+                [disabled]="!newDeploymentDatabaseForm || !newDeploymentDatabaseForm.form.valid || !newDeploymentDatabaseForm.form.dirty">
+          <span>Save Deployment Database</span>
+        </button>
       </div>
     </div>
   </div>

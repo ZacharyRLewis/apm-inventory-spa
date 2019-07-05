@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
-import {Application, Deployment, HostServer} from '../../model';
+import {Application, Deployment, DeploymentDatabase, HostServer} from '../../model';
 import {DeploymentFilters} from '../../model/deployment-filters';
 import {ApplicationService, HostServerService} from '../../services';
 import {DeploymentService} from '../../services/deployment/deployment.service';
@@ -101,8 +101,13 @@ export class DeploymentListComponent implements OnInit  {
     this.deploymentComponent.loadApis(deployment.contextName);
   }
 
-  public prepareDeploymentDatabaseModal(deployment: Deployment): void {
+  public prepareDeploymentDatabaseModal(deployment: Deployment, deploymentDatabase: DeploymentDatabase): void {
     this.deploymentDatabaseComponent.passedDeployment = Object.assign({}, deployment);
+
+    if (deploymentDatabase) {
+      this.deploymentDatabaseComponent.passedDeploymentDatabase = Object.assign({}, deploymentDatabase);
+      this.deploymentDatabaseComponent.model = Object.assign({}, deploymentDatabase);
+    }
   }
 
   public openModal(modalId: string): void {
@@ -134,16 +139,17 @@ export class DeploymentListComponent implements OnInit  {
     this.openModal(this.DEPLOYMENT_MODAL_ID);
   }
 
-  public handleDeploymentDatabaseCreate(deployment: Deployment): void {
+  public handleDeploymentDatabaseUpdate(deployment: Deployment): void {
     this.prepareDeploymentModal(deployment);
+    this.deploymentComponent.loadDeploymentDatabases();
     this.deploymentComponent.databasesAdded = true;
     this.closeModal(this.DEPLOYMENT_DATABASE_MODAL_ID);
     this.openModal(this.DEPLOYMENT_MODAL_ID);
   }
 
-  public addDatabaseToDeployment(deployment: Deployment): void {
+  public openDeploymentDatabaseModal({deployment, deploymentDatabase}): void {
     this.deploymentDatabaseComponent.loadDatabases();
-    this.prepareDeploymentDatabaseModal(deployment);
+    this.prepareDeploymentDatabaseModal(deployment, deploymentDatabase);
     this.closeModal(this.DEPLOYMENT_MODAL_ID);
     this.openModal(this.DEPLOYMENT_DATABASE_MODAL_ID);
   }

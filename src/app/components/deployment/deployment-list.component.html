@@ -45,10 +45,10 @@
                 (createEvent)="handleCreate($event)"
                 (deleteEvent)="handleDelete($event)"
                 (updateEvent)="handleUpdate($event)"
-                (addDatabaseEvent)="addDatabaseToDeployment($event)">
+                (openDeploymentDatabaseModalEvent)="openDeploymentDatabaseModal($event)">
 </apm-deployment>
 
 <apm-deployment-database #deploymentDatabaseComponent [modalId]="DEPLOYMENT_DATABASE_MODAL_ID"
-                       (addDatabaseEvent)="handleDeploymentDatabaseCreate($event)"
-                       (cancelAddDatabaseEvent)="handleDeploymentDatabaseCancel($event)">
+                         (updateDatabaseEvent)="handleDeploymentDatabaseUpdate($event)"
+                         (cancelAddDatabaseEvent)="handleDeploymentDatabaseCancel($event)">
 </apm-deployment-database>

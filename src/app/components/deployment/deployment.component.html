@@ -92,7 +92,7 @@
           <p-panel header="Databases" [toggleable]="true" [(collapsed)]="collapseDatabasesPanel">
             <div class="child-table-div">
               <div>
-                <button class="add-button" [disabled]="!passedDeployment || !model.id" (click)="addDatabase()">
+                <button class="add-button" [disabled]="!passedDeployment || !model.id" (click)="openDeploymentDatabaseModal()">
                   <i class="fa fa-plus" aria-hidden="true"></i>
                   <span>Add Database</span>
                 </button>
@@ -110,7 +110,9 @@
                     <tr>
                       <td>{{getDatabaseName(database.databaseId)}}</td>
                       <td>{{getDatabaseHost(database.databaseId)}}</td>
-                      <td>{{database.connectionUsername}}</td>
+                      <td>
+                        <a (click)="openDeploymentDatabaseModal(database)">{{database.connectionUsername}}</a>
+                      </td>
                     </tr>
                   </ng-template>
                 </p-table>

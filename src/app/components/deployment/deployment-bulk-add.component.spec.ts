@@ -82,12 +82,14 @@ describe('DeploymentBulkAddComponent', () => {
     expect(component.contextName).toEqual('');
   });
 
-  it('should close modal', () => {
+  it('should dismiss modal', () => {
     spyOn(modalService, 'closeModal').and.callThrough();
 
     component.closeModal();
 
-    expect(modalService.closeModal).toHaveBeenCalled();
+    component.cancelAppDeploymentEvent.subscribe(application => {
+      expect(application.id).toEqual('123');
+    });
   });
 
   it('should get host server name correctly', () => {

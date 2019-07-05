@@ -17,7 +17,7 @@ export class DeploymentComponent implements OnInit {
   @Output() createEvent: EventEmitter<Deployment> = new EventEmitter<Deployment>();
   @Output() deleteEvent: EventEmitter<Deployment> = new EventEmitter<Deployment>();
   @Output() updateEvent: EventEmitter<Deployment> = new EventEmitter<Deployment>();
-  @Output() addDatabaseEvent: EventEmitter<Deployment> = new EventEmitter<Deployment>();
+  @Output() openDeploymentDatabaseModalEvent: EventEmitter<object> = new EventEmitter<object>();
 
   public model: Deployment = new Deployment();
   public passedApplication: Application;
@@ -182,10 +182,10 @@ export class DeploymentComponent implements OnInit {
     return host + this.model.contextName;
   }
 
-  public addDatabase(): void {
+  public openDeploymentDatabaseModal(deploymentDatabase?: DeploymentDatabase): void {
     const deployment: Deployment = Object.assign({}, this.model);
 
-    this.addDatabaseEvent.emit(deployment);
+    this.openDeploymentDatabaseModalEvent.emit({deployment, deploymentDatabase});
   }
 
   public getDatabaseName(databaseId: string): string {

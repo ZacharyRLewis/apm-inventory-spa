@@ -5,7 +5,7 @@ import {ModalService, ShareDataService} from '@win-angular/services';
 import {cold} from 'jasmine-marbles';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
-import {Database, DeploymentDatabase, TestDomain, WinResponse} from '../../model';
+import {Database, Deployment, DeploymentDatabase, TestDomain, WinResponse} from '../../model';
 import {DatabaseService, DeploymentDatabaseService} from '../../services';
 import {DeploymentDatabaseComponent} from './deployment-database.component';
 
@@ -13,6 +13,14 @@ class MockDeploymentDatabaseService extends DeploymentDatabaseService {
   private response: WinResponse<DeploymentDatabase[]> = {meta: null, data: [TestDomain.DEPLOYMENT_DATABASE]};
 
   public create(deploymentDatabase: DeploymentDatabase): Observable<WinResponse<DeploymentDatabase>> {
+    return cold('--x|', {x: this.response});
+  }
+
+  public update(deploymentDatabase: Deployment): Observable<WinResponse<DeploymentDatabase>> {
+    return cold('--x|', {x: this.response});
+  }
+
+  public delete(deploymentDatabase: Deployment): Observable<WinResponse<DeploymentDatabase>> {
     return cold('--x|', {x: this.response});
   }
 }
@@ -67,24 +75,65 @@ describe('DeploymentDatabaseComponent', () => {
     expect(component.passedDeployment.id).toEqual('');
   });
 
-  it('should close modal', () => {
+  it('should dismiss modal', () => {
     spyOn(modalService, 'closeModal').and.callThrough();
 
     component.closeModal();
 
-    expect(modalService.closeModal).toHaveBeenCalled();
+    component.cancelAddDatabaseEvent.subscribe(deployment => {
+      expect(deployment.id).toEqual('123');
+    });
   });
 
-  it('should add deployment database to deployment', () => {
+  it('should call create deployment database when passedDeploymentDatabase doesnt exist', () => {
+    spyOn(component, 'createDeploymentDatabase').and.callThrough();
+    spyOn(component, 'updateDeploymentDatabase').and.callThrough();
+
+    component.passedDeploymentDatabase = null;
+    component.saveDeploymentDatabase();
+
+    expect(component.updateDeploymentDatabase).toHaveBeenCalledTimes(0);
+    expect(component.createDeploymentDatabase).toHaveBeenCalledTimes(1);
+  });
+
+  it('should create deployment database', () => {
     spyOn(deploymentDatabaseService, 'create').and.callThrough();
 
     component.model = Object.assign({}, deploymentDatabase);
     component.passedDeployment = TestDomain.DEPLOYMENT;
-    component.addToDeployment();
+    component.createDeploymentDatabase();
 
     expect(deploymentDatabaseService.create).toHaveBeenCalled();
 
-    component.addDatabaseEvent.subscribe(deployment => {
+    component.updateDatabaseEvent.subscribe(deployment => {
+      expect(deployment.id).toEqual('123');
+    });
+  });
+
+  it('should delete deployment database', () => {
+    spyOn(deploymentDatabaseService, 'delete').and.callThrough();
+
+    component.model = Object.assign({}, deploymentDatabase);
+    component.passedDeployment = TestDomain.DEPLOYMENT;
+    component.deleteDeploymentDatabase();
+
+    expect(deploymentDatabaseService.delete).toHaveBeenCalled();
+
+    component.updateDatabaseEvent.subscribe(deployment => {
+      expect(deployment.id).toEqual('123');
+    });
+  });
+
+  it('should update deployment database', () => {
+    spyOn(deploymentDatabaseService, 'update').and.callThrough();
+
+    component.model = Object.assign({}, deploymentDatabase);
+    component.passedDeployment = TestDomain.DEPLOYMENT;
+    component.updateDeploymentDatabase();
+
+    expect(deploymentDatabaseService.update).toHaveBeenCalled();
+
+    component.updateDatabaseEvent.subscribe(deployment => {
       expect(deployment.id).toEqual('123');
     });
   });

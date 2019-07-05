@@ -263,12 +263,12 @@ describe('DeploymentComponent', () => {
     expect(apiUrl3).toEqual('https://ag1.winwholesale.com/' + deployment.contextName);
   });
 
-  it('should emit add database event', () => {
+  it('should emit open deployment database modal event', () => {
     component.model = deployment;
-    component.addDatabase();
+    component.openDeploymentDatabaseModal();
 
-    component.addDatabaseEvent.subscribe(depl => {
-      expect(depl.id).toEqual(deployment.id);
+    component.openDeploymentDatabaseModalEvent.subscribe(res => {
+      expect(res.deployment.id).toEqual(deployment.id);
     });
   });
 });

@@ -128,14 +128,14 @@ describe('DeploymentListComponent', () => {
     expect(component.refreshDeployments).toHaveBeenCalled();
   });
 
-  it('should handle deployment database create', () => {
+  it('should handle deployment database update', () => {
     spyOn(component, 'prepareDeploymentModal').and.callThrough();
     spyOn(modalService, 'closeModal').and.callThrough();
     spyOn(modalService, 'openModal').and.callThrough();
 
     const deployment: Deployment = TestDomain.DEPLOYMENT;
 
-    component.handleDeploymentDatabaseCreate(deployment);
+    component.handleDeploymentDatabaseUpdate(deployment);
 
     expect(component.prepareDeploymentModal).toHaveBeenCalledWith(deployment);
     expect(modalService.closeModal).toHaveBeenCalledWith(component.DEPLOYMENT_DATABASE_MODAL_ID);
