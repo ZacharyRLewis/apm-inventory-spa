@@ -9,12 +9,15 @@
         </button>
       </div>
       <div class="modal-body container">
-        <form ngForm="newDatabaseForm">
+        <form id="newDatabaseForm" #newDatabaseForm="ngForm">
           <div class="apm-form-body">
             <div class="apm-form-group">
-              <label class="win-label apm-label" for="environment">Environment</label>
+              <label class="win-label apm-label" for="environment">Environment*</label>
               <div class="apm-input-group">
-                <select class="apm-input apm-select" id="environment" [(ngModel)]="model.environment" name="environment" #environment="ngModel">
+                <select class="apm-input apm-select" id="environment" [(ngModel)]="model.environment" name="environment"
+                        #environment="ngModel" required
+                        [class.invalid]="(environment.touched || environment.dirty) && environment.invalid">
+                  <option value=""></option>
                   <option *ngFor="let env of environments">
                     {{env}}
                   </option>
@@ -22,15 +25,19 @@
               </div>
             </div>
             <div class="apm-form-group">
-              <label class="win-label apm-label" for="name">Name</label>
+              <label class="win-label apm-label" for="databaseName">Name*</label>
               <div class="apm-input-group">
-                <input type="text" class="apm-input" id="name" name="name" [(ngModel)]="model.name">
+                <input type="text" class="apm-input" id="databaseName" name="databaseName" required minlength="2"
+                       [(ngModel)]="model.name" #databaseName="ngModel"
+                       [class.invalid]="(databaseName.touched || databaseName.dirty) && databaseName.invalid">
               </div>
             </div>
             <div class="apm-form-group">
-              <label class="win-label apm-label" for="hostName">Host Name</label>
+              <label class="win-label apm-label" for="hostName">Host Name*</label>
               <div class="apm-input-group">
-                <input type="text" class="apm-input" id="hostName" name="hostName" [(ngModel)]="model.hostName">
+                <input type="text" class="apm-input" id="hostName" name="hostName" required minlength="2"
+                       [(ngModel)]="model.hostName" #hostName="ngModel"
+                       [class.invalid]="(hostName.touched || hostName.dirty) && hostName.invalid">
               </div>
             </div>
             <div class="apm-form-group">
@@ -40,9 +47,12 @@
               </div>
             </div>
             <div class="apm-form-group">
-              <label class="win-label apm-label" for="type">Type</label>
+              <label class="win-label apm-label" for="databaseType">Type*</label>
               <div class="apm-input-group">
-                <select class="apm-input apm-select" id="type" [(ngModel)]="model.type.id" name="type" #type="ngModel">
+                <select class="apm-input apm-select" id="databaseType" [(ngModel)]="model.type.id" name="databaseType"
+                        #databaseType="ngModel" required
+                        [class.invalid]="(databaseType.touched || databaseType.dirty) && databaseType.invalid">
+                  <option value=""></option>
                   <option *ngFor="let dbType of databaseTypes" value="{{dbType.id}}">
                     {{dbType.name}}
                   </option>
@@ -56,8 +66,9 @@
         <button type="button" class="win-button win-button-secondary btn left" *ngIf="passedDatabase" (click)="deleteDatabase()">
           <span>Delete Database</span>
         </button>
-        <button type="button" class="win-button win-button-primary btn right" (click)="saveDatabase()">
-          <span>Save Database</span>
+        <button type="button" class="win-button win-button-primary btn right" (click)="saveDatabase()"
+                [disabled]="!newDatabaseForm || !newDatabaseForm.form.valid || !newDatabaseForm.form.dirty">
+        <span>Save Database</span>
         </button>
       </div>
     </div>

@@ -8,10 +8,10 @@
         </button>
       </div>
       <div class="modal-body container">
-        <form ngForm="newDeploymentForm">
+        <form id="newDeploymentForm" #newDeploymentForm="ngForm">
           <div class="apm-form-body">
             <div class="apm-form-group">
-              <label class="win-label apm-label" for="applicationName">Application Name</label>
+              <label class="win-label apm-label" for="applicationName">Application Name*</label>
               <div class="apm-input-group">
                 <div class="apm-input-group">
                   <div class="apm-input base-url" id="applicationName">{{passedApplication?.name}}</div>
@@ -19,9 +19,11 @@
               </div>
             </div>
             <div class="apm-form-group">
-              <label class="win-label apm-label" for="environment">Environment</label>
+              <label class="win-label apm-label" for="environment">Environment*</label>
               <div class="apm-input-group">
-                <select class="apm-input apm-select" id="environment" [(ngModel)]="environment" name="environment">
+                <select class="apm-input apm-select" id="environment" [(ngModel)]="model.environment" name="environment"
+                        #environment="ngModel" required
+                        [class.invalid]="(environment.touched || environment.dirty) && environment.invalid">
                   <option *ngFor="let env of environments">
                     {{env}}
                   </option>
@@ -31,13 +33,15 @@
             <div class="apm-form-group">
               <label class="win-label apm-label" for="directory">Deployment Directory</label>
               <div class="apm-input-group">
-                <input type="text" class="apm-input" id="directory" name="directory" [(ngModel)]="directory">
+                <input type="text" class="apm-input" id="directory" name="directory" [(ngModel)]="model.directory">
               </div>
             </div>
             <div class="apm-form-group">
-              <label class="win-label apm-label" for="https">Is HTTPS?</label>
+              <label class="win-label apm-label" for="https">Is HTTPS?*</label>
               <div class="apm-input-group">
-                <select class="apm-input apm-select" id="https" [(ngModel)]="https" name="https">
+                <select class="apm-input apm-select" id="https" [(ngModel)]="model.https" name="https"
+                        #https="ngModel" required
+                        [class.invalid]="(https.touched || https.dirty) && https.invalid">
                   <option *ngFor="let choice of ['true', 'false']" value="{{choice}}">
                     {{choice}}
                   </option>
@@ -45,9 +49,11 @@
               </div>
             </div>
             <div class="apm-form-group">
-              <label class="win-label apm-label" for="hostServerId">Host Server</label>
+              <label class="win-label apm-label" for="hostServerId">Host Server*</label>
               <div class="apm-input-group">
-                <select class="apm-input apm-select" id="hostServerId" [(ngModel)]="hostServerId" name="hostServerId">
+                <select class="apm-input apm-select" id="hostServerId" [(ngModel)]="model.hostServerId" name="hostServerId"
+                        #hostServerId="ngModel" required
+                        [class.invalid]="(hostServerId.touched || hostServerId.dirty) && hostServerId.invalid">
                   <option *ngFor="let hostServer of hostServers" value="{{hostServer.id}}">
                     {{hostServer.name}}
                   </option>
@@ -57,20 +63,22 @@
             <div class="apm-form-group">
               <label class="win-label apm-label" for="port">Port</label>
               <div class="apm-input-group">
-                <input type="text" class="apm-input" id="port" name="port" [(ngModel)]="port">
+                <input type="text" class="apm-input" id="port" name="port" [(ngModel)]="model.port">
               </div>
             </div>
             <div class="apm-form-group">
-              <label class="win-label apm-label" for="contextName">Context Name</label>
+              <label class="win-label apm-label" for="contextName">Context Name*</label>
               <div class="apm-input-group">
-                <input type="text" class="apm-input" id="contextName" name="contextName" [(ngModel)]="contextName">
+                <input type="text" class="apm-input" id="contextName" name="contextName" required minlength="2"
+                       [(ngModel)]="model.contextName" #contextName="ngModel"
+                       [class.invalid]="(contextName.touched || contextName.dirty) && contextName.invalid">
               </div>
             </div>
             <div class="apm-form-group">
               <label class="win-label apm-label" for="addAnotherButton">&nbsp;</label>
               <div class="apm-input-group">
                 <button id="addAnotherButton" class="win-button win-button-primary btn left"
-                        [disabled]="fieldsHaveNotBeenChanged()"
+                        [disabled]="fieldsHaveNotBeenChanged() || !newDeploymentForm || !newDeploymentForm.form.valid || !newDeploymentForm.form.dirty"
                         (click)="createDeploymentFromFields()">
                   <span>Add Another</span>
                 </button>
@@ -104,7 +112,8 @@
         <button type="button" class="win-button win-button-secondary btn left" (click)="backToApplication()">
           <span>Back to Application</span>
         </button>
-        <button type="button" class="win-button win-button-primary btn right" (click)="addToApplication()">
+        <button type="button" class="win-button win-button-primary btn right" (click)="addToApplication()"
+                [disabled]="!newDeploymentForm || !newDeploymentForm.form.valid || !newDeploymentForm.form.dirty">
           <span>Add to Application</span>
         </button>
       </div>

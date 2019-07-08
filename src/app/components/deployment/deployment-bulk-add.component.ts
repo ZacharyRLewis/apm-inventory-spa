@@ -1,7 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ModalService} from '@win-angular/services';
 import {Application, Deployment, HostServer} from '../../model';
-import {DeploymentService} from '../../services';
 
 @Component({
   selector: 'apm-deployment-bulk-add',
@@ -16,16 +14,11 @@ export class DeploymentBulkAddComponent {
   @Output() cancelAppDeploymentEvent: EventEmitter<Application> = new EventEmitter<Application>();
 
   public deployments: Deployment[] = [];
+  public model: Deployment = new Deployment();
   public passedApplication: Application;
   public environments: string[] = ['DEV', 'QA', 'PROD'];
-  public directory = '';
-  public environment = '';
-  public https = false;
-  public hostServerId = '';
-  public port = '';
-  public contextName = '';
 
-  constructor(private deploymentService: DeploymentService, private modalService: ModalService) {
+  constructor() {
     this.setDefaultValues();
   }
 
@@ -33,12 +26,12 @@ export class DeploymentBulkAddComponent {
     this.passedApplication = new Application();
     this.passedApplication.id = '';
     this.deployments = [];
-    this.directory = '';
-    this.environment = '';
-    this.https = false;
-    this.hostServerId = '';
-    this.port = '';
-    this.contextName = '';
+    this.model.directory = '';
+    this.model.environment = '';
+    this.model.https = false;
+    this.model.hostServerId = '';
+    this.model.port = '';
+    this.model.contextName = '';
   }
 
   public closeModal(): void {
@@ -64,18 +57,18 @@ export class DeploymentBulkAddComponent {
   }
 
   public createDeploymentFromFields(): void {
-    if (!this.environment || !this.hostServerId || !this.port || !this.contextName) {
+    if (!this.model.environment || !this.model.hostServerId || !this.model.contextName) {
       return;
     }
 
     const deployment: Deployment = new Deployment();
     deployment.applicationId = this.passedApplication.id;
-    deployment.environment = this.environment;
-    deployment.directory = this.directory;
-    deployment.https = this.https;
-    deployment.hostServerId = this.hostServerId;
-    deployment.port = this.port;
-    deployment.contextName = this.contextName;
+    deployment.environment = this.model.environment;
+    deployment.directory = this.model.directory;
+    deployment.https = this.model.https;
+    deployment.hostServerId = this.model.hostServerId;
+    deployment.port = this.model.port;
+    deployment.contextName = this.model.contextName;
 
     this.deployments.push(deployment);
   }
@@ -86,10 +79,10 @@ export class DeploymentBulkAddComponent {
     }
 
     const lastDeploymentAdded: Deployment = this.deployments[this.deployments.length - 1];
-    return lastDeploymentAdded.environment === this.environment
-      && lastDeploymentAdded.hostServerId === this.hostServerId
-      && lastDeploymentAdded.port === this.port
-      && lastDeploymentAdded.contextName === this.contextName;
+    return lastDeploymentAdded.environment === this.model.environment
+      && lastDeploymentAdded.hostServerId === this.model.hostServerId
+      && lastDeploymentAdded.port === this.model.port
+      && lastDeploymentAdded.contextName === this.model.contextName;
   }
 
   public backToApplication(): void {

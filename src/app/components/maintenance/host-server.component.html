@@ -9,18 +9,23 @@
         </button>
       </div>
       <div class="modal-body container">
-        <form ngForm="newHostServerForm">
+        <form id="newHostServerForm" #newHostServerForm="ngForm">
           <div class="apm-form-body">
             <div class="apm-form-group">
-              <label class="win-label apm-label" for="name">Name</label>
+              <label class="win-label apm-label" for="hostServerName">Name*</label>
               <div class="apm-input-group">
-                <input type="text" class="apm-input" id="name" name="name" [(ngModel)]="model.name">
+                <input type="text" class="apm-input" id="hostServerName" name="hostServerName" required minlength="2"
+                       [(ngModel)]="model.name" #hostServerName="ngModel"
+                       [class.invalid]="(hostServerName.touched || hostServerName.dirty) && hostServerName.invalid">
               </div>
             </div>
             <div class="apm-form-group">
-              <label class="win-label apm-label" for="environment">Environment</label>
+              <label class="win-label apm-label" for="environment">Environment*</label>
               <div class="apm-input-group">
-                <select class="apm-input apm-select" id="environment" [(ngModel)]="model.environment" name="environment" #environment="ngModel">
+                <select class="apm-input apm-select" id="environment" [(ngModel)]="model.environment" name="environment"
+                        #environment="ngModel" required
+                        [class.invalid]="(environment.touched || environment.dirty) && environment.invalid">
+                  <option value=""></option>
                   <option *ngFor="let env of environments">
                     {{env}}
                   </option>
@@ -28,9 +33,12 @@
               </div>
             </div>
             <div class="apm-form-group">
-              <label class="win-label apm-label" for="operatingSystem">Operating System</label>
+              <label class="win-label apm-label" for="operatingSystem">Operating System*</label>
               <div class="apm-input-group">
-                <select class="apm-input apm-select" id="operatingSystem" [(ngModel)]="model.operatingSystem" name="operatingSystem" #operatingSystem="ngModel">
+                <select class="apm-input apm-select" id="operatingSystem" [(ngModel)]="model.operatingSystem" name="operatingSystem"
+                        #operatingSystem="ngModel" required
+                        [class.invalid]="(operatingSystem.touched || operatingSystem.dirty) && operatingSystem.invalid">
+                  <option value=""></option>
                   <option *ngFor="let operatingSystem of operatingSystems">
                     {{operatingSystem}}
                   </option>
@@ -42,10 +50,11 @@
       </div>
       <div class="modal-footer container">
         <button type="button" class="win-button win-button-secondary btn left" *ngIf="passedHostServer" (click)="deleteHostServer()">
-          <span>Delete HostServer</span>
+          <span>Delete Host Server</span>
         </button>
-        <button type="button" class="win-button win-button-primary btn right" (click)="saveHostServer()">
-          <span>Save HostServer</span>
+        <button type="button" class="win-button win-button-primary btn right" (click)="saveHostServer()"
+                [disabled]="!newHostServerForm || !newHostServerForm.form.valid || !newHostServerForm.form.dirty">
+        <span>Save Host Server</span>
         </button>
       </div>
     </div>

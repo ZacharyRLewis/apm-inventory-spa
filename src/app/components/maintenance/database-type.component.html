@@ -9,12 +9,14 @@
         </button>
       </div>
       <div class="modal-body container">
-        <form ngForm="newDatabaseTypeForm">
+        <form id="newDatabaseTypeForm" #newDatabaseTypeForm="ngForm">
           <div class="apm-form-body">
             <div class="apm-form-group">
-              <label class="win-label apm-label" for="name">Name</label>
+              <label class="win-label apm-label" for="databaseTypeName">Name*</label>
               <div class="apm-input-group">
-                <input type="text" class="apm-input" id="name" name="name" [(ngModel)]="model.name">
+                <input type="text" class="apm-input" id="databaseTypeName" name="databaseTypeName" required minlength="2"
+                       [(ngModel)]="model.name" #databaseTypeName="ngModel"
+                       [class.invalid]="(databaseTypeName.touched || databaseTypeName.dirty) && databaseTypeName.invalid">
               </div>
             </div>
           </div>
@@ -24,8 +26,9 @@
         <button type="button" class="win-button win-button-secondary btn left" *ngIf="passedDatabaseType" (click)="deleteDatabaseType()">
           <span>Delete Database Type</span>
         </button>
-        <button type="button" class="win-button win-button-primary btn right" (click)="saveDatabaseType()">
-          <span>Save Database Type</span>
+        <button type="button" class="win-button win-button-primary btn right" (click)="saveDatabaseType()"
+                [disabled]="!newDatabaseTypeForm || !newDatabaseTypeForm.form.valid || !newDatabaseTypeForm.form.dirty">
+        <span>Save Database Type</span>
         </button>
       </div>
     </div>

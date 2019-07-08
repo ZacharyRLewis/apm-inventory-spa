@@ -9,24 +9,30 @@
         </button>
       </div>
       <div class="modal-body container">
-        <form ngForm="newApplicationTypeForm">
+        <form id="newApplicationTypeForm" #newApplicationTypeForm="ngForm">
           <div class="apm-form-body">
             <div class="apm-form-group">
-              <label class="win-label apm-label" for="name">Name</label>
+              <label class="win-label apm-label" for="applicationTypeName">Name*</label>
               <div class="apm-input-group">
-                <input type="text" class="apm-input" id="name" name="name" [(ngModel)]="model.name">
+                <input type="text" class="apm-input" id="applicationTypeName" name="applicationTypeName" required minlength="2"
+                       [(ngModel)]="model.name" #applicationTypeName="ngModel"
+                       [class.invalid]="(applicationTypeName.touched || applicationTypeName.dirty) && applicationTypeName.invalid">
               </div>
             </div>
             <div class="apm-form-group">
-              <label class="win-label apm-label" for="version">Version</label>
+              <label class="win-label apm-label" for="version">Version*</label>
               <div class="apm-input-group">
-                <input type="text" class="apm-input" id="version" name="version" [(ngModel)]="model.version">
+                <input type="text" class="apm-input" id="version" name="version" required
+                       [(ngModel)]="model.version" #version="ngModel"
+                       [class.invalid]="(version.touched || version.dirty) && version.invalid">
               </div>
             </div>
             <div class="apm-form-group">
-              <label class="win-label apm-label" for="version">Description</label>
+              <label class="win-label apm-label" for="version">Description*</label>
               <div class="apm-input-group">
-                <input type="text" class="apm-input" id="description" name="description" [(ngModel)]="model.description">
+                <input type="text" class="apm-input" id="description" name="description" required minlength="2"
+                       [(ngModel)]="model.description" #description="ngModel"
+                       [class.invalid]="(description.touched || description.dirty) && description.invalid">
               </div>
             </div>
           </div>
@@ -36,8 +42,9 @@
         <button type="button" class="win-button win-button-secondary btn left" *ngIf="passedApplicationType" (click)="deleteApplicationType()">
           <span>Delete Application Type</span>
         </button>
-        <button type="button" class="win-button win-button-primary btn right" (click)="saveApplicationType()">
-          <span>Save Application Type</span>
+        <button type="button" class="win-button win-button-primary btn right" (click)="saveApplicationType()"
+                [disabled]="!newApplicationTypeForm || !newApplicationTypeForm.form.valid || !newApplicationTypeForm.form.dirty">
+        <span>Save Application Type</span>
         </button>
       </div>
     </div>

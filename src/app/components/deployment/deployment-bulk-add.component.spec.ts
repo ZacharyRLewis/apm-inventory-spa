@@ -1,57 +1,19 @@
 import {HttpClientModule} from '@angular/common/http';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {ModalService} from '@win-angular/services';
-import {cold} from 'jasmine-marbles';
 import {TableModule} from 'primeng/table';
-import {Observable} from 'rxjs';
 import {DeploymentBulkAddComponent} from '..';
-import {Deployment, HostServer, TestDomain, WinResponse} from '../../model';
-import {DatabaseService, DeploymentService} from '../../services';
-
-class MockDeploymentService extends DeploymentService {
-  private response: WinResponse<Deployment> = {meta: null, data: TestDomain.DEPLOYMENT};
-
-  public create(deployment: Deployment): Observable<WinResponse<Deployment>> {
-    return cold('--x|', {x: this.response});
-  }
-
-  public update(deployment: Deployment): Observable<WinResponse<Deployment>> {
-    return cold('--x|', {x: this.response});
-  }
-
-  public delete(deployment: Deployment): Observable<WinResponse<Deployment>> {
-    return cold('--x|', {x: this.response});
-  }
-}
-
-class MockModalService extends ModalService {
-  openModal(modalId: string, hideFocus?: boolean) {
-    console.log('open modal');
-  }
-
-  closeModal(modalId: string) {
-    console.log('close modal');
-  }
-}
+import {Deployment, HostServer, TestDomain} from '../../model';
 
 describe('DeploymentBulkAddComponent', () => {
   let component: DeploymentBulkAddComponent;
   let fixture: ComponentFixture<DeploymentBulkAddComponent>;
-  let deploymentService: DeploymentService;
-  let databaseService: DatabaseService;
-  let modalService: ModalService;
   let deployment: Deployment;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientModule, TableModule],
       declarations: [DeploymentBulkAddComponent],
-      providers: [
-        {provide: DeploymentService, useClass: MockDeploymentService},
-        DatabaseService,
-        {provide: ModalService, useClass: MockModalService}
-      ]
     }).compileComponents();
   }));
 
@@ -59,9 +21,6 @@ describe('DeploymentBulkAddComponent', () => {
     fixture = TestBed.createComponent(DeploymentBulkAddComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    deploymentService = TestBed.get(DeploymentService);
-    databaseService = TestBed.get(DatabaseService);
-    modalService = TestBed.get(ModalService);
     component.modalId = 'test';
     deployment = TestDomain.DEPLOYMENT;
   });
@@ -74,17 +33,15 @@ describe('DeploymentBulkAddComponent', () => {
     component.setDefaultValues();
 
     expect(component.passedApplication.id).toEqual('');
-    expect(component.environment).toEqual('');
-    expect(component.directory).toEqual('');
-    expect(component.https).toEqual(false);
-    expect(component.hostServerId).toEqual('');
-    expect(component.port).toEqual('');
-    expect(component.contextName).toEqual('');
+    expect(component.model.environment).toEqual('');
+    expect(component.model.directory).toEqual('');
+    expect(component.model.https).toEqual(false);
+    expect(component.model.hostServerId).toEqual('');
+    expect(component.model.port).toEqual('');
+    expect(component.model.contextName).toEqual('');
   });
 
   it('should dismiss modal', () => {
-    spyOn(modalService, 'closeModal').and.callThrough();
-
     component.closeModal();
 
     component.cancelAppDeploymentEvent.subscribe(application => {
@@ -137,24 +94,24 @@ describe('DeploymentBulkAddComponent', () => {
   it('should create deployment from fields', () => {
     component.deployments = [];
     component.passedApplication = TestDomain.APPLICATION;
-    component.environment = 'DEV';
-    component.directory = '/test';
-    component.https = true;
-    component.hostServerId = '1';
-    component.port = '1234';
-    component.contextName = 'test-service';
+    component.model.environment = 'DEV';
+    component.model.directory = '/test';
+    component.model.https = true;
+    component.model.hostServerId = '1';
+    component.model.port = '1234';
+    component.model.contextName = 'test-service';
     component.createDeploymentFromFields();
 
     expect(component.deployments.length).toEqual(1);
 
     const created = component.deployments[0];
     expect(component.passedApplication.id).toEqual(created.applicationId);
-    expect(component.environment).toEqual(created.environment);
-    expect(component.directory).toEqual(created.directory);
-    expect(component.https).toEqual(created.https);
-    expect(component.hostServerId).toEqual(created.hostServerId);
-    expect(component.port).toEqual(created.port);
-    expect(component.contextName).toEqual(created.contextName);
+    expect(component.model.environment).toEqual(created.environment);
+    expect(component.model.directory).toEqual(created.directory);
+    expect(component.model.https).toEqual(created.https);
+    expect(component.model.hostServerId).toEqual(created.hostServerId);
+    expect(component.model.port).toEqual(created.port);
+    expect(component.model.contextName).toEqual(created.contextName);
   });
 
   it('should not create deployment from fields if they are empty', () => {
