@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
 import {HostServer} from '../../model';
 import {HostServerService} from '../../services';
@@ -15,10 +15,13 @@ export class HostServerComponent {
   @Output() deleteEvent: EventEmitter<HostServer> = new EventEmitter<HostServer>();
   @Output() updateEvent: EventEmitter<HostServer> = new EventEmitter<HostServer>();
 
-  model: HostServer = new HostServer();
-  passedHostServer: HostServer;
-  environments: string[] = ['DEV', 'QA', 'PROD'];
-  operatingSystems: string[] = ['AS400', 'LINUX', 'WINDOWS'];
+  public model: HostServer = new HostServer();
+  public passedHostServer: HostServer;
+  public environments: string[] = ['DEV', 'QA', 'PROD'];
+  public operatingSystems: string[] = ['AS400', 'LINUX', 'WINDOWS'];
+
+  @ViewChild('newHostServerForm')
+  public newHostServerForm;
 
   constructor(private hostServerService: HostServerService, private modalService: ModalService, private shareDataService: ShareDataService) {
     this.setDefaultValues();
@@ -33,6 +36,7 @@ export class HostServerComponent {
 
   public closeModal(): void {
     this.modalService.closeModal(this.modalId);
+    this.newHostServerForm.resetForm();
   }
 
   public saveHostServer(): void {

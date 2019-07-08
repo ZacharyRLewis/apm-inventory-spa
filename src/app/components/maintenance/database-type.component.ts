@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
 import {DatabaseType} from '../../model';
 import {DatabaseTypeService} from '../../services';
@@ -15,8 +15,11 @@ export class DatabaseTypeComponent {
   @Output() deleteEvent: EventEmitter<DatabaseType> = new EventEmitter<DatabaseType>();
   @Output() updateEvent: EventEmitter<DatabaseType> = new EventEmitter<DatabaseType>();
 
-  model: DatabaseType = new DatabaseType();
-  passedDatabaseType: DatabaseType;
+  public model: DatabaseType = new DatabaseType();
+  public passedDatabaseType: DatabaseType;
+
+  @ViewChild('newDatabaseTypeForm')
+  public newDatabaseTypeForm;
 
   constructor(private databaseTypeService: DatabaseTypeService, private modalService: ModalService, private shareDataService: ShareDataService) {
     this.setDefaultValues();
@@ -29,6 +32,7 @@ export class DatabaseTypeComponent {
 
   public closeModal(): void {
     this.modalService.closeModal(this.modalId);
+    this.newDatabaseTypeForm.resetForm();
   }
 
   public saveDatabaseType(): void {

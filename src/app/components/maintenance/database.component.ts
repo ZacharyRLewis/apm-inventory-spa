@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
 import {Database, DatabaseType} from '../../model';
 import {DatabaseService} from '../../services';
@@ -16,9 +16,12 @@ export class DatabaseComponent {
   @Output() deleteEvent: EventEmitter<Database> = new EventEmitter<Database>();
   @Output() updateEvent: EventEmitter<Database> = new EventEmitter<Database>();
 
-  model: Database = new Database();
-  passedDatabase: Database;
-  environments: string[] = ['DEV', 'QA', 'PROD'];
+  public model: Database = new Database();
+  public passedDatabase: Database;
+  public environments: string[] = ['DEV', 'QA', 'PROD'];
+
+  @ViewChild('newDatabaseForm')
+  public newDatabaseForm;
 
   constructor(private databaseService: DatabaseService, private modalService: ModalService, private shareDataService: ShareDataService) {
     this.setDefaultValues();
@@ -36,6 +39,7 @@ export class DatabaseComponent {
 
   public closeModal(): void {
     this.modalService.closeModal(this.modalId);
+    this.newDatabaseForm.resetForm();
   }
 
   public saveDatabase(): void {

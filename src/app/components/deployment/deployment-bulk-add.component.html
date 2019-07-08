@@ -24,6 +24,7 @@
                 <select class="apm-input apm-select" id="environment" [(ngModel)]="model.environment" name="environment"
                         #environment="ngModel" required
                         [class.invalid]="(environment.touched || environment.dirty) && environment.invalid">
+                  <option value=""></option>
                   <option *ngFor="let env of environments">
                     {{env}}
                   </option>
@@ -54,6 +55,7 @@
                 <select class="apm-input apm-select" id="hostServerId" [(ngModel)]="model.hostServerId" name="hostServerId"
                         #hostServerId="ngModel" required
                         [class.invalid]="(hostServerId.touched || hostServerId.dirty) && hostServerId.invalid">
+                  <option value=""></option>
                   <option *ngFor="let hostServer of hostServers" value="{{hostServer.id}}">
                     {{hostServer.name}}
                   </option>

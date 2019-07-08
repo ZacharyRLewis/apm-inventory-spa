@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {Application, Deployment, HostServer} from '../../model';
 
 @Component({
@@ -18,6 +18,9 @@ export class DeploymentBulkAddComponent {
   public passedApplication: Application;
   public environments: string[] = ['DEV', 'QA', 'PROD'];
 
+  @ViewChild('newDeploymentForm')
+  public newDeploymentForm;
+
   constructor() {
     this.setDefaultValues();
   }
@@ -36,6 +39,7 @@ export class DeploymentBulkAddComponent {
 
   public closeModal(): void {
     this.backToApplication();
+    this.newDeploymentForm.resetForm();
   }
 
   public getHostServerName(hostServerId: string): string {
@@ -102,5 +106,6 @@ export class DeploymentBulkAddComponent {
 
     this.createAppDeploymentEvent.emit({application, deployments});
     this.setDefaultValues();
+    this.newDeploymentForm.resetForm();
   }
 }

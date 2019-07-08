@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
 import {ApplicationType} from '../../model';
 import {ApplicationTypeService} from '../../services';
@@ -15,8 +15,11 @@ export class ApplicationTypeComponent {
   @Output() deleteEvent: EventEmitter<ApplicationType> = new EventEmitter<ApplicationType>();
   @Output() updateEvent: EventEmitter<ApplicationType> = new EventEmitter<ApplicationType>();
 
-  model: ApplicationType = new ApplicationType();
-  passedApplicationType: ApplicationType;
+  public model: ApplicationType = new ApplicationType();
+  public passedApplicationType: ApplicationType;
+
+  @ViewChild('newApplicationTypeForm')
+  public newApplicationTypeForm;
 
   constructor(private applicationTypeService: ApplicationTypeService, private modalService: ModalService,
               private shareDataService: ShareDataService) {
@@ -32,6 +35,7 @@ export class ApplicationTypeComponent {
 
   public closeModal(): void {
     this.modalService.closeModal(this.modalId);
+    this.newApplicationTypeForm.resetForm();
   }
 
   public saveApplicationType(): void {
