@@ -109,8 +109,6 @@ export class ApplicationComponent {
   }
 
   public hasApplicationPermissions(): boolean {
-    console.log('this.permissions = ' + JSON.stringify(this.permissions));
-    console.log('this.passedApplication = ' + JSON.stringify(this.passedApplication));
     return this.permissions.permissions.indexOf('APM_Admin') >= 0 || this.passedApplication.owners.indexOf(this.permissions.username) >= 0;
   }
 
