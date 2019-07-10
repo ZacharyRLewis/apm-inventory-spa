@@ -90,6 +90,7 @@ describe('HostServerComponent', () => {
     spyOn(component, 'updateHostServer').and.callThrough();
 
     component.passedHostServer = Object.assign({}, hostServer);
+    component.permissions = TestDomain.PERMISSIONS;
     component.saveHostServer();
 
     expect(component.updateHostServer).toHaveBeenCalledTimes(1);
@@ -101,6 +102,7 @@ describe('HostServerComponent', () => {
     spyOn(component, 'updateHostServer').and.callThrough();
 
     component.passedHostServer = null;
+    component.permissions = TestDomain.PERMISSIONS;
     component.saveHostServer();
 
     expect(component.updateHostServer).toHaveBeenCalledTimes(0);
@@ -111,6 +113,7 @@ describe('HostServerComponent', () => {
     spyOn(hostServerService, 'create').and.callThrough();
 
     component.model = Object.assign({}, hostServer);
+    component.permissions = TestDomain.PERMISSIONS;
     component.createHostServer();
 
     expect(hostServerService.create).toHaveBeenCalled();
@@ -124,6 +127,7 @@ describe('HostServerComponent', () => {
     spyOn(hostServerService, 'delete').and.callThrough();
 
     component.model = Object.assign({}, hostServer);
+    component.permissions = TestDomain.PERMISSIONS;
     component.deleteHostServer();
 
     expect(hostServerService.delete).toHaveBeenCalled();
@@ -137,6 +141,7 @@ describe('HostServerComponent', () => {
     spyOn(hostServerService, 'update').and.callThrough();
 
     component.model = Object.assign({}, hostServer);
+    component.permissions = TestDomain.PERMISSIONS;
     component.updateHostServer();
 
     expect(hostServerService.update).toHaveBeenCalled();

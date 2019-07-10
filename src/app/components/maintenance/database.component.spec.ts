@@ -92,6 +92,7 @@ describe('DatabaseComponent', () => {
     spyOn(component, 'updateDatabase').and.callThrough();
 
     component.passedDatabase = Object.assign({}, database);
+    component.permissions = TestDomain.PERMISSIONS;
     component.saveDatabase();
 
     expect(component.updateDatabase).toHaveBeenCalledTimes(1);
@@ -103,6 +104,7 @@ describe('DatabaseComponent', () => {
     spyOn(component, 'updateDatabase').and.callThrough();
 
     component.passedDatabase = null;
+    component.permissions = TestDomain.PERMISSIONS;
     component.saveDatabase();
 
     expect(component.updateDatabase).toHaveBeenCalledTimes(0);
@@ -113,6 +115,7 @@ describe('DatabaseComponent', () => {
     spyOn(databaseService, 'create').and.callThrough();
 
     component.model = Object.assign({}, database);
+    component.permissions = TestDomain.PERMISSIONS;
     component.createDatabase();
 
     expect(databaseService.create).toHaveBeenCalled();
@@ -126,6 +129,7 @@ describe('DatabaseComponent', () => {
     spyOn(databaseService, 'delete').and.callThrough();
 
     component.model = Object.assign({}, database);
+    component.permissions = TestDomain.PERMISSIONS;
     component.deleteDatabase();
 
     expect(databaseService.delete).toHaveBeenCalled();
@@ -139,6 +143,7 @@ describe('DatabaseComponent', () => {
     spyOn(databaseService, 'update').and.callThrough();
 
     component.model = Object.assign({}, database);
+    component.permissions = TestDomain.PERMISSIONS;
     component.updateDatabase();
 
     expect(databaseService.update).toHaveBeenCalled();

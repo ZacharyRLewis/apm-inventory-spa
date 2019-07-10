@@ -2,8 +2,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
-import {WinResponse} from '../../model/';
-import {Permissions} from '../../model/permissions';
+import {Permissions, WinResponse} from '../../model';
 
 @Injectable()
 export class PermissionsService {

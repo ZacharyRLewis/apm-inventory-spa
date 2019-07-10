@@ -8,8 +8,8 @@ import {PanelModule} from 'primeng/panel';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {DeploymentComponent} from '..';
-import {Database, Deployment, DeploymentDatabase, HostServer, MulesoftApi, TestDomain, WinResponse} from '../../model';
-import {DatabaseService, DeploymentDatabaseService, DeploymentService, MulesoftApiService} from '../../services';
+import {Database, Deployment, DeploymentDatabase, HostServer, MulesoftApi, Permissions, TestDomain, WinResponse} from '../../model';
+import {DatabaseService, DeploymentDatabaseService, DeploymentService, MulesoftApiService, PermissionsService} from '../../services';
 
 class MockDeploymentService extends DeploymentService {
   private response: WinResponse<Deployment> = {meta: null, data: TestDomain.DEPLOYMENT};
@@ -65,6 +65,14 @@ class MockModalService extends ModalService {
   }
 }
 
+class MockPermissionsService extends PermissionsService {
+  private response: WinResponse<Permissions> = {meta: null, data: TestDomain.PERMISSIONS};
+
+  public findUserPermissions(): Observable<WinResponse<Permissions>> {
+    return cold('--x|', {x: this.response});
+  }
+}
+
 describe('DeploymentComponent', () => {
   let component: DeploymentComponent;
   let fixture: ComponentFixture<DeploymentComponent>;
@@ -85,6 +93,7 @@ describe('DeploymentComponent', () => {
         {provide: DeploymentDatabaseService, useClass: MockDeploymentDatabaseService},
         {provide: MulesoftApiService, useClass: MockMulesoftApiService},
         {provide: ModalService, useClass: MockModalService},
+        {provide: PermissionsService, useClass: MockPermissionsService},
         ShareDataService
       ]
     }).compileComponents();
@@ -166,6 +175,7 @@ describe('DeploymentComponent', () => {
     spyOn(component, 'updateDeployment').and.callThrough();
 
     component.passedDeployment = Object.assign({}, deployment);
+    component.permissions = TestDomain.PERMISSIONS;
     component.saveDeployment();
 
     expect(component.updateDeployment).toHaveBeenCalledTimes(1);
@@ -177,6 +187,7 @@ describe('DeploymentComponent', () => {
     spyOn(component, 'updateDeployment').and.callThrough();
 
     component.passedDeployment = null;
+    component.permissions = TestDomain.PERMISSIONS;
     component.saveDeployment();
 
     expect(component.updateDeployment).toHaveBeenCalledTimes(0);
@@ -187,6 +198,7 @@ describe('DeploymentComponent', () => {
     spyOn(deploymentService, 'create').and.callThrough();
 
     component.model = Object.assign({}, deployment);
+    component.permissions = TestDomain.PERMISSIONS;
     component.createDeployment();
 
     expect(deploymentService.create).toHaveBeenCalled();
@@ -200,6 +212,7 @@ describe('DeploymentComponent', () => {
     spyOn(deploymentService, 'delete').and.callThrough();
 
     component.model = Object.assign({}, deployment);
+    component.permissions = TestDomain.PERMISSIONS;
     component.deleteDeployment();
 
     expect(deploymentService.delete).toHaveBeenCalled();
@@ -213,6 +226,7 @@ describe('DeploymentComponent', () => {
     spyOn(deploymentService, 'update').and.callThrough();
 
     component.model = Object.assign({}, deployment);
+    component.permissions = TestDomain.PERMISSIONS;
     component.updateDeployment();
 
     expect(deploymentService.update).toHaveBeenCalled();
@@ -265,6 +279,7 @@ describe('DeploymentComponent', () => {
 
   it('should emit open deployment database modal event', () => {
     component.model = deployment;
+    component.permissions = TestDomain.PERMISSIONS;
     component.openDeploymentDatabaseModal();
 
     component.openDeploymentDatabaseModalEvent.subscribe(res => {

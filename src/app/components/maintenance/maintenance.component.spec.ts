@@ -7,8 +7,8 @@ import {cold, getTestScheduler} from 'jasmine-marbles';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {ApplicationTypeComponent, DatabaseComponent, DatabaseTypeComponent, HostServerComponent, MaintenanceComponent} from '..';
-import {ApplicationType, Database, DatabaseType, HostServer, TestDomain, WinResponse} from '../../model';
-import {ApplicationTypeService, DatabaseService, DatabaseTypeService, HostServerService} from '../../services';
+import {ApplicationType, Database, DatabaseType, HostServer, Permissions, TestDomain, WinResponse} from '../../model';
+import {ApplicationTypeService, DatabaseService, DatabaseTypeService, HostServerService, PermissionsService} from '../../services';
 
 class MockApplicationTypeService extends ApplicationTypeService {
   private response: WinResponse<ApplicationType[]> = {meta: null, data: [TestDomain.APPLICATION_TYPE]};
@@ -52,6 +52,14 @@ class MockModalService extends ModalService {
   }
 }
 
+class MockPermissionsService extends PermissionsService {
+  private response: WinResponse<Permissions> = {meta: null, data: TestDomain.PERMISSIONS};
+
+  public findUserPermissions(): Observable<WinResponse<Permissions>> {
+    return cold('--x|', {x: this.response});
+  }
+}
+
 describe('MaintenanceComponent', () => {
   let component: MaintenanceComponent;
   let fixture: ComponentFixture<MaintenanceComponent>;
@@ -72,6 +80,7 @@ describe('MaintenanceComponent', () => {
         {provide: DatabaseService, useClass: MockDatabaseService},
         {provide: HostServerService, useClass: MockHostServerService},
         {provide: ModalService, useClass: MockModalService},
+        {provide: PermissionsService, useClass: MockPermissionsService},
         ShareDataService
       ]
     }).compileComponents();

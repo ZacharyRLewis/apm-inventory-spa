@@ -10,6 +10,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {ComponentsModule} from './components/components.module';
 import {
+  ApplicationDependencyService,
   ApplicationService,
   ApplicationTypeService,
   DatabaseService,
@@ -18,10 +19,9 @@ import {
   DeploymentDatabaseService,
   DeploymentService,
   HostServerService,
-  MulesoftApiService
+  MulesoftApiService,
+  PermissionsService
 } from './services';
-import {ApplicationDependencyService} from './services/application-dependency/application-dependency.service';
-import {PermissionsService} from './services/permission/permission.service';
 import {ServiceInterceptor} from './services/service.interceptor';
 
 @NgModule({

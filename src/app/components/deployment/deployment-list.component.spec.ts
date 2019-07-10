@@ -18,7 +18,8 @@ import {
   DeploymentDatabaseService,
   DeploymentService,
   HostServerService,
-  MulesoftApiService
+  MulesoftApiService,
+  PermissionsService
 } from '../../services';
 import {DeploymentDatabaseComponent} from './deployment-database.component';
 import {DeploymentFlyoutFilterComponent} from './deployment-flyout-filter.component';
@@ -59,7 +60,7 @@ describe('DeploymentListComponent', () => {
         {provide: DeploymentService, useClass: MockDeploymentService},
         ApplicationService, DatabaseService, DeploymentDatabaseService, HostServerService, MulesoftApiService,
         {provide: ModalService, useClass: MockModalService},
-        ShareDataService
+        PermissionsService, ShareDataService
       ]
     }).compileComponents();
   }));

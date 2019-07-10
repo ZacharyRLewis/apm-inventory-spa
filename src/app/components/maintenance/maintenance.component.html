@@ -172,25 +172,25 @@
 
 <input class="form-control" style="visibility: hidden" />
 
-<apm-application-type #applicationTypeComponent [modalId]="APPLICATION_TYPE_MODAL_ID"
+<apm-application-type #applicationTypeComponent [modalId]="APPLICATION_TYPE_MODAL_ID" [permissions]="permissions"
                       (createEvent)="handleApplicationTypeCreate($event)"
                       (deleteEvent)="handleApplicationTypeDelete($event)"
                       (updateEvent)="handleApplicationTypeUpdate($event)">
 </apm-application-type>
 
-<apm-database-type #databaseTypeComponent [modalId]="DATABASE_TYPE_MODAL_ID"
+<apm-database-type #databaseTypeComponent [modalId]="DATABASE_TYPE_MODAL_ID" [permissions]="permissions"
                    (createEvent)="handleDatabaseTypeCreate($event)"
                    (deleteEvent)="handleDatabaseTypeDelete($event)"
                    (updateEvent)="handleDatabaseTypeUpdate($event)">
 </apm-database-type>
 
-<apm-database #databaseComponent [modalId]="DATABASE_MODAL_ID" [databaseTypes]="databaseTypes"
+<apm-database #databaseComponent [modalId]="DATABASE_MODAL_ID" [databaseTypes]="databaseTypes" [permissions]="permissions"
               (createEvent)="handleDatabaseCreate($event)"
               (deleteEvent)="handleDatabaseDelete($event)"
               (updateEvent)="handleDatabaseUpdate($event)">
 </apm-database>
 
-<apm-host-server #hostServerComponent [modalId]="HOST_SERVER_MODAL_ID"
+<apm-host-server #hostServerComponent [modalId]="HOST_SERVER_MODAL_ID" [permissions]="permissions"
               (createEvent)="handleHostServerCreate($event)"
               (deleteEvent)="handleHostServerDelete($event)"
               (updateEvent)="handleHostServerUpdate($event)">

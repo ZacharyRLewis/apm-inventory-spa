@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ShareDataService} from '@win-angular/services';
 import {NgxPermissionsService} from 'ngx-permissions';
 import {Message} from 'primeng/api';
-import {Permissions} from './model/permissions';
-import {PermissionsService} from './services/permission/permission.service';
+import {Permissions} from './model';
+import {PermissionsService} from './services';
 
 @Component({
   selector: 'apm-root',

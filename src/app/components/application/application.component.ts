@@ -1,8 +1,7 @@
 import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
-import {Application, ApplicationType, Dependency, Deployment, HostServer} from '../../model';
-import {DependencyRefresh} from '../../model/dependency-refresh';
-import {ApplicationService, DependencyService, DeploymentService} from '../../services';
+import {Application, ApplicationType, Dependency, DependencyRefresh, Deployment, HostServer, Permissions} from '../../model';
+import {ApplicationService, DependencyService, DeploymentService, PermissionsService} from '../../services';
 
 @Component({
   selector: 'apm-application',
@@ -26,6 +25,7 @@ export class ApplicationComponent {
   public dependencies: Dependency[] = [];
   public deploymentsAdded = false;
   public dependenciesRefreshed = false;
+  public permissions: Permissions;
 
   // Panel controls
   public collapseGeneralInfoPanel = false;
@@ -40,8 +40,12 @@ export class ApplicationComponent {
 
   constructor(private applicationService: ApplicationService, private deploymentService: DeploymentService,
               private modalService: ModalService, private dependencyService: DependencyService,
-              private shareDataService: ShareDataService) {
+              private shareDataService: ShareDataService, private permissionsService: PermissionsService) {
     this.setDefaultValues();
+    this.permissionsService.findUserPermissions()
+      .subscribe(response => {
+        this.permissions = response.data;
+      });
   }
 
   public setDefaultValues(): void {
@@ -104,6 +108,10 @@ export class ApplicationComponent {
     this.setDefaultValues();
   }
 
+  public hasApplicationPermissions(): boolean {
+    return this.permissions.permissions.indexOf('APM_Admin') >= 0 || this.passedApplication.owners.indexOf(this.permissions.username) >= 0;
+  }
+
   public saveApplication(): void {
     if (this.passedApplication && this.passedApplication.id) {
       this.updateApplication();
@@ -137,6 +145,11 @@ export class ApplicationComponent {
   public updateApplication(): void {
     const updated: Application = Object.assign({}, this.model);
 
+    if (!this.hasApplicationPermissions()) {
+      this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to update this application'}]);
+      return;
+    }
+
     this.applicationService.update(updated)
       .subscribe(result => {
           const returned: Application = result.data;
@@ -158,6 +171,11 @@ export class ApplicationComponent {
 
   public deleteApplication(): void {
     const deleted: Application = Object.assign({}, this.model);
+
+    if (!this.hasApplicationPermissions()) {
+      this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to delete this application'}]);
+      return;
+    }
 
     this.applicationService.delete(deleted)
       .subscribe(res => {
@@ -190,10 +208,20 @@ export class ApplicationComponent {
   public addDeployments(): void {
     const application: Application = Object.assign({}, this.model);
 
+    if (!this.hasApplicationPermissions()) {
+      this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to add deployments to this application'}]);
+      return;
+    }
+
     this.addDeploymentEvent.emit(application);
   }
 
   public refreshDependencies(): void {
+    if (!this.hasApplicationPermissions()) {
+      this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to refresh dependencies for this application'}]);
+      return;
+    }
+
     this.shareDataService.blockUI(true);
 
     this.dependencyService.refreshDependencies(new DependencyRefresh(this.passedApplication.id))

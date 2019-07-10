@@ -89,6 +89,7 @@ describe('ApplicationTypeComponent', () => {
     spyOn(component, 'updateApplicationType').and.callThrough();
 
     component.passedApplicationType = Object.assign({}, applicationType);
+    component.permissions = TestDomain.PERMISSIONS;
     component.saveApplicationType();
 
     expect(component.updateApplicationType).toHaveBeenCalledTimes(1);
@@ -100,6 +101,7 @@ describe('ApplicationTypeComponent', () => {
     spyOn(component, 'updateApplicationType').and.callThrough();
 
     component.passedApplicationType = null;
+    component.permissions = TestDomain.PERMISSIONS;
     component.saveApplicationType();
 
     expect(component.updateApplicationType).toHaveBeenCalledTimes(0);
@@ -110,6 +112,7 @@ describe('ApplicationTypeComponent', () => {
     spyOn(applicationTypeService, 'create').and.callThrough();
 
     component.model = Object.assign({}, applicationType);
+    component.permissions = TestDomain.PERMISSIONS;
     component.createApplicationType();
 
     expect(applicationTypeService.create).toHaveBeenCalled();
@@ -123,6 +126,7 @@ describe('ApplicationTypeComponent', () => {
     spyOn(applicationTypeService, 'delete').and.callThrough();
 
     component.model = Object.assign({}, applicationType);
+    component.permissions = TestDomain.PERMISSIONS;
     component.deleteApplicationType();
 
     expect(applicationTypeService.delete).toHaveBeenCalled();
@@ -136,6 +140,7 @@ describe('ApplicationTypeComponent', () => {
     spyOn(applicationTypeService, 'update').and.callThrough();
 
     component.model = Object.assign({}, applicationType);
+    component.permissions = TestDomain.PERMISSIONS;
     component.updateApplicationType();
 
     expect(applicationTypeService.update).toHaveBeenCalled();

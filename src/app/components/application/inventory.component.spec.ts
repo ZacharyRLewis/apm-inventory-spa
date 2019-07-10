@@ -20,7 +20,8 @@ import {
   DeploymentDatabaseService,
   DeploymentService,
   HostServerService,
-  MulesoftApiService
+  MulesoftApiService,
+  PermissionsService
 } from '../../services';
 import {ApplicationFlyoutFilterComponent} from './application-flyout-filter.component';
 
@@ -86,7 +87,7 @@ describe('InventoryComponent', () => {
         {provide: ApplicationTypeService, useClass: MockApplicationTypeService},
         {provide: HostServerService, useClass: MockHostServerService},
         DatabaseService, DeploymentService, DeploymentDatabaseService,
-        DependencyService, MulesoftApiService,
+        DependencyService, MulesoftApiService, PermissionsService,
         {provide: ModalService, useClass: MockModalService},
         {provide: ShareDataService, useClass: MockShareDataService},
       ]

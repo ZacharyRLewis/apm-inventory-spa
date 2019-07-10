@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
-import {Database, DatabaseType} from '../../model';
+import {Database, DatabaseType, Permissions} from '../../model';
 import {DatabaseService} from '../../services';
 
 @Component({
@@ -12,6 +12,7 @@ export class DatabaseComponent {
 
   @Input() modalId: string;
   @Input() databaseTypes: DatabaseType[] = [];
+  @Input() permissions: Permissions;
   @Output() createEvent: EventEmitter<Database> = new EventEmitter<Database>();
   @Output() deleteEvent: EventEmitter<Database> = new EventEmitter<Database>();
   @Output() updateEvent: EventEmitter<Database> = new EventEmitter<Database>();
@@ -42,6 +43,10 @@ export class DatabaseComponent {
     this.newDatabaseForm.resetForm();
   }
 
+  public hasAdminPermissions(): boolean {
+    return this.permissions.permissions.indexOf('APM_Admin') >= 0;
+  }
+
   public saveDatabase(): void {
     if (this.passedDatabase) {
       this.updateDatabase();
@@ -52,6 +57,11 @@ export class DatabaseComponent {
 
   public createDatabase(): void {
     const created: Database = Object.assign({}, this.model);
+
+    if (!this.hasAdminPermissions()) {
+      this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to create a database'}]);
+      return;
+    }
 
     this.databaseService.create(created)
       .subscribe(res => {
@@ -67,6 +77,11 @@ export class DatabaseComponent {
   public updateDatabase(): void {
     const updated: Database = Object.assign({}, this.model);
 
+    if (!this.hasAdminPermissions()) {
+      this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to update a database'}]);
+      return;
+    }
+
     this.databaseService.update(updated)
       .subscribe(res => {
           this.closeModal();
@@ -80,6 +95,11 @@ export class DatabaseComponent {
 
   public deleteDatabase(): void {
     const deleted: Database = Object.assign({}, this.model);
+
+    if (!this.hasAdminPermissions()) {
+      this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to delete a database'}]);
+      return;
+    }
 
     this.databaseService.delete(deleted)
       .subscribe(res => {

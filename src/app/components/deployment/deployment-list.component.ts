@@ -1,9 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
-import {Application, Deployment, DeploymentDatabase, HostServer} from '../../model';
-import {DeploymentFilters} from '../../model/deployment-filters';
-import {ApplicationService, HostServerService} from '../../services';
-import {DeploymentService} from '../../services/deployment/deployment.service';
+import {Application, Deployment, DeploymentDatabase, DeploymentFilters, HostServer} from '../../model';
+import {ApplicationService, DeploymentService, HostServerService} from '../../services';
 import {DeploymentDatabaseComponent} from './deployment-database.component';
 import {DeploymentComponent} from './deployment.component';
 
@@ -99,6 +97,7 @@ export class DeploymentListComponent implements OnInit  {
     this.deploymentComponent.loadDatabases();
     this.deploymentComponent.loadDeploymentDatabases();
     this.deploymentComponent.loadApis(deployment.contextName);
+    this.deploymentComponent.loadApplicationOwners();
   }
 
   public prepareDeploymentDatabaseModal(deployment: Deployment, deploymentDatabase: DeploymentDatabase): void {

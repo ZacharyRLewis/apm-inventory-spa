@@ -1,6 +1,7 @@
 export class Permissions {
 
-  constructor(public permissions: string[]) {
+  constructor(public username: string,
+              public permissions: string[]) {
   }
 
 }

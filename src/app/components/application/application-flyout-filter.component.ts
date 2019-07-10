@@ -1,6 +1,5 @@
 import {Component, ElementRef, EventEmitter, HostListener, Input, Output, Renderer2, ViewChild} from '@angular/core';
-import {ApplicationFilters} from '../../model/application-filters';
-import {Application, ApplicationType, SelectOption} from '../../model/index';
+import {Application, ApplicationFilters, ApplicationType, SelectOption} from '../../model';
 
 @Component({
   selector: 'apm-application-flyout-filter',

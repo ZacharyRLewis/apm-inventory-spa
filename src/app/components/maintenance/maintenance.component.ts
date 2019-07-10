@@ -1,7 +1,7 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
-import {ApplicationType, Database, DatabaseType, HostServer} from '../../model';
-import {ApplicationTypeService, DatabaseService, DatabaseTypeService, HostServerService} from '../../services';
+import {ApplicationType, Database, DatabaseType, HostServer, Permissions} from '../../model';
+import {ApplicationTypeService, DatabaseService, DatabaseTypeService, HostServerService, PermissionsService} from '../../services';
 import {DatabaseComponent} from '../maintenance/database.component';
 import {ApplicationTypeComponent} from './application-type.component';
 import {DatabaseTypeComponent} from './database-type.component';
@@ -12,7 +12,7 @@ import {HostServerComponent} from './host-server.component';
   templateUrl: './maintenance.component.html',
   styleUrls: ['./maintenance.component.scss']
 })
-export class MaintenanceComponent implements OnInit {
+export class MaintenanceComponent {
 
   public selectedTab = 0;
   public tabNames = ['Application Types', 'Database Types', 'Databases', 'Host Servers'];
@@ -21,6 +21,7 @@ export class MaintenanceComponent implements OnInit {
   public databaseTypes: DatabaseType[] = [];
   public databases: Database[] = [];
   public hostServers: HostServer[] = [];
+  public permissions: Permissions;
 
   public readonly APPLICATION_TYPE_MODAL_ID = 'application-type-modal';
   public readonly DATABASE_TYPE_MODAL_ID = 'database-type-modal';
@@ -69,14 +70,16 @@ export class MaintenanceComponent implements OnInit {
 
   constructor(private applicationTypeService: ApplicationTypeService, private databaseTypeService: DatabaseTypeService,
               private databaseService: DatabaseService, private hostServerService: HostServerService,
-              private modalService: ModalService, private shareDataService: ShareDataService) {
+              private modalService: ModalService, private shareDataService: ShareDataService, private permissionsService: PermissionsService) {
     this.refreshApplicationTypes();
     this.refreshDatabaseTypes();
     this.refreshDatabases();
     this.refreshHostServers();
-  }
 
-  ngOnInit() {
+    this.permissionsService.findUserPermissions()
+      .subscribe(response => {
+        this.permissions = response.data;
+      });
   }
 
   public toggleTabs(tab: number): void {

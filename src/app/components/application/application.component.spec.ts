@@ -9,9 +9,8 @@ import {PanelModule} from 'primeng/panel';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {ApplicationComponent} from '..';
-import {Application, Dependency, Deployment, TestDomain, WinResponse} from '../../model';
-import {DependencyRefresh} from '../../model/dependency-refresh';
-import {ApplicationService, DependencyService, DeploymentService, HostServerService} from '../../services';
+import {Application, Dependency, DependencyRefresh, Deployment, Permissions, TestDomain, WinResponse} from '../../model';
+import {ApplicationService, DependencyService, DeploymentService, HostServerService, PermissionsService} from '../../services';
 
 class MockApplicationService extends ApplicationService {
   private response: WinResponse<Application> = {meta: null, data: TestDomain.APPLICATION};
@@ -29,10 +28,10 @@ class MockApplicationService extends ApplicationService {
   }
 }
 
-class MockDependencyService extends DependencyService {
-  private response: WinResponse<Dependency[]> = {meta: null, data: [TestDomain.DEPENDENCY]};
+class MockPermissionsService extends PermissionsService {
+  private response: WinResponse<Permissions> = {meta: null, data: TestDomain.PERMISSIONS};
 
-  public refreshDependencies(refresh: DependencyRefresh): Observable<WinResponse<Dependency[]>> {
+  public findUserPermissions(): Observable<WinResponse<Permissions>> {
     return cold('--x|', {x: this.response});
   }
 }
@@ -70,6 +69,7 @@ describe('ApplicationComponent', () => {
         {provide: ApplicationService, useClass: MockApplicationService},
         DependencyService, DeploymentService, HostServerService,
         {provide: ModalService, useClass: MockModalService},
+        {provide: PermissionsService, useClass: MockPermissionsService},
         {provide: ShareDataService, useClass: MockShareDataService},
       ]
     }).compileComponents();
@@ -134,6 +134,7 @@ describe('ApplicationComponent', () => {
     spyOn(component, 'updateApplication').and.callThrough();
 
     component.passedApplication = Object.assign({}, application);
+    component.permissions = TestDomain.PERMISSIONS;
     component.saveApplication();
 
     expect(component.updateApplication).toHaveBeenCalledTimes(1);
@@ -170,6 +171,8 @@ describe('ApplicationComponent', () => {
 
     const appl: Application = Object.assign({}, application);
     component.model = appl;
+    component.passedApplication = appl;
+    component.permissions = TestDomain.PERMISSIONS;
     component.deleteApplication();
 
     expect(applicationService.delete).toHaveBeenCalledWith(appl);
@@ -186,6 +189,8 @@ describe('ApplicationComponent', () => {
     const appl: Application = Object.assign({}, application);
     appl.deployments = [new Deployment('0'), new Deployment('0')];
     component.model = appl;
+    component.passedApplication = appl;
+    component.permissions = TestDomain.PERMISSIONS;
     component.updateApplication();
 
     expect(applicationService.update).toHaveBeenCalledWith(appl);
@@ -201,6 +206,7 @@ describe('ApplicationComponent', () => {
     spyOn(shareDataService, 'blockUI').and.callThrough();
 
     component.passedApplication = Object.assign({}, application);
+    component.permissions = TestDomain.PERMISSIONS;
     component.refreshDependencies();
 
     expect(dependencyService.refreshDependencies).toHaveBeenCalled();
@@ -209,6 +215,8 @@ describe('ApplicationComponent', () => {
 
   it('should emit add deployment event', () => {
     component.model = application;
+    component.passedApplication = application;
+    component.permissions = TestDomain.PERMISSIONS;
     component.addDeployments();
 
     component.addDeploymentEvent.subscribe(appl => {

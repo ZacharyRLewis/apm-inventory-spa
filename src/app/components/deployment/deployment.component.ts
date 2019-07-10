@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
-import {Application, Database, Deployment, DeploymentDatabase, HostServer, MulesoftApi} from '../../model';
-import {DatabaseService, DeploymentDatabaseService, DeploymentService, MulesoftApiService} from '../../services';
+import {Application, Database, Deployment, DeploymentDatabase, HostServer, MulesoftApi, Permissions} from '../../model';
+import {DatabaseService, DeploymentDatabaseService, DeploymentService, MulesoftApiService, PermissionsService} from '../../services';
 
 @Component({
   selector: 'apm-deployment',
@@ -20,13 +20,14 @@ export class DeploymentComponent implements OnInit {
   @Output() openDeploymentDatabaseModalEvent: EventEmitter<object> = new EventEmitter<object>();
 
   public model: Deployment = new Deployment();
-  public passedApplication: Application;
   public passedDeployment: Deployment;
   public environments: string[] = ['DEV', 'QA', 'PROD'];
   public databases: Database[] = [];
   public deploymentDatabases: DeploymentDatabase[] = [];
   public apis: MulesoftApi[] = [];
   public databasesAdded = false;
+  public permissions: Permissions;
+  public applicationOwners: string[] = [];
 
   // Panel controls
   public collapseGeneralInfoPanel = false;
@@ -38,8 +39,12 @@ export class DeploymentComponent implements OnInit {
 
   constructor(private deploymentService: DeploymentService, private modalService: ModalService, private databaseService: DatabaseService,
               private deploymentDatabaseService: DeploymentDatabaseService, private mulesoftAssetService: MulesoftApiService,
-              private shareDataService: ShareDataService) {
+              private shareDataService: ShareDataService, private permissionsService: PermissionsService) {
     this.setDefaultValues();
+    this.permissionsService.findUserPermissions()
+      .subscribe(response => {
+        this.permissions = response.data;
+      });
   }
 
   public setDefaultValues(): void {
@@ -97,10 +102,24 @@ export class DeploymentComponent implements OnInit {
       });
   }
 
+  public loadApplicationOwners = () => {
+    for (const application of this.applications) {
+      if (application.id == this.passedDeployment.applicationId) {
+        this.applicationOwners = application.owners;
+        break;
+      }
+    }
+  }
+
   public closeModal(): void {
     this.modalService.closeModal(this.modalId);
     this.newDeploymentForm.resetForm();
     this.setDefaultValues();
+  }
+
+  public hasApplicationPermissions(): boolean {
+    console.log('applicationOwners = ' + JSON.stringify(this.applicationOwners));
+    return this.permissions.permissions.indexOf('APM_Adminz') >= 0 || this.applicationOwners.indexOf(this.permissions.username) >= 0;
   }
 
   public saveDeployment(): void {
@@ -113,6 +132,11 @@ export class DeploymentComponent implements OnInit {
 
   public createDeployment(): void {
     const created: Deployment = Object.assign({}, this.model);
+
+    if (!this.hasApplicationPermissions()) {
+      this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to create deployments for this application'}]);
+      return;
+    }
 
     this.deploymentService.create(created)
       .subscribe(res => {
@@ -127,6 +151,11 @@ export class DeploymentComponent implements OnInit {
   public updateDeployment(): void {
     const updated: Deployment = Object.assign({}, this.model);
 
+    if (!this.hasApplicationPermissions()) {
+      this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to update deployments for this application'}]);
+      return;
+    }
+
     this.deploymentService.update(updated)
       .subscribe(res => {
           this.closeModal();
@@ -139,6 +168,11 @@ export class DeploymentComponent implements OnInit {
 
   public deleteDeployment(): void {
     const deleted: Deployment = Object.assign({}, this.model);
+
+    if (!this.hasApplicationPermissions()) {
+      this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to delete deployments for this application'}]);
+      return;
+    }
 
     this.deploymentService.delete(deleted)
       .subscribe(res => {
@@ -184,6 +218,11 @@ export class DeploymentComponent implements OnInit {
 
   public openDeploymentDatabaseModal(deploymentDatabase?: DeploymentDatabase): void {
     const deployment: Deployment = Object.assign({}, this.model);
+
+    if (!this.hasApplicationPermissions()) {
+      this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to add databases to this deployment'}]);
+      return;
+    }
 
     this.openDeploymentDatabaseModalEvent.emit({deployment, deploymentDatabase});
   }

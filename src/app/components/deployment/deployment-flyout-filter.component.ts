@@ -1,6 +1,5 @@
 import {Component, ElementRef, EventEmitter, HostListener, Input, Output, Renderer2, ViewChild} from '@angular/core';
-import {DeploymentFilters} from '../../model/deployment-filters';
-import {Application, HostServer} from '../../model/index';
+import {Application, DeploymentFilters, HostServer} from '../../model';
 
 @Component({
   selector: 'apm-deployment-flyout-filter',

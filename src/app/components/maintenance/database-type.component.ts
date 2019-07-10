@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
-import {DatabaseType} from '../../model';
+import {DatabaseType, Permissions} from '../../model';
 import {DatabaseTypeService} from '../../services';
 
 @Component({
@@ -11,6 +11,7 @@ import {DatabaseTypeService} from '../../services';
 export class DatabaseTypeComponent {
 
   @Input() modalId: string;
+  @Input() permissions: Permissions;
   @Output() createEvent: EventEmitter<DatabaseType> = new EventEmitter<DatabaseType>();
   @Output() deleteEvent: EventEmitter<DatabaseType> = new EventEmitter<DatabaseType>();
   @Output() updateEvent: EventEmitter<DatabaseType> = new EventEmitter<DatabaseType>();
@@ -35,6 +36,10 @@ export class DatabaseTypeComponent {
     this.newDatabaseTypeForm.resetForm();
   }
 
+  public hasAdminPermissions(): boolean {
+    return this.permissions.permissions.indexOf('APM_Admin') >= 0;
+  }
+
   public saveDatabaseType(): void {
     if (this.passedDatabaseType) {
       this.updateDatabaseType();
@@ -45,6 +50,11 @@ export class DatabaseTypeComponent {
 
   public createDatabaseType(): void {
     const created: DatabaseType = Object.assign({}, this.model);
+
+    if (!this.hasAdminPermissions()) {
+      this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to create a database type'}]);
+      return;
+    }
 
     this.databaseTypeService.create(created)
       .subscribe(res => {
@@ -60,6 +70,11 @@ export class DatabaseTypeComponent {
   public updateDatabaseType(): void {
     const updated: DatabaseType = Object.assign({}, this.model);
 
+    if (!this.hasAdminPermissions()) {
+      this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to update a database type'}]);
+      return;
+    }
+
     this.databaseTypeService.update(updated)
       .subscribe(res => {
           this.closeModal();
@@ -73,6 +88,11 @@ export class DatabaseTypeComponent {
 
   public deleteDatabaseType(): void {
     const deleted: DatabaseType = Object.assign({}, this.model);
+
+    if (!this.hasAdminPermissions()) {
+      this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to delete a database type'}]);
+      return;
+    }
 
     this.databaseTypeService.delete(deleted)
       .subscribe(res => {

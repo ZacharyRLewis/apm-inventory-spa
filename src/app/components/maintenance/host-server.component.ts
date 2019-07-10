@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
-import {HostServer} from '../../model';
+import {HostServer, Permissions} from '../../model';
 import {HostServerService} from '../../services';
 
 @Component({
@@ -11,6 +11,7 @@ import {HostServerService} from '../../services';
 export class HostServerComponent {
 
   @Input() modalId: string;
+  @Input() permissions: Permissions;
   @Output() createEvent: EventEmitter<HostServer> = new EventEmitter<HostServer>();
   @Output() deleteEvent: EventEmitter<HostServer> = new EventEmitter<HostServer>();
   @Output() updateEvent: EventEmitter<HostServer> = new EventEmitter<HostServer>();
@@ -39,6 +40,10 @@ export class HostServerComponent {
     this.newHostServerForm.resetForm();
   }
 
+  public hasAdminPermissions(): boolean {
+    return this.permissions.permissions.indexOf('APM_Admin') >= 0;
+  }
+
   public saveHostServer(): void {
     if (this.passedHostServer) {
       this.updateHostServer();
@@ -49,6 +54,11 @@ export class HostServerComponent {
 
   public createHostServer(): void {
     const created: HostServer = Object.assign({}, this.model);
+
+    if (!this.hasAdminPermissions()) {
+      this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to create a host server'}]);
+      return;
+    }
 
     this.hostServerService.create(created)
       .subscribe(res => {
@@ -64,6 +74,11 @@ export class HostServerComponent {
   public updateHostServer(): void {
     const updated: HostServer = Object.assign({}, this.model);
 
+    if (!this.hasAdminPermissions()) {
+      this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to update a host server'}]);
+      return;
+    }
+
     this.hostServerService.update(updated)
       .subscribe(res => {
           this.closeModal();
@@ -77,6 +92,11 @@ export class HostServerComponent {
 
   public deleteHostServer(): void {
     const deleted: HostServer = Object.assign({}, this.model);
+
+    if (!this.hasAdminPermissions()) {
+      this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to delete a host server'}]);
+      return;
+    }
 
     this.hostServerService.delete(deleted)
       .subscribe(res => {

@@ -1,10 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
-import {Application, ApplicationType, HostServer, SelectOption} from '../../model';
-import {ApplicationFilters} from '../../model/application-filters';
-import {HostServerService} from '../../services';
-import {ApplicationTypeService} from '../../services/application-type/application-type.service';
-import {ApplicationService} from '../../services/application/application.service';
+import {Application, ApplicationFilters, ApplicationType, HostServer, SelectOption} from '../../model';
+import {ApplicationService, ApplicationTypeService, HostServerService} from '../../services';
 import {ApplicationComponent} from '../application/application.component';
 import {DeploymentBulkAddComponent} from '../deployment/deployment-bulk-add.component';
 

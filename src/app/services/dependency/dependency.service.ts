@@ -2,8 +2,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
-import {Dependency, WinResponse} from '../../model';
-import {DependencyRefresh} from '../../model/dependency-refresh';
+import {Dependency, DependencyRefresh, WinResponse} from '../../model';
 import {ServiceInterface} from '../service.interface';
 
 @Injectable()

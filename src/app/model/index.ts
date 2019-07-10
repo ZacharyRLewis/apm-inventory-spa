@@ -11,6 +11,7 @@ export {Dependency} from './dependency';
 export {DependencyRefresh} from './dependency-refresh';
 export {HostServer} from './host-server';
 export {MulesoftApi} from './mulesoft/mulesoft-api';
+export {Permissions} from './permissions';
 export {SelectOption} from './select-option';
 export {ServiceCall} from './service-call';
 export {TestDomain} from './test-domain';

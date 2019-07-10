@@ -2,7 +2,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
-import {ApplicationType, WinResponse} from '../../model/';
+import {ApplicationType, WinResponse} from '../../model';
 import {ServiceInterface} from '../service.interface';
 
 @Injectable()
