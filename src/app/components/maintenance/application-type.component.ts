@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
 import {ApplicationType, Permissions} from '../../model';
-import {ApplicationTypeService} from '../../services';
+import {ApplicationService, ApplicationTypeService} from '../../services';
 
 @Component({
   selector: 'apm-application-type',
@@ -18,12 +18,13 @@ export class ApplicationTypeComponent {
 
   public model: ApplicationType = new ApplicationType();
   public passedApplicationType: ApplicationType;
+  public applicationUses = 0;
 
   @ViewChild('newApplicationTypeForm')
   public newApplicationTypeForm;
 
-  constructor(private applicationTypeService: ApplicationTypeService, private modalService: ModalService,
-              private shareDataService: ShareDataService) {
+  constructor(private applicationService: ApplicationService, private applicationTypeService: ApplicationTypeService,
+              private modalService: ModalService, private shareDataService: ShareDataService) {
     this.setDefaultValues();
   }
 
@@ -32,6 +33,15 @@ export class ApplicationTypeComponent {
     this.model.name = '';
     this.model.version = '';
     this.model.description = '';
+  }
+
+  public loadApplicationUses = () => {
+    const params = [{name: 'applicationTypeId', value: this.passedApplicationType.id}];
+
+    this.applicationService.filterAll(params)
+      .subscribe(response => {
+        this.applicationUses = response.data.length;
+      });
   }
 
   public closeModal(): void {
@@ -94,6 +104,11 @@ export class ApplicationTypeComponent {
 
     if (!this.hasAdminPermissions()) {
       this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to delete an application type'}]);
+      return;
+    }
+
+    if (this.applicationUses > 0) {
+      this.shareDataService.showStatus([{severity: 'error', summary: 'This application type cannot be deleted because it is in use'}]);
       return;
     }
 

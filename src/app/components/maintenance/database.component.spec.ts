@@ -7,7 +7,7 @@ import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {DatabaseComponent} from '..';
 import {Database, TestDomain, WinResponse} from '../../model';
-import {DatabaseService} from '../../services';
+import {DatabaseService, DeploymentDatabaseService} from '../../services';
 
 class MockDatabaseService extends DatabaseService {
   private response: WinResponse<Database> = {meta: null, data: TestDomain.DATABASE};
@@ -47,6 +47,7 @@ describe('DatabaseComponent', () => {
       imports: [FormsModule, HttpClientModule, TableModule],
       declarations: [DatabaseComponent],
       providers: [
+        DeploymentDatabaseService,
         {provide: DatabaseService, useClass: MockDatabaseService},
         {provide: ModalService, useClass: MockModalService},
         ShareDataService
@@ -75,7 +76,7 @@ describe('DatabaseComponent', () => {
     expect(component.model.name).toEqual('');
     expect(component.model.hostName).toEqual('');
     expect(component.model.port).toEqual('');
-    expect(component.model.type.name).toEqual('');
+    expect(component.model.databaseTypeId).toEqual('');
     expect(component.model.environment).toEqual('');
   });
 

@@ -8,7 +8,14 @@ import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {ApplicationTypeComponent, DatabaseComponent, DatabaseTypeComponent, HostServerComponent, MaintenanceComponent} from '..';
 import {ApplicationType, Database, DatabaseType, HostServer, Permissions, TestDomain, WinResponse} from '../../model';
-import {ApplicationTypeService, DatabaseService, DatabaseTypeService, HostServerService, PermissionsService} from '../../services';
+import {
+  ApplicationService,
+  ApplicationTypeService,
+  DatabaseService,
+  DatabaseTypeService, DeploymentDatabaseService, DeploymentService,
+  HostServerService,
+  PermissionsService
+} from '../../services';
 
 class MockApplicationTypeService extends ApplicationTypeService {
   private response: WinResponse<ApplicationType[]> = {meta: null, data: [TestDomain.APPLICATION_TYPE]};
@@ -75,6 +82,7 @@ describe('MaintenanceComponent', () => {
       imports: [FormsModule, HttpClientModule, HttpClientTestingModule, TableModule],
       declarations: [MaintenanceComponent, ApplicationTypeComponent, DatabaseTypeComponent, DatabaseComponent, HostServerComponent],
       providers: [
+        ApplicationService, DeploymentService, DeploymentDatabaseService,
         {provide: ApplicationTypeService, useClass: MockApplicationTypeService},
         {provide: DatabaseTypeService, useClass: MockDatabaseTypeService},
         {provide: DatabaseService, useClass: MockDatabaseService},

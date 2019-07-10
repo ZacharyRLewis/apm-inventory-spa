@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
 import {HostServer, Permissions} from '../../model';
-import {HostServerService} from '../../services';
+import {DeploymentService, HostServerService} from '../../services';
 
 @Component({
   selector: 'apm-host-server',
@@ -20,11 +20,13 @@ export class HostServerComponent {
   public passedHostServer: HostServer;
   public environments: string[] = ['DEV', 'QA', 'PROD'];
   public operatingSystems: string[] = ['AS400', 'LINUX', 'WINDOWS'];
+  public deploymentUses = 0;
 
   @ViewChild('newHostServerForm')
   public newHostServerForm;
 
-  constructor(private hostServerService: HostServerService, private modalService: ModalService, private shareDataService: ShareDataService) {
+  constructor(private deploymentService: DeploymentService, private hostServerService: HostServerService,
+              private modalService: ModalService, private shareDataService: ShareDataService) {
     this.setDefaultValues();
   }
 
@@ -33,6 +35,15 @@ export class HostServerComponent {
     this.model.name = '';
     this.model.operatingSystem = '';
     this.model.environment = '';
+  }
+
+  public loadDeploymentUses = () => {
+    const params = [{name: 'hostServerId', value: this.passedHostServer.id}];
+
+    this.deploymentService.filterAll(params)
+      .subscribe(response => {
+        this.deploymentUses = response.data.length;
+      });
   }
 
   public closeModal(): void {
@@ -95,6 +106,11 @@ export class HostServerComponent {
 
     if (!this.hasAdminPermissions()) {
       this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to delete a host server'}]);
+      return;
+    }
+
+    if (this.deploymentUses > 0) {
+      this.shareDataService.showStatus([{severity: 'error', summary: 'This host server cannot be deleted because it is in use'}]);
       return;
     }
 

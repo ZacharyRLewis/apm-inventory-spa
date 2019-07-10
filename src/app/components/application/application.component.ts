@@ -177,6 +177,11 @@ export class ApplicationComponent {
       return;
     }
 
+    if (this.deployments.length > 0) {
+      this.shareDataService.showStatus([{severity: 'error', summary: 'This application cannot be deleted because it has deployments'}]);
+      return;
+    }
+
     this.applicationService.delete(deleted)
       .subscribe(res => {
           this.closeModal();

@@ -6,7 +6,7 @@ import {cold} from 'jasmine-marbles';
 import {Observable} from 'rxjs';
 import {DatabaseTypeComponent} from '..';
 import {DatabaseType, TestDomain, WinResponse} from '../../model';
-import {DatabaseTypeService} from '../../services';
+import {DatabaseService, DatabaseTypeService} from '../../services';
 
 class MockDatabaseTypeService extends DatabaseTypeService {
   private response: WinResponse<DatabaseType> = {meta: null, data: TestDomain.APPLICATION_TYPE};
@@ -46,6 +46,7 @@ describe('DatabaseTypeComponent', () => {
       imports: [FormsModule, HttpClientModule],
       declarations: [DatabaseTypeComponent],
       providers: [
+        DatabaseService,
         {provide: DatabaseTypeService, useClass: MockDatabaseTypeService},
         {provide: ModalService, useClass: MockModalService},
         ShareDataService

@@ -137,21 +137,25 @@ export class MaintenanceComponent {
   public prepareApplicationTypeModal(applicationType: ApplicationType): void {
     this.applicationTypeComponent.passedApplicationType = Object.assign({}, applicationType);
     this.applicationTypeComponent.model = Object.assign({}, applicationType);
+    this.applicationTypeComponent.loadApplicationUses();
   }
 
   public prepareDatabaseTypeModal(databaseType: DatabaseType): void {
     this.databaseTypeComponent.passedDatabaseType = Object.assign({}, databaseType);
     this.databaseTypeComponent.model = Object.assign({}, databaseType);
+    this.databaseTypeComponent.loadDatabaseUses();
   }
 
   public prepareDatabaseModal(database: Database): void {
     this.databaseComponent.passedDatabase = Object.assign({}, database);
     this.databaseComponent.model = Object.assign({}, database);
+    this.databaseComponent.loadDeploymentUses();
   }
 
   public prepareHostServerModal(hostServer: HostServer): void {
     this.hostServerComponent.passedHostServer = Object.assign({}, hostServer);
     this.hostServerComponent.model = Object.assign({}, hostServer);
+    this.hostServerComponent.loadDeploymentUses();
   }
 
   public openModal(modalId: string): void {
@@ -220,5 +224,17 @@ export class MaintenanceComponent {
   public handleHostServerUpdate(hostServer: HostServer): void {
     this.shareDataService.showStatus([{severity: 'success', summary: 'Host Server ' + hostServer.name + ' successfully updated'}]);
     this.refreshHostServers();
+  }
+
+  public getDatabaseTypeName(databaseTypeId: string): string {
+    if (!this.databaseTypes || !databaseTypeId) {
+      return '';
+    }
+    for (const databaseType of this.databaseTypes) {
+      if (databaseType.id === databaseTypeId) {
+        return databaseType.name;
+      }
+    }
+    return null;
   }
 }

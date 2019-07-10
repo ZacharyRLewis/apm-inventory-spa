@@ -7,7 +7,7 @@ import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {HostServerComponent} from '..';
 import {HostServer, TestDomain, WinResponse} from '../../model';
-import {HostServerService} from '../../services';
+import {DeploymentService, HostServerService} from '../../services';
 
 class MockHostServerService extends HostServerService {
   private response: WinResponse<HostServer> = {meta: null, data: TestDomain.HOST_SERVER};
@@ -47,6 +47,7 @@ describe('HostServerComponent', () => {
       imports: [FormsModule, HttpClientModule, TableModule],
       declarations: [HostServerComponent],
       providers: [
+        DeploymentService,
         {provide: HostServerService, useClass: MockHostServerService},
         {provide: ModalService, useClass: MockModalService},
         ShareDataService

@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
 import {DatabaseType, Permissions} from '../../model';
-import {DatabaseTypeService} from '../../services';
+import {DatabaseService, DatabaseTypeService} from '../../services';
 
 @Component({
   selector: 'apm-database-type',
@@ -18,17 +18,30 @@ export class DatabaseTypeComponent {
 
   public model: DatabaseType = new DatabaseType();
   public passedDatabaseType: DatabaseType;
+  public databaseUses = 0;
 
   @ViewChild('newDatabaseTypeForm')
   public newDatabaseTypeForm;
 
-  constructor(private databaseTypeService: DatabaseTypeService, private modalService: ModalService, private shareDataService: ShareDataService) {
+  constructor(private databaseService: DatabaseService, private databaseTypeService: DatabaseTypeService,
+              private modalService: ModalService, private shareDataService: ShareDataService) {
     this.setDefaultValues();
   }
 
   public setDefaultValues(): void {
     this.model.id = null;
     this.model.name = '';
+  }
+
+  public loadDatabaseUses = () => {
+    const params = [{name: 'databaseTypeId', value: this.passedDatabaseType.id}];
+    console.log('databases params = ' + JSON.stringify(params));
+
+    this.databaseService.filterAll(params)
+      .subscribe(response => {
+        console.log('databases response: ' + JSON.stringify(response));
+        this.databaseUses = response.data.length;
+      });
   }
 
   public closeModal(): void {
@@ -91,6 +104,11 @@ export class DatabaseTypeComponent {
 
     if (!this.hasAdminPermissions()) {
       this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to delete a database type'}]);
+      return;
+    }
+
+    if (this.databaseUses > 0) {
+      this.shareDataService.showStatus([{severity: 'error', summary: 'This database type cannot be deleted because it is in use'}]);
       return;
     }
 

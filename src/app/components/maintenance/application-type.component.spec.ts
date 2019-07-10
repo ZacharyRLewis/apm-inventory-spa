@@ -6,7 +6,7 @@ import {cold} from 'jasmine-marbles';
 import {Observable} from 'rxjs';
 import {ApplicationTypeComponent} from '..';
 import {ApplicationType, TestDomain, WinResponse} from '../../model';
-import {ApplicationTypeService} from '../../services';
+import {ApplicationService, ApplicationTypeService} from '../../services';
 
 class MockApplicationTypeService extends ApplicationTypeService {
   private response: WinResponse<ApplicationType> = {meta: null, data: TestDomain.APPLICATION_TYPE};
@@ -46,6 +46,7 @@ describe('ApplicationTypeComponent', () => {
       imports: [FormsModule, HttpClientModule],
       declarations: [ApplicationTypeComponent],
       providers: [
+        ApplicationService,
         {provide: ApplicationTypeService, useClass: MockApplicationTypeService},
         {provide: ModalService, useClass: MockModalService},
         ShareDataService

@@ -49,7 +49,7 @@
             <div class="apm-form-group">
               <label class="win-label apm-label" for="databaseType">Type*</label>
               <div class="apm-input-group">
-                <select class="apm-input apm-select" id="databaseType" [(ngModel)]="model.type.id" name="databaseType"
+                <select class="apm-input apm-select" id="databaseType" [(ngModel)]="model.databaseTypeId" name="databaseType"
                         #databaseType="ngModel" required
                         [class.invalid]="(databaseType.touched || databaseType.dirty) && databaseType.invalid">
                   <option value=""></option>

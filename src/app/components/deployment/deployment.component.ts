@@ -118,8 +118,7 @@ export class DeploymentComponent implements OnInit {
   }
 
   public hasApplicationPermissions(): boolean {
-    console.log('applicationOwners = ' + JSON.stringify(this.applicationOwners));
-    return this.permissions.permissions.indexOf('APM_Adminz') >= 0 || this.applicationOwners.indexOf(this.permissions.username) >= 0;
+    return this.permissions.permissions.indexOf('APM_Admin') >= 0 || this.applicationOwners.indexOf(this.permissions.username) >= 0;
   }
 
   public saveDeployment(): void {
@@ -171,6 +170,11 @@ export class DeploymentComponent implements OnInit {
 
     if (!this.hasApplicationPermissions()) {
       this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to delete deployments for this application'}]);
+      return;
+    }
+
+    if (this.databases.length > 0) {
+      this.shareDataService.showStatus([{severity: 'error', summary: 'This deployment cannot be deleted because it has databases'}]);
       return;
     }
 

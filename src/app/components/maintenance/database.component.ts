@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
 import {Database, DatabaseType, Permissions} from '../../model';
-import {DatabaseService} from '../../services';
+import {DatabaseService, DeploymentDatabaseService} from '../../services';
 
 @Component({
   selector: 'apm-database',
@@ -20,11 +20,13 @@ export class DatabaseComponent {
   public model: Database = new Database();
   public passedDatabase: Database;
   public environments: string[] = ['DEV', 'QA', 'PROD'];
+  public deploymentUses = 0;
 
   @ViewChild('newDatabaseForm')
   public newDatabaseForm;
 
-  constructor(private databaseService: DatabaseService, private modalService: ModalService, private shareDataService: ShareDataService) {
+  constructor(private databaseService: DatabaseService, private deploymentDatabaseService: DeploymentDatabaseService,
+              private modalService: ModalService, private shareDataService: ShareDataService) {
     this.setDefaultValues();
   }
 
@@ -33,14 +35,22 @@ export class DatabaseComponent {
     this.model.name = '';
     this.model.hostName = '';
     this.model.port = '';
-    this.model.type = new DatabaseType();
-    this.model.type.name = '';
+    this.model.databaseTypeId = '';
     this.model.environment = '';
   }
 
   public closeModal(): void {
     this.modalService.closeModal(this.modalId);
     this.newDatabaseForm.resetForm();
+  }
+
+  public loadDeploymentUses = () => {
+    const params = [{name: 'databaseId', value: this.passedDatabase.id}];
+
+    this.deploymentDatabaseService.filterAll(params)
+      .subscribe(response => {
+        this.deploymentUses = response.data.length;
+      });
   }
 
   public hasAdminPermissions(): boolean {
@@ -98,6 +108,11 @@ export class DatabaseComponent {
 
     if (!this.hasAdminPermissions()) {
       this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to delete a database'}]);
+      return;
+    }
+
+    if (this.deploymentUses > 0) {
+      this.shareDataService.showStatus([{severity: 'error', summary: 'This database cannot be deleted because it is in use'}]);
       return;
     }
 

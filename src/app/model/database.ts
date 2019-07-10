@@ -6,7 +6,7 @@ export class Database {
               public name?: string,
               public hostName?: string,
               public port?: string,
-              public type?: DatabaseType,
+              public databaseTypeId?: string,
               public environment?: string) {
   }
 
