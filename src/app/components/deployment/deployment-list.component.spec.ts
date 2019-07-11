@@ -110,21 +110,21 @@ describe('DeploymentListComponent', () => {
 
   it('should refresh deployments on create event', () => {
     spyOn(component, 'refreshDeployments').and.callThrough();
-    component.handleCreate(TestDomain.DEPLOYMENT);
+    component.handleCreate({application: TestDomain.APPLICATION, deployment: TestDomain.DEPLOYMENT});
 
     expect(component.refreshDeployments).toHaveBeenCalled();
   });
 
   it('should refresh deployments on delete event', () => {
     spyOn(component, 'refreshDeployments').and.callThrough();
-    component.handleDelete(TestDomain.DEPLOYMENT);
+    component.handleDelete({application: TestDomain.APPLICATION, deployment: TestDomain.DEPLOYMENT});
 
     expect(component.refreshDeployments).toHaveBeenCalled();
   });
 
   it('should refresh deployments on update event', () => {
     spyOn(component, 'refreshDeployments').and.callThrough();
-    component.handleUpdate(TestDomain.DEPLOYMENT);
+    component.handleUpdate({application: TestDomain.APPLICATION, deployment: TestDomain.DEPLOYMENT});
 
     expect(component.refreshDeployments).toHaveBeenCalled();
   });

@@ -131,7 +131,15 @@
                   <ng-template pTemplate="body" let-deployment>
                     <tr>
                       <td>{{deployment.environment}}</td>
-                      <td>{{getDeploymentBaseUrl(deployment)}}</td>
+                      <td *ngIf="deployment.id else noLink">
+                        <a (click)="openDeploymentModal(deployment)">{{getDeploymentBaseUrl(deployment)}}</a>
+                      </td>
+                      <ng-template #noLink>
+                        <td>
+                          <span>{{getDeploymentBaseUrl(deployment)}}</span>
+                          <span class="pending-deployment">Pending</span>
+                        </td>
+                      </ng-template>
                     </tr>
                   </ng-template>
                 </p-table>

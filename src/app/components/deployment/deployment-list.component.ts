@@ -132,17 +132,17 @@ export class DeploymentListComponent implements OnInit  {
     this.modalService.closeModal(this.DEPLOYMENT_DATABASE_MODAL_ID);
   }
 
-  public handleCreate(deployment: Deployment): void {
+  public handleCreate({application, deployment}): void {
     this.shareDataService.showStatus([{severity: 'success', summary: 'Deployment ' + deployment.contextName + ' successfully created'}]);
     this.refreshDeployments();
   }
 
-  public handleDelete(deployment: Deployment): void {
+  public handleDelete({application, deployment}): void {
     this.shareDataService.showStatus([{severity: 'success', summary: 'Deployment ' + deployment.contextName + ' successfully deleted'}]);
     this.refreshDeployments();
   }
 
-  public handleUpdate(deployment: Deployment): void {
+  public handleUpdate({application, deployment}): void {
     this.shareDataService.showStatus([{severity: 'success', summary: 'Deployment ' + deployment.contextName + ' successfully updated'}]);
     this.refreshDeployments();
   }

@@ -10,7 +10,7 @@ import {cold, getTestScheduler} from 'jasmine-marbles';
 import {AutoCompleteModule, ChipsModule, PanelModule, SidebarModule} from 'primeng/primeng';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
-import {ApplicationComponent, DeploymentBulkAddComponent, InventoryComponent} from '..';
+import {ApplicationComponent, DeploymentBulkAddComponent, DeploymentComponent, InventoryComponent} from '..';
 import {Application, ApplicationFilters, ApplicationType, Deployment, HostServer, TestDomain, WinResponse} from '../../model';
 import {
   ApplicationService,
@@ -81,7 +81,7 @@ describe('InventoryComponent', () => {
         AutoCompleteModule, BrowserAnimationsModule, ChipsComponentModule, ChipsModule, FormsModule, HttpClientModule,
         HttpClientTestingModule, PanelModule, SelectComponentModule, SidebarModule, TableModule
       ],
-      declarations: [InventoryComponent, ApplicationComponent, ApplicationFlyoutFilterComponent, DeploymentBulkAddComponent],
+      declarations: [InventoryComponent, ApplicationComponent, ApplicationFlyoutFilterComponent, DeploymentComponent, DeploymentBulkAddComponent],
       providers: [
         {provide: ApplicationService, useClass: MockApplicationService},
         {provide: ApplicationTypeService, useClass: MockApplicationTypeService},

@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
-import {Application, ApplicationType, Dependency, DependencyRefresh, Deployment, HostServer, Permissions} from '../../model';
+import {Application, ApplicationType, Dependency, DependencyRefresh, Deployment, DeploymentDatabase, HostServer, Permissions} from '../../model';
 import {ApplicationService, DependencyService, DeploymentService, PermissionsService} from '../../services';
 
 @Component({
@@ -18,6 +18,7 @@ export class ApplicationComponent {
   @Output() deleteEvent: EventEmitter<Application> = new EventEmitter<Application>();
   @Output() updateEvent: EventEmitter<Application> = new EventEmitter<Application>();
   @Output() addDeploymentEvent: EventEmitter<Application> = new EventEmitter<Application>();
+  @Output() openDeploymentModalEvent: EventEmitter<object> = new EventEmitter<object>();
 
   public model: Application = new Application();
   public passedApplication: Application;
@@ -228,6 +229,17 @@ export class ApplicationComponent {
     }
 
     this.addDeploymentEvent.emit(application);
+  }
+
+  public openDeploymentModal(deployment: Deployment): void {
+    const application: Application = Object.assign({}, this.passedApplication);
+
+    if (!this.hasApplicationPermissions()) {
+      this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to maintain deployments for this application'}]);
+      return;
+    }
+
+    this.openDeploymentModalEvent.emit({application, deployment});
   }
 
   public refreshDependencies(): void {

@@ -1,8 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
-import {Application, ApplicationFilters, ApplicationType, HostServer, SelectOption} from '../../model';
+import {Application, ApplicationFilters, ApplicationType, Deployment, HostServer, SelectOption} from '../../model';
 import {ApplicationService, ApplicationTypeService, HostServerService} from '../../services';
 import {ApplicationComponent} from '../application/application.component';
+import {DeploymentComponent} from '../deployment/deployment.component';
 import {DeploymentBulkAddComponent} from '../deployment/deployment-bulk-add.component';
 
 @Component({
@@ -19,6 +20,7 @@ export class InventoryComponent implements OnInit {
   public filters = new ApplicationFilters();
 
   public APPLICATION_MODAL_ID = 'application-modal';
+  public DEPLOYMENT_MODAL_ID = 'deployment-modal';
   public DEPLOYMENT_BULK_ADD_MODAL_ID = 'deployment-bulk-add-modal';
 
   public columns = [
@@ -30,6 +32,9 @@ export class InventoryComponent implements OnInit {
 
   @ViewChild('applicationComponent')
   applicationComponent: ApplicationComponent;
+
+  @ViewChild('deploymentComponent')
+  deploymentComponent: DeploymentComponent;
 
   @ViewChild('deploymentBulkAddComponent')
   deploymentBulkAddComponent: DeploymentBulkAddComponent;
@@ -120,11 +125,28 @@ export class InventoryComponent implements OnInit {
     this.applicationComponent.applicationTypes = this.applicationTypes;
   }
 
+  public resetDeploymentComponent(): void {
+    this.deploymentComponent.passedDeployment = null;
+    this.deploymentComponent.passedApplication = null;
+    this.deploymentComponent.applications = this.applications;
+    this.deploymentComponent.setDefaultValues();
+  }
+
   public prepareApplicationModal(application: Application): void {
     this.applicationComponent.passedApplication = Object.assign({}, application);
     this.applicationComponent.model = Object.assign({}, application);
     this.applicationComponent.loadDeployments();
     this.applicationComponent.loadDependencies();
+  }
+
+  public prepareDeploymentModal({application, deployment}): void {
+    this.deploymentComponent.passedApplication = Object.assign({}, application);
+    this.deploymentComponent.passedDeployment = Object.assign({}, deployment);
+    this.deploymentComponent.model = Object.assign({}, deployment);
+    this.deploymentComponent.loadDatabases();
+    this.deploymentComponent.loadDeploymentDatabases();
+    this.deploymentComponent.loadApis(deployment.contextName);
+    this.deploymentComponent.loadApplicationOwners();
   }
 
   public prepareDeploymentBulkAddModal(application: Application): void {
@@ -137,6 +159,12 @@ export class InventoryComponent implements OnInit {
     this.modalService.registerPopState(this.applicationComponent.backButtonCallback);
   }
 
+  public openDeploymentModal(): void {
+    history.pushState(null, null, document.URL);
+    this.modalService.openModal(this.DEPLOYMENT_MODAL_ID);
+    this.modalService.registerPopState(this.deploymentComponent.backButtonCallback);
+  }
+
   public openDeploymentBulkAddModal(): void {
     history.pushState(null, null, document.URL);
     this.modalService.openModal(this.DEPLOYMENT_BULK_ADD_MODAL_ID);
@@ -146,6 +174,11 @@ export class InventoryComponent implements OnInit {
   public closeApplicationModal(): void {
     this.modalService.unregisterPopState(this.applicationComponent.backButtonCallback);
     this.modalService.closeModal(this.APPLICATION_MODAL_ID);
+  }
+
+  public closeDeploymentModal(): void {
+    this.modalService.unregisterPopState(this.deploymentComponent.backButtonCallback);
+    this.modalService.closeModal(this.DEPLOYMENT_MODAL_ID);
   }
 
   public closeDeploymentBulkAddModal(): void {
@@ -172,6 +205,20 @@ export class InventoryComponent implements OnInit {
   public handleUpdate(application: Application): void {
     this.shareDataService.showStatus([{severity: 'success', summary: 'Application ' + application.name + ' successfully updated'}]);
     this.loadApplications();
+  }
+
+  public handleDeploymentDelete({application, deployment}): void {
+    this.shareDataService.showStatus([{severity: 'success', summary: 'Deployment ' + deployment.contextName + ' successfully deleted'}]);
+    this.prepareApplicationModal(application);
+    this.closeDeploymentModal();
+    this.openApplicationModal();
+  }
+
+  public handleDeploymentUpdate({application, deployment}): void {
+    this.shareDataService.showStatus([{severity: 'success', summary: 'Deployment ' + deployment.contextName + ' successfully updated'}]);
+    this.prepareApplicationModal(application);
+    this.closeDeploymentModal();
+    this.openApplicationModal();
   }
 
   public handleBulkDeploymentCancel(application: Application): void {

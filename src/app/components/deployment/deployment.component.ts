@@ -13,14 +13,16 @@ export class DeploymentComponent implements OnInit {
   @Input() modalId: string;
   @Input() applications: Application[] = [];
   @Input() hostServers: HostServer[] = [];
+  @Input() readonlyDatabases = false;
 
-  @Output() createEvent: EventEmitter<Deployment> = new EventEmitter<Deployment>();
-  @Output() deleteEvent: EventEmitter<Deployment> = new EventEmitter<Deployment>();
-  @Output() updateEvent: EventEmitter<Deployment> = new EventEmitter<Deployment>();
+  @Output() createEvent: EventEmitter<object> = new EventEmitter<object>();
+  @Output() deleteEvent: EventEmitter<object> = new EventEmitter<object>();
+  @Output() updateEvent: EventEmitter<object> = new EventEmitter<object>();
   @Output() openDeploymentDatabaseModalEvent: EventEmitter<object> = new EventEmitter<object>();
 
   public model: Deployment = new Deployment();
   public passedDeployment: Deployment;
+  public passedApplication: Application;
   public environments: string[] = ['DEV', 'QA', 'PROD'];
   public databases: Database[] = [];
   public deploymentDatabases: DeploymentDatabase[] = [];
@@ -140,6 +142,7 @@ export class DeploymentComponent implements OnInit {
 
   public createDeployment(): void {
     const created: Deployment = Object.assign({}, this.model);
+    const application: Application = Object.assign({}, this.passedApplication);
 
     if (!this.hasApplicationPermissions()) {
       this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to create deployments for this application'}]);
@@ -149,7 +152,7 @@ export class DeploymentComponent implements OnInit {
     this.deploymentService.create(created)
       .subscribe(res => {
           this.closeModal();
-          this.createEvent.emit(created);
+          this.createEvent.emit({application, deployment: created});
         },
         err => {
           this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(create deployment) >> ' + err.message}]);
@@ -158,6 +161,7 @@ export class DeploymentComponent implements OnInit {
 
   public updateDeployment(): void {
     const updated: Deployment = Object.assign({}, this.model);
+    const application: Application = Object.assign({}, this.passedApplication);
 
     if (!this.hasApplicationPermissions()) {
       this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to update deployments for this application'}]);
@@ -167,7 +171,7 @@ export class DeploymentComponent implements OnInit {
     this.deploymentService.update(updated)
       .subscribe(res => {
           this.closeModal();
-          this.updateEvent.emit(updated);
+          this.updateEvent.emit({application, deployment: updated});
         },
         err => {
           this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(update deployment) >> ' + err.message}]);
@@ -176,13 +180,14 @@ export class DeploymentComponent implements OnInit {
 
   public deleteDeployment(): void {
     const deleted: Deployment = Object.assign({}, this.model);
+    const application: Application = Object.assign({}, this.passedApplication);
 
     if (!this.hasApplicationPermissions()) {
       this.shareDataService.showStatus([{severity: 'error', summary: 'You are not authorized to delete deployments for this application'}]);
       return;
     }
 
-    if (this.databases.length > 0) {
+    if (this.deploymentDatabases.length > 0) {
       this.shareDataService.showStatus([{severity: 'error', summary: 'This deployment cannot be deleted because it has databases'}]);
       return;
     }
@@ -190,7 +195,7 @@ export class DeploymentComponent implements OnInit {
     this.deploymentService.delete(deleted)
       .subscribe(res => {
           this.closeModal();
-          this.deleteEvent.emit(deleted);
+          this.deleteEvent.emit({application, deployment: deleted});
         },
         err => {
           this.shareDataService.showStatus([{severity: 'error', summary: 'ERR:(delete deployment) >> ' + err.message}]);

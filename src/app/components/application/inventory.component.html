@@ -46,8 +46,15 @@
                  (createEvent)="handleCreate($event)"
                  (deleteEvent)="handleDelete($event)"
                  (updateEvent)="handleUpdate($event)"
-                 (addDeploymentEvent)="addDeploymentToApplication($event)">
+                 (addDeploymentEvent)="addDeploymentToApplication($event)"
+                 (openDeploymentModalEvent)="prepareDeploymentModal($event); openDeploymentModal();">
 </apm-application>
+
+<apm-deployment #deploymentComponent [modalId]="DEPLOYMENT_MODAL_ID" [applications]="applications" [hostServers]="hostServers"
+                [readonlyDatabases]="true"
+                (deleteEvent)="handleDeploymentDelete($event)"
+                (updateEvent)="handleDeploymentUpdate($event)">
+</apm-deployment>
 
 <apm-deployment-bulk-add #deploymentBulkAddComponent [modalId]="DEPLOYMENT_BULK_ADD_MODAL_ID" [hostServers]="hostServers"
                          (createAppDeploymentEvent)="handleBulkDeploymentCreate($event)"

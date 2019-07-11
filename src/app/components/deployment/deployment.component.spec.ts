@@ -203,8 +203,8 @@ describe('DeploymentComponent', () => {
 
     expect(deploymentService.create).toHaveBeenCalled();
 
-    component.createEvent.subscribe(created => {
-      expect(created.id).toEqual('123');
+    component.createEvent.subscribe(response => {
+      expect(response.deployment.id).toEqual('123');
     });
   });
 
@@ -217,8 +217,8 @@ describe('DeploymentComponent', () => {
 
     expect(deploymentService.delete).toHaveBeenCalled();
 
-    component.deleteEvent.subscribe(deleted => {
-      expect(deleted.id).toEqual(deployment.id);
+    component.deleteEvent.subscribe(response => {
+      expect(response.deployment.id).toEqual(deployment.id);
     });
   });
 
@@ -231,8 +231,8 @@ describe('DeploymentComponent', () => {
 
     expect(deploymentService.update).toHaveBeenCalled();
 
-    component.updateEvent.subscribe(updated => {
-      expect(updated.id).toEqual(deployment.id);
+    component.updateEvent.subscribe(response => {
+      expect(response.deployment.id).toEqual(deployment.id);
     });
   });
 

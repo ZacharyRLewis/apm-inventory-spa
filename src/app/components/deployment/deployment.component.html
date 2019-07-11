@@ -92,7 +92,7 @@
           <p-panel header="Databases" [toggleable]="true" [(collapsed)]="collapseDatabasesPanel">
             <div class="child-table-div">
               <div>
-                <button class="add-button" [disabled]="!passedDeployment || !model.id" (click)="openDeploymentDatabaseModal()">
+                <button class="add-button" [disabled]="!passedDeployment || !model.id || readonlyDatabases" (click)="openDeploymentDatabaseModal()">
                   <i class="fa fa-plus" aria-hidden="true"></i>
                   <span>Add Database</span>
                 </button>
@@ -110,9 +110,15 @@
                     <tr>
                       <td>{{getDatabaseName(database.databaseId)}}</td>
                       <td>{{getDatabaseHost(database.databaseId)}}</td>
-                      <td>
+                      <td *ngIf="!readonlyDatabases else readonlyDatabase">
                         <a (click)="openDeploymentDatabaseModal(database)">{{database.connectionUsername}}</a>
                       </td>
+                      <ng-template #readonlyDatabase>
+                        <td>
+                          <span>{{database.connectionUsername}}</span>
+                          <span class="readonly-database">Read Only</span>
+                        </td>
+                      </ng-template>
                     </tr>
                   </ng-template>
                 </p-table>
