@@ -156,7 +156,7 @@ describe('InventoryComponent', () => {
   it('should open modal', () => {
     spyOn(modalService, 'openModal').and.callThrough();
 
-    component.openModal('application-modal');
+    component.openApplicationModal();
 
     expect(modalService.openModal).toHaveBeenCalled();
   });
@@ -225,15 +225,15 @@ describe('InventoryComponent', () => {
 
   it('should handle bulk deployment cancel', () => {
     spyOn(component, 'prepareApplicationModal').and.callThrough();
-    spyOn(component, 'closeModal').and.callThrough();
-    spyOn(component, 'openModal').and.callThrough();
+    spyOn(component, 'closeDeploymentBulkAddModal').and.callThrough();
+    spyOn(component, 'openApplicationModal').and.callThrough();
 
     const application = TestDomain.APPLICATION;
     component.handleBulkDeploymentCancel(application);
 
     expect(component.prepareApplicationModal).toHaveBeenCalledWith(application);
-    expect(component.closeModal).toHaveBeenCalledTimes(1);
-    expect(component.openModal).toHaveBeenCalledTimes(1);
+    expect(component.closeDeploymentBulkAddModal).toHaveBeenCalledTimes(1);
+    expect(component.openApplicationModal).toHaveBeenCalledTimes(1);
   });
 
   it('should handle bulk deployment create without existing deployments', () => {

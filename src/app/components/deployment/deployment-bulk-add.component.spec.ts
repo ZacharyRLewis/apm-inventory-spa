@@ -1,6 +1,7 @@
 import {HttpClientModule} from '@angular/common/http';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {ModalService} from '@win-angular/services';
 import {TableModule} from 'primeng/table';
 import {DeploymentBulkAddComponent} from '..';
 import {Deployment, HostServer, TestDomain} from '../../model';
@@ -14,6 +15,9 @@ describe('DeploymentBulkAddComponent', () => {
     TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientModule, TableModule],
       declarations: [DeploymentBulkAddComponent],
+      providers: [
+        ModalService
+      ]
     }).compileComponents();
   }));
 

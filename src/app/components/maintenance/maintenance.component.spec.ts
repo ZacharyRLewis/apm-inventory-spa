@@ -201,7 +201,7 @@ describe('MaintenanceComponent', () => {
   it('should open application type modal', () => {
     spyOn(modalService, 'openModal').and.callThrough();
 
-    component.openModal('application-type-modal');
+    component.openApplicationTypeModal();
 
     expect(modalService.openModal).toHaveBeenCalled();
   });
@@ -209,7 +209,7 @@ describe('MaintenanceComponent', () => {
   it('should open database type modal', () => {
     spyOn(modalService, 'openModal').and.callThrough();
 
-    component.openModal('database-type-modal');
+    component.openDatabaseTypeModal();
 
     expect(modalService.openModal).toHaveBeenCalled();
   });
@@ -217,7 +217,7 @@ describe('MaintenanceComponent', () => {
   it('should open database modal', () => {
     spyOn(modalService, 'openModal').and.callThrough();
 
-    component.openModal('database-modal');
+    component.openDatabaseModal();
 
     expect(modalService.openModal).toHaveBeenCalled();
   });
@@ -225,7 +225,7 @@ describe('MaintenanceComponent', () => {
   it('should open host server modal', () => {
     spyOn(modalService, 'openModal').and.callThrough();
 
-    component.openModal('host-server-modal');
+    component.openHostServerModal();
 
     expect(modalService.openModal).toHaveBeenCalled();
   });

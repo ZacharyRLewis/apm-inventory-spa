@@ -19,7 +19,7 @@
       <ng-template pTemplate="body" let-deployment>
         <tr>
           <td>
-            <a (click)="prepareDeploymentModal(deployment); openModal(DEPLOYMENT_MODAL_ID);">{{deployment.id}}</a>
+            <a (click)="prepareDeploymentModal(deployment); openDeploymentModal();">{{deployment.id}}</a>
           </td>
           <td>{{getAppName(deployment.applicationId)}}</td>
           <td>{{deployment.environment}}</td>
@@ -31,7 +31,7 @@
 
   <nav class="navbar sticky-bottom-navbar">
     <div class="sticky-bottom-div">
-      <button class="add-button" (click)="resetDeploymentComponent(); openModal(DEPLOYMENT_MODAL_ID);">
+      <button class="add-button" (click)="resetDeploymentComponent(); openDeploymentModal();">
         <i class="fa fa-plus" aria-hidden="true"></i>
         <span>Create Deployment</span>
       </button>
@@ -45,7 +45,7 @@
                 (createEvent)="handleCreate($event)"
                 (deleteEvent)="handleDelete($event)"
                 (updateEvent)="handleUpdate($event)"
-                (openDeploymentDatabaseModalEvent)="openDeploymentDatabaseModal($event)">
+                (openDeploymentDatabaseModalEvent)="addDatabaseToDeployment($event)">
 </apm-deployment>
 
 <apm-deployment-database #deploymentDatabaseComponent [modalId]="DEPLOYMENT_DATABASE_MODAL_ID"

@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {ModalService} from '@win-angular/services';
 import {Application, Deployment, HostServer} from '../../model';
 
 @Component({
@@ -21,7 +22,7 @@ export class DeploymentBulkAddComponent {
   @ViewChild('newDeploymentForm')
   public newDeploymentForm;
 
-  constructor() {
+  constructor(private modalService: ModalService) {
     this.setDefaultValues();
   }
 
@@ -40,6 +41,15 @@ export class DeploymentBulkAddComponent {
   public closeModal(): void {
     this.backToApplication();
     this.newDeploymentForm.resetForm();
+  }
+
+  /**
+   * Callback function to be called when the user presses the back button in the browser.
+   * Closes the modal and unregisters the event listener.
+   */
+  public backButtonCallback = () => {
+    this.modalService.unregisterPopState(this.backButtonCallback);
+    this.modalService.closeModal(this.modalId);
   }
 
   public getHostServerName(hostServerId: string): string {

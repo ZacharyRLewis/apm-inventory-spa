@@ -187,12 +187,15 @@ export class DashboardComponent implements OnInit {
     }
 }
 
-  public openModal(modalId: string): void {
-    this.modalService.openModal(modalId);
+  public openFindAvailablePortModal(): void {
+    history.pushState(null, null, document.URL);
+    this.modalService.openModal(this.FIND_AVAILABLE_PORT_MODAL_ID);
+    this.modalService.registerPopState(this.findAvailablePortComponent.backButtonCallback);
   }
 
-  public closeModal(modalId: string): void {
-    this.modalService.closeModal(modalId);
+  public closeFindAvailablePortModal(): void {
+    this.modalService.unregisterPopState(this.findAvailablePortComponent.backButtonCallback);
+    this.modalService.closeModal(this.FIND_AVAILABLE_PORT_MODAL_ID);
   }
 
   /**

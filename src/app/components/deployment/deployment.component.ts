@@ -117,6 +117,15 @@ export class DeploymentComponent implements OnInit {
     this.setDefaultValues();
   }
 
+  /**
+   * Callback function to be called when the user presses the back button in the browser.
+   * Closes the modal and unregisters the event listener.
+   */
+  public backButtonCallback = () => {
+    this.modalService.unregisterPopState(this.backButtonCallback);
+    this.modalService.closeModal(this.modalId);
+  }
+
   public hasApplicationPermissions(): boolean {
     return this.permissions.permissions.indexOf('APM_Admin') >= 0 || this.applicationOwners.indexOf(this.permissions.username) >= 0;
   }

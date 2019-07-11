@@ -131,18 +131,32 @@ export class InventoryComponent implements OnInit {
     this.deploymentBulkAddComponent.passedApplication = Object.assign({}, application);
   }
 
-  public openModal(modalId: string): void {
-    this.modalService.openModal(modalId);
+  public openApplicationModal(): void {
+    history.pushState(null, null, document.URL);
+    this.modalService.openModal(this.APPLICATION_MODAL_ID);
+    this.modalService.registerPopState(this.applicationComponent.backButtonCallback);
   }
 
-  public closeModal(modalId: string): void {
-    this.modalService.closeModal(modalId);
+  public openDeploymentBulkAddModal(): void {
+    history.pushState(null, null, document.URL);
+    this.modalService.openModal(this.DEPLOYMENT_BULK_ADD_MODAL_ID);
+    this.modalService.registerPopState(this.deploymentBulkAddComponent.backButtonCallback);
+  }
+
+  public closeApplicationModal(): void {
+    this.modalService.unregisterPopState(this.applicationComponent.backButtonCallback);
+    this.modalService.closeModal(this.APPLICATION_MODAL_ID);
+  }
+
+  public closeDeploymentBulkAddModal(): void {
+    this.modalService.unregisterPopState(this.deploymentBulkAddComponent.backButtonCallback);
+    this.modalService.closeModal(this.DEPLOYMENT_BULK_ADD_MODAL_ID);
   }
 
   public addDeploymentToApplication(application: Application): void {
     this.prepareDeploymentBulkAddModal(application);
-    this.closeModal(this.APPLICATION_MODAL_ID);
-    this.openModal(this.DEPLOYMENT_BULK_ADD_MODAL_ID);
+    this.closeApplicationModal();
+    this.openDeploymentBulkAddModal();
   }
 
   public handleCreate(application: Application): void {
@@ -162,8 +176,8 @@ export class InventoryComponent implements OnInit {
 
   public handleBulkDeploymentCancel(application: Application): void {
     this.prepareApplicationModal(application);
-    this.closeModal(this.DEPLOYMENT_BULK_ADD_MODAL_ID);
-    this.openModal(this.APPLICATION_MODAL_ID);
+    this.closeDeploymentBulkAddModal();
+    this.openApplicationModal();
   }
 
   public handleBulkDeploymentCreate({application, deployments}): void {
@@ -176,8 +190,8 @@ export class InventoryComponent implements OnInit {
     }
 
     this.applicationComponent.deploymentsAdded = true;
-    this.closeModal(this.DEPLOYMENT_BULK_ADD_MODAL_ID);
-    this.openModal(this.APPLICATION_MODAL_ID);
+    this.closeDeploymentBulkAddModal();
+    this.openApplicationModal();
   }
 
   public getApplicationTypeDescription(applicationTypeId: string): string {

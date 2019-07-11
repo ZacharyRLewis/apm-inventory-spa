@@ -50,6 +50,15 @@ export class DeploymentDatabaseComponent {
     this.setDefaultValues();
   }
 
+  /**
+   * Callback function to be called when the user presses the back button in the browser.
+   * Closes the modal and unregisters the event listener.
+   */
+  public backButtonCallback = () => {
+    this.modalService.unregisterPopState(this.backButtonCallback);
+    this.modalService.closeModal(this.modalId);
+  }
+
   public saveDeploymentDatabase(): void {
     if (this.passedDeploymentDatabase) {
       this.updateDeploymentDatabase();

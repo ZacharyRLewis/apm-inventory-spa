@@ -103,7 +103,7 @@ describe('DeploymentListComponent', () => {
   it('should open modal', () => {
     spyOn(modalService, 'openModal').and.callThrough();
 
-    component.openModal('deployment-modal');
+    component.openDeploymentModal();
 
     expect(modalService.openModal).toHaveBeenCalled();
   });

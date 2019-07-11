@@ -51,6 +51,15 @@ export class HostServerComponent {
     this.newHostServerForm.resetForm();
   }
 
+  /**
+   * Callback function to be called when the user presses the back button in the browser.
+   * Closes the modal and unregisters the event listener.
+   */
+  public backButtonCallback = () => {
+    this.modalService.unregisterPopState(this.backButtonCallback);
+    this.modalService.closeModal(this.modalId);
+  }
+
   public hasAdminPermissions(): boolean {
     return this.permissions.permissions.indexOf('APM_Admin') >= 0;
   }

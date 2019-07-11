@@ -101,6 +101,7 @@ export class DeploymentListComponent implements OnInit  {
   }
 
   public prepareDeploymentDatabaseModal(deployment: Deployment, deploymentDatabase: DeploymentDatabase): void {
+    this.deploymentDatabaseComponent.loadDatabases();
     this.deploymentDatabaseComponent.passedDeployment = Object.assign({}, deployment);
 
     if (deploymentDatabase) {
@@ -109,12 +110,26 @@ export class DeploymentListComponent implements OnInit  {
     }
   }
 
-  public openModal(modalId: string): void {
-    this.modalService.openModal(modalId);
+  public openDeploymentModal(): void {
+    history.pushState(null, null, document.URL);
+    this.modalService.openModal(this.DEPLOYMENT_MODAL_ID);
+    this.modalService.registerPopState(this.deploymentComponent.backButtonCallback);
   }
 
-  public closeModal(modalId: string): void {
-    this.modalService.closeModal(modalId);
+  public openDeploymentDatabaseModal(): void {
+    history.pushState(null, null, document.URL);
+    this.modalService.openModal(this.DEPLOYMENT_DATABASE_MODAL_ID);
+    this.modalService.registerPopState(this.deploymentDatabaseComponent.backButtonCallback);
+  }
+
+  public closeDeploymentModal(): void {
+    this.modalService.unregisterPopState(this.deploymentComponent.backButtonCallback);
+    this.modalService.closeModal(this.DEPLOYMENT_MODAL_ID);
+  }
+
+  public closeDeploymentDatabaseModal(): void {
+    this.modalService.unregisterPopState(this.deploymentDatabaseComponent.backButtonCallback);
+    this.modalService.closeModal(this.DEPLOYMENT_DATABASE_MODAL_ID);
   }
 
   public handleCreate(deployment: Deployment): void {
@@ -134,23 +149,22 @@ export class DeploymentListComponent implements OnInit  {
 
   public handleDeploymentDatabaseCancel(deployment: Deployment): void {
     this.prepareDeploymentModal(deployment);
-    this.closeModal(this.DEPLOYMENT_DATABASE_MODAL_ID);
-    this.openModal(this.DEPLOYMENT_MODAL_ID);
+    this.closeDeploymentDatabaseModal();
+    this.openDeploymentModal();
   }
 
   public handleDeploymentDatabaseUpdate(deployment: Deployment): void {
     this.prepareDeploymentModal(deployment);
     this.deploymentComponent.loadDeploymentDatabases();
     this.deploymentComponent.databasesAdded = true;
-    this.closeModal(this.DEPLOYMENT_DATABASE_MODAL_ID);
-    this.openModal(this.DEPLOYMENT_MODAL_ID);
+    this.closeDeploymentDatabaseModal();
+    this.openDeploymentModal();
   }
 
-  public openDeploymentDatabaseModal({deployment, deploymentDatabase}): void {
-    this.deploymentDatabaseComponent.loadDatabases();
+  public addDatabaseToDeployment({deployment, deploymentDatabase}): void {
     this.prepareDeploymentDatabaseModal(deployment, deploymentDatabase);
-    this.closeModal(this.DEPLOYMENT_MODAL_ID);
-    this.openModal(this.DEPLOYMENT_DATABASE_MODAL_ID);
+    this.closeDeploymentModal();
+    this.openDeploymentDatabaseModal();
   }
 
   public getAppName(applicationId: string): string {

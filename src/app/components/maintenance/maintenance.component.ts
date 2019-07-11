@@ -158,12 +158,48 @@ export class MaintenanceComponent {
     this.hostServerComponent.loadDeploymentUses();
   }
 
-  public openModal(modalId: string): void {
-    this.modalService.openModal(modalId);
+  public openApplicationTypeModal(): void {
+    history.pushState(null, null, document.URL);
+    this.modalService.openModal(this.APPLICATION_TYPE_MODAL_ID);
+    this.modalService.registerPopState(this.applicationTypeComponent.backButtonCallback);
   }
 
-  public closeModal(modalId: string): void {
-    this.modalService.closeModal(modalId);
+  public openDatabaseModal(): void {
+    history.pushState(null, null, document.URL);
+    this.modalService.openModal(this.DATABASE_MODAL_ID);
+    this.modalService.registerPopState(this.databaseComponent.backButtonCallback);
+  }
+
+  public openDatabaseTypeModal(): void {
+    history.pushState(null, null, document.URL);
+    this.modalService.openModal(this.DATABASE_TYPE_MODAL_ID);
+    this.modalService.registerPopState(this.databaseTypeComponent.backButtonCallback);
+  }
+
+  public openHostServerModal(): void {
+    history.pushState(null, null, document.URL);
+    this.modalService.openModal(this.HOST_SERVER_MODAL_ID);
+    this.modalService.registerPopState(this.hostServerComponent.backButtonCallback);
+  }
+
+  public closeApplicationTypeModal(): void {
+    this.modalService.unregisterPopState(this.applicationTypeComponent.backButtonCallback);
+    this.modalService.closeModal(this.APPLICATION_TYPE_MODAL_ID);
+  }
+
+  public closeDatabaseModal(): void {
+    this.modalService.unregisterPopState(this.databaseComponent.backButtonCallback);
+    this.modalService.closeModal(this.DATABASE_MODAL_ID);
+  }
+
+  public closeDatabaseTypeModal(): void {
+    this.modalService.unregisterPopState(this.databaseTypeComponent.backButtonCallback);
+    this.modalService.closeModal(this.DATABASE_TYPE_MODAL_ID);
+  }
+
+  public closeHostServerModal(): void {
+    this.modalService.unregisterPopState(this.hostServerComponent.backButtonCallback);
+    this.modalService.closeModal(this.HOST_SERVER_MODAL_ID);
   }
 
   public handleApplicationTypeCreate(applicationType: ApplicationType): void {

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
 import {Deployment, HostServer} from '../../model';
 import {DeploymentService} from '../../services';
@@ -41,6 +41,15 @@ export class FindAvailablePortComponent {
     this.modalService.closeModal(this.modalId);
   }
 
+  /**
+   * Callback function to be called when the user presses the back button in the browser.
+   * Closes the modal and unregisters the event listener.
+   */
+  public backButtonCallback = () => {
+    this.modalService.unregisterPopState(this.backButtonCallback);
+    this.modalService.closeModal(this.modalId);
+  }
+
   public findPorts(): void {
     this.shareDataService.blockUI(true);
 
@@ -55,8 +64,7 @@ export class FindAvailablePortComponent {
 
     this.deploymentService.filterAll(params)
       .subscribe(response => {
-        const deployments = response.data;
-        self.getPortSuggestions(deployments);
+        self.getPortSuggestions(response.data);
 
         this.shareDataService.blockUI(false);
       });
