@@ -463,6 +463,10 @@ button:disabled {
 
 // PrimeNG Autocomplete
 
+.ui-autocomplete.ui-widget {
+  width: 100%;
+}
+
 .ui-autocomplete {
   font-size: 13px;
 
@@ -549,5 +553,33 @@ button:disabled {
   .ui-growl-item-container.ui-state-highlight.ui-growl-message-error {
     background-color: $win-error;
     border-color: $win-error;
+  }
+}
+
+.suggestions {
+  border: solid 1px #ccc;
+  position: absolute;
+  background: white;
+
+  ul {
+    padding: 0px;
+    margin: 0px;
+
+    li {
+      list-style: none;
+      padding: 0px;
+      margin: 0px;
+
+      a {
+        padding: 5px 12px;
+        display: block;
+        text-decoration: none !important;
+        color: $win-primary-text !important;
+      }
+
+      a:hover {
+        background-color: $win-chroma-1;
+      }
+    }
   }
 }

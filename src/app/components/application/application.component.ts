@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
-import {Application, ApplicationType, Dependency, DependencyRefresh, Deployment, DeploymentDatabase, HostServer, Permissions} from '../../model';
+import {Chips} from 'primeng/chips';
+import {Application, ApplicationType, Dependency, DependencyRefresh, Deployment, HostServer, Permissions} from '../../model';
 import {ApplicationService, DependencyService, DeploymentService, PermissionsService} from '../../services';
 
 @Component({
@@ -10,9 +11,13 @@ import {ApplicationService, DependencyService, DeploymentService, PermissionsSer
 })
 export class ApplicationComponent {
 
+  private readonly TYPE_AHEAD_SIZE: number = 10;
+
   @Input() modalId: string;
   @Input() applicationTypes: ApplicationType[] = [];
   @Input() hostServers: HostServer[] = [];
+  @Input() tagsInUse: string[] = [];
+  @Input() departments: string[] = [];
 
   @Output() createEvent: EventEmitter<Application> = new EventEmitter<Application>();
   @Output() deleteEvent: EventEmitter<Application> = new EventEmitter<Application>();
@@ -20,10 +25,19 @@ export class ApplicationComponent {
   @Output() addDeploymentEvent: EventEmitter<Application> = new EventEmitter<Application>();
   @Output() openDeploymentModalEvent: EventEmitter<object> = new EventEmitter<object>();
 
+  @ViewChild('chipsComponent')
+  public chipsComponent: Chips;
+
   public model: Application = new Application();
   public passedApplication: Application;
   public deployments: Deployment[] = [];
   public dependencies: Dependency[] = [];
+  public tagSuggestions: string[] = [];
+  public deptSuggestions: string[] = [];
+  public temporaryTags: string[] = [];
+  public showTagSuggestions = false;
+  public showDeptSuggestions = false;
+  public tagsAdded = false;
   public deploymentsAdded = false;
   public dependenciesRefreshed = false;
   public permissions: Permissions;
@@ -123,6 +137,7 @@ export class ApplicationComponent {
   }
 
   public saveApplication(): void {
+    this.model.tags = [...this.temporaryTags];
     if (this.passedApplication && this.passedApplication.id) {
       this.updateApplication();
     } else {
@@ -300,5 +315,78 @@ export class ApplicationComponent {
       }
     }
     return false;
+  }
+
+  public blurTags(): void {
+    this.toggleTagSuggestions(false);
+    this.selectTagSuggestion(this.chipsComponent.inputViewChild.nativeElement.value);
+  }
+
+  public toggleTagSuggestions(isVisible: boolean) {
+    this.showTagSuggestions = isVisible;
+  }
+
+  public selectTagSuggestion(suggestion: string) {
+    if (suggestion && this.temporaryTags.indexOf(suggestion) < 0) {
+      this.temporaryTags.push(suggestion);
+      this.tagsAdded = true;
+    }
+    this.chipsComponent.inputViewChild.nativeElement.value = '';
+    this.tagSuggestions = [];
+  }
+
+  public selectDeptSuggestion(suggestion: string) {
+    this.model.owningDepartment = suggestion;
+    this.deptSuggestions = [];
+  }
+
+  public processTagTypeAhead(): void {
+    const results: string[] = [];
+    const selection = this.chipsComponent.inputViewChild.nativeElement.value;
+
+    if (!selection || selection === '') {
+      this.tagSuggestions = results;
+      return;
+    }
+
+    for (const tag of this.tagsInUse) {
+      if (results.length < this.TYPE_AHEAD_SIZE) {
+        const check1 = tag.toLowerCase();
+        const check2 = selection.toLowerCase();
+
+        if (check1.indexOf(check2) >= 0) {
+          results.push(tag);
+        }
+      } else {
+        break;
+      }
+
+      this.tagSuggestions = results;
+    }
+  }
+
+  public processDeptTypeAhead(): void {
+    const results: string[] = [];
+    const selection = this.model.owningDepartment;
+
+    if (!selection || selection === '') {
+      this.tagSuggestions = results;
+      return;
+    }
+
+    for (const dept of this.departments) {
+      if (results.length < this.TYPE_AHEAD_SIZE) {
+        const check1 = dept.toLowerCase();
+        const check2 = selection.toLowerCase();
+
+        if (check1.indexOf(check2) === 0) {
+          results.push(dept);
+        }
+      } else {
+        break;
+      }
+
+      this.deptSuggestions = results;
+    }
   }
 }

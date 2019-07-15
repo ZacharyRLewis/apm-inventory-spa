@@ -185,7 +185,7 @@ export class DashboardComponent implements OnInit {
         }
       }
     }
-}
+  }
 
   public openFindAvailablePortModal(): void {
     history.pushState(null, null, document.URL);

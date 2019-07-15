@@ -52,7 +52,15 @@
             </div>
           </p-panel>
           <p-panel header="Tags" [toggleable]="true" [(collapsed)]="collapseTagsPanel">
-            <p-chips [(ngModel)]="model.tags" name="tags" [allowDuplicate]="false" [addOnTab]="true" [addOnBlur]="true"></p-chips>
+            <p-chips #chipsComponent [(ngModel)]="temporaryTags" name="tags" [allowDuplicate]="false" [addOnTab]="true"
+                     [addOnBlur]="false" (keyup)="processTagTypeAhead()" (onFocus)="toggleTagSuggestions(true)" (onBlur)="blurTags()"></p-chips>
+            <div class="suggestions tagSuggestions" *ngIf="showTagSuggestions && tagSuggestions.length > 0">
+              <ul *ngFor="let suggestion of tagSuggestions">
+                <li>
+                  <a (mousedown)="selectTagSuggestion(suggestion)">{{suggestion}}</a>
+                </li>
+              </ul>
+            </div>
           </p-panel>
           <p-panel header="Source Code" [toggleable]="true" [(collapsed)]="collapseSourceCodePanel">
             <div class="apm-form-body">
@@ -83,9 +91,12 @@
               <div class="apm-form-group">
                 <label class="win-label apm-label" for="owningDepartment">Owning Department*</label>
                 <div class="apm-input-group">
-                  <input type="text" class="apm-input" id="owningDepartment" name="owningDepartment" required minlength="2"
-                         [(ngModel)]="model.owningDepartment" #owningDepartment="ngModel"
-                         [class.invalid]="(owningDepartment.touched || owningDepartment.dirty) && owningDepartment.invalid">
+                  <p-autoComplete [suggestions]="deptSuggestions" [(ngModel)]="model.owningDepartment" id="owningDepartment" name="owningDepartment"
+                                  (completeMethod)="processDeptTypeAhead()" (onSelect)="selectDeptSuggestion($event)">
+                    <ng-template let-suggestion pTemplate="item">
+                      {{suggestion}}
+                    </ng-template>
+                  </p-autoComplete>
                 </div>
               </div>
               <div class="apm-form-group">
@@ -199,7 +210,7 @@
         </button>
         <button type="button" class="win-button win-button-primary btn right" (click)="saveApplication()"
                 [disabled]="(!newApplicationForm || !newApplicationForm.form.valid || !newApplicationForm.form.dirty)
-                && !deploymentsAdded && !dependenciesRefreshed">
+                && !deploymentsAdded && !dependenciesRefreshed && !tagsAdded">
           <span>Save Application</span>
         </button>
       </div>

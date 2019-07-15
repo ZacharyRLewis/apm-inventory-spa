@@ -197,7 +197,7 @@ export class DeploymentListComponent implements OnInit  {
     return Deployment.getBaseUrl(deployment, hostServerName);
   }
 
-  public resetFilters(event?): void {
+  public resetFilters(): void {
     this.filters = new DeploymentFilters();
     this.filters.applicationId = '';
     this.filters.environment = '';

@@ -16,7 +16,9 @@ export class InventoryComponent implements OnInit {
   public applications: Application[] = [];
   public applicationTypes: ApplicationType[] = [];
   public hostServers: HostServer[] = [];
-  public departments: SelectOption[] = [];
+  public departments: string[] = [];
+  public departmentOptions: SelectOption[] = [];
+  public tagsInUse: string[] = [];
   public filters = new ApplicationFilters();
 
   public APPLICATION_MODAL_ID = 'application-modal';
@@ -54,6 +56,7 @@ export class InventoryComponent implements OnInit {
       .subscribe(response => {
         this.applications = response.data;
         this.loadDepartments();
+        this.loadTagsInUse();
       });
   }
 
@@ -76,20 +79,43 @@ export class InventoryComponent implements OnInit {
       let existsInList = false;
 
       for (const department of this.departments) {
-        if (application.owningDepartment === department.key) {
+        if (application.owningDepartment === department) {
           existsInList = true;
           break;
         }
       }
 
       if (application.owningDepartment && !existsInList) {
-        this.departments.push(new SelectOption(application.owningDepartment, application.owningDepartment));
+        this.departments.push(application.owningDepartment);
+        this.departmentOptions.push(new SelectOption(application.owningDepartment, application.owningDepartment));
       }
     }
 
-    this.departments = this.departments.sort((a, b) => {
+    this.departments.sort();
+    this.departmentOptions = this.departmentOptions.sort((a, b) => {
       return a.value.localeCompare(b.value);
     });
+  }
+
+  public loadTagsInUse = () => {
+    for (const application of this.applications) {
+      for (const appTag of application.tags) {
+
+        let existsInList = false;
+
+        for (const tag of this.tagsInUse) {
+          if (appTag === tag) {
+            existsInList = true;
+            break;
+          }
+        }
+
+        if (appTag && !existsInList) {
+          this.tagsInUse.push(appTag);
+        }
+      }
+    }
+    this.tagsInUse.sort();
   }
 
   public searchApplications(): void {
@@ -135,6 +161,7 @@ export class InventoryComponent implements OnInit {
   public prepareApplicationModal(application: Application): void {
     this.applicationComponent.passedApplication = Object.assign({}, application);
     this.applicationComponent.model = Object.assign({}, application);
+    this.applicationComponent.temporaryTags = [...application.tags];
     this.applicationComponent.loadDeployments();
     this.applicationComponent.loadDependencies();
   }
@@ -253,7 +280,7 @@ export class InventoryComponent implements OnInit {
     return null;
   }
 
-  public resetFilters(event?): void {
+  public resetFilters(): void {
     this.filters = new ApplicationFilters();
     this.filters.name = '';
     this.filters.owningDepartment = '';

@@ -4,7 +4,7 @@
   </div>
 
   <apm-application-flyout-filter #applicationFiltersComponent [applications]="applications" [applicationTypes]="applicationTypes"
-                                 [departments]="departments" (filter)="filters = $event; searchApplications() " (clear)="resetFilters()">
+                                 [departments]="departmentOptions" (filter)="filters = $event; searchApplications() " (clear)="resetFilters()">
   </apm-application-flyout-filter>
 
   <div class="applications-table">
@@ -43,6 +43,7 @@
 <input class="form-control" style="visibility: hidden" />
 
 <apm-application #applicationComponent [modalId]="APPLICATION_MODAL_ID" [applicationTypes]="applicationTypes" [hostServers]="hostServers"
+                 [tagsInUse]="tagsInUse" [departments]="departments"
                  (createEvent)="handleCreate($event)"
                  (deleteEvent)="handleDelete($event)"
                  (updateEvent)="handleUpdate($event)"

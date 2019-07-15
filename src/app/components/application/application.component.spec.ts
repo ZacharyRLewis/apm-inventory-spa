@@ -6,10 +6,11 @@ import {ModalService, ShareDataService} from '@win-angular/services';
 import {cold} from 'jasmine-marbles';
 import {ChipsModule} from 'primeng/chips';
 import {PanelModule} from 'primeng/panel';
+import {AutoCompleteModule} from 'primeng/primeng';
 import {TableModule} from 'primeng/table';
 import {Observable} from 'rxjs';
 import {ApplicationComponent} from '..';
-import {Application, Dependency, DependencyRefresh, Deployment, Permissions, TestDomain, WinResponse} from '../../model';
+import {Application, Deployment, Permissions, TestDomain, WinResponse} from '../../model';
 import {ApplicationService, DependencyService, DeploymentService, HostServerService, PermissionsService} from '../../services';
 
 class MockApplicationService extends ApplicationService {
@@ -63,7 +64,7 @@ describe('ApplicationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule, ChipsModule, FormsModule, HttpClientModule, PanelModule, TableModule],
+      imports: [AutoCompleteModule, BrowserAnimationsModule, ChipsModule, FormsModule, HttpClientModule, PanelModule, TableModule],
       declarations: [ApplicationComponent],
       providers: [
         {provide: ApplicationService, useClass: MockApplicationService},
@@ -222,5 +223,59 @@ describe('ApplicationComponent', () => {
     component.addDeploymentEvent.subscribe(appl => {
       expect(appl.id).toEqual('123');
     });
+  });
+
+  it('should select a tag suggestion', () => {
+    component.temporaryTags = [];
+    component.selectTagSuggestion('selectedSuggestion');
+
+    expect(component.temporaryTags.length).toEqual(1);
+    expect(component.temporaryTags[0]).toEqual('selectedSuggestion');
+    expect(component.tagsAdded).toBeTruthy();
+    expect(component.tagSuggestions.length).toEqual(0);
+  });
+
+  it('should select a department suggestion', () => {
+    component.model.owningDepartment = '';
+    component.selectDeptSuggestion('selectedSuggestion');
+
+    expect(component.model.owningDepartment).toEqual('selectedSuggestion');
+    expect(component.deptSuggestions.length).toEqual(0);
+  });
+
+  it('should process tag typeaheads correctly', () => {
+    component.chipsComponent.inputViewChild.nativeElement.value = 'test';
+    component.tagsInUse = ['test'];
+    component.processTagTypeAhead();
+
+    expect(component.tagSuggestions.length).toEqual(1);
+
+    component.chipsComponent.inputViewChild.nativeElement.value = 'typeahead';
+    component.processTagTypeAhead();
+
+    expect(component.tagSuggestions.length).toEqual(0);
+
+    component.chipsComponent.inputViewChild.nativeElement.value = '';
+    component.processTagTypeAhead();
+
+    expect(component.tagSuggestions.length).toEqual(0);
+  });
+
+  it('should process department typeaheads correctly', () => {
+    component.model.owningDepartment = 'test';
+    component.departments = ['test'];
+    component.processDeptTypeAhead();
+
+    expect(component.deptSuggestions.length).toEqual(1);
+
+    component.model.owningDepartment = 'typeahead';
+    component.processDeptTypeAhead();
+
+    expect(component.deptSuggestions.length).toEqual(0);
+
+    component.model.owningDepartment = '';
+    component.processDeptTypeAhead();
+
+    expect(component.deptSuggestions.length).toEqual(0);
   });
 });
