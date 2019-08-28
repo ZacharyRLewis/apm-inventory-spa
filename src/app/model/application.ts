@@ -11,6 +11,7 @@ export class Application {
               public defaultBranch?: string,
               public serviceApi?: boolean,
               public applicationTypeId?: string,
+              public workflowStatusId?: string,
               public owningDepartment?: string,
               public primaryContactName?: string,
               public primaryContactEmail?: string,

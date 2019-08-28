@@ -1,5 +1,6 @@
 export {ApplicationComponent} from './application/application.component';
 export {ApplicationTypeComponent} from './maintenance/application-type.component';
+export {ApplicationWorkflowComponent} from './workflow/application-workflow.component';
 export {DashboardComponent} from './dashboard/dashboard.component';
 export {DatabaseComponent} from './maintenance/database.component';
 export {DatabaseTypeComponent} from './maintenance/database-type.component';
@@ -13,3 +14,4 @@ export {InventoryComponent} from './application/inventory.component';
 export {MaintenanceComponent} from './maintenance/maintenance.component';
 export {NavbarComponent} from './navbar/navbar.component';
 export {SidenavComponent} from './sidenav/sidenav.component';
+export {WorkflowsComponent} from './workflow/workflows.component';

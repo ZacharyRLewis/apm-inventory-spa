@@ -1,0 +1,68 @@
+<div class="win-body">
+  <div class="page-title-wrapper">
+    <h2 class="page-title">Workflows</h2>
+    <div class="btn-group">
+      <button class="tab-btn" [disabled]="selectedTab === 0" (click)="toggleTabs(0)"
+              [ngClass]="{'selected-tab': selectedTab === 0}">
+        {{tabNames[0]}}
+      </button>
+    </div>
+  </div>
+
+  <div class="tab-body">
+    <div *ngIf="selectedTab === 0">
+      <div class="tab-title">
+        <div class="win-label">Application Workflows</div>
+      </div>
+      <div>
+        <div class="tab-table" *ngIf="applicationWorkflows?.length > 0; else noApplicationWorkflows">
+          <p-table [value]="applicationWorkflows" [columns]="applicationWorkflowColumns" sortField="id"
+                   [paginator]="true" [rows]="20">
+            <ng-template pTemplate="header">
+              <tr>
+                <th *ngFor="let column of applicationWorkflowColumns" [pSortableColumn]="column.field"
+                    width="{{column.width}}">
+                  {{column.header}}
+                  <p-sortIcon [field]="column.field"></p-sortIcon>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-applicationWorkflow>
+              <tr>
+                <td>
+                  <a
+                    (click)="prepareApplicationWorkflowModal(applicationWorkflow); openApplicationWorkflowModal();">{{applicationWorkflow.id}}</a>
+                </td>
+                <td>{{applicationWorkflow.applicationId}}</td>
+                <td>{{applicationWorkflow.workflowStatusId}}</td>
+                <td>{{applicationWorkflow.application.name}}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        <ng-template #noApplicationWorkflows>
+          <div class="no-results-found">No results found</div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <nav class="navbar sticky-bottom-navbar">
+    <div class="sticky-bottom-div">
+      <button *ngIf="selectedTab === 0" class="add-button"
+              (click)="resetApplicationWorkflowComponent(); openApplicationWorkflowModal();">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+        <span>New Application Workflow</span>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<input class="form-control" style="visibility: hidden"/>
+
+<apm-application-workflow #applicationWorkflowComponent [modalId]="APPLICATION_WORKFLOW_MODAL_ID"
+                          [permissions]="permissions" [applicationWorkflowStatuses]="applicationWorkflowStatuses" [teams]="teams"
+                          (createEvent)="handleApplicationWorkflowCreate($event)"
+                          (deleteEvent)="handleApplicationWorkflowDelete($event)"
+                          (updateEvent)="handleApplicationWorkflowUpdate($event)">
+</apm-application-workflow>

@@ -61,7 +61,7 @@ describe('DependencyService', () => {
       dependencyService.findAll().subscribe();
       dependencyService.findAll()
         .subscribe(res => {
-          expect(res).toEqual(expected, 'should return expected heroes');
+          expect(res).toEqual(expected, 'should return expected dependencies');
         });
 
       const requests = httpTester.match(dependencyService.url);

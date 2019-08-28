@@ -2,7 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {ModalService, ShareDataService} from '@win-angular/services';
 import {ApplicationType, Database, DatabaseType, HostServer, Permissions} from '../../model';
 import {ApplicationTypeService, DatabaseService, DatabaseTypeService, HostServerService, PermissionsService} from '../../services';
-import {DatabaseComponent} from '../maintenance/database.component';
+import {DatabaseComponent} from './database.component';
 import {ApplicationTypeComponent} from './application-type.component';
 import {DatabaseTypeComponent} from './database-type.component';
 import {HostServerComponent} from './host-server.component';

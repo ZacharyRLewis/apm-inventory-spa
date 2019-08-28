@@ -61,7 +61,7 @@ describe('DatabaseService', () => {
       databaseService.findAll().subscribe();
       databaseService.findAll()
         .subscribe(res => {
-          expect(res).toEqual(expected, 'should return expected heroes');
+          expect(res).toEqual(expected, 'should return expected databases');
         });
 
       const requests = httpTester.match(databaseService.url);

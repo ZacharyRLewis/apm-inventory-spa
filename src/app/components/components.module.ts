@@ -24,12 +24,15 @@ import {HostServerComponent} from './maintenance/host-server.component';
 import {MaintenanceComponent} from './maintenance/maintenance.component';
 import {NavbarComponent} from './navbar/navbar.component';
 import {SidenavComponent} from './sidenav/sidenav.component';
+import {ApplicationWorkflowComponent} from './workflow/application-workflow.component';
+import {WorkflowsComponent} from './workflow/workflows.component';
 
 @NgModule({
   declarations: [
     ApplicationComponent,
     ApplicationFlyoutFilterComponent,
     ApplicationTypeComponent,
+    ApplicationWorkflowComponent,
     DashboardComponent,
     DatabaseComponent,
     DatabaseTypeComponent,
@@ -44,6 +47,7 @@ import {SidenavComponent} from './sidenav/sidenav.component';
     MaintenanceComponent,
     NavbarComponent,
     SidenavComponent,
+    WorkflowsComponent,
   ],
   imports: [
     AutoCompleteModule,

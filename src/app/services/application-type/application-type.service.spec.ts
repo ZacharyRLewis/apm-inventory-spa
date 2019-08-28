@@ -61,7 +61,7 @@ describe('ApplicationTypeService', () => {
       applicationTypeService.findAll().subscribe();
       applicationTypeService.findAll()
         .subscribe(res => {
-          expect(res).toEqual(expected, 'should return expected heroes');
+          expect(res).toEqual(expected, 'should return expected applicationTypes');
         });
 
       const requests = httpTester.match(applicationTypeService.url);

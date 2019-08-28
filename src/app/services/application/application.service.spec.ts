@@ -61,7 +61,7 @@ describe('ApplicationService', () => {
       applicationService.findAll().subscribe();
       applicationService.findAll()
         .subscribe(res => {
-          expect(res).toEqual(expected, 'should return expected heroes');
+          expect(res).toEqual(expected, 'should return expected applications');
         });
 
       const requests = httpTester.match(applicationService.url);

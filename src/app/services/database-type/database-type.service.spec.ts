@@ -61,7 +61,7 @@ describe('DatabaseTypeService', () => {
       databaseTypeService.findAll().subscribe();
       databaseTypeService.findAll()
         .subscribe(res => {
-          expect(res).toEqual(expected, 'should return expected heroes');
+          expect(res).toEqual(expected, 'should return expected databaseTypes');
         });
 
       const requests = httpTester.match(databaseTypeService.url);

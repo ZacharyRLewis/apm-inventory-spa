@@ -61,7 +61,7 @@ describe('DeploymentDatabaseService', () => {
       deploymentDatabaseService.findAll().subscribe();
       deploymentDatabaseService.findAll()
         .subscribe(res => {
-          expect(res).toEqual(expected, 'should return expected heroes');
+          expect(res).toEqual(expected, 'should return expected deployment databases');
         });
 
       const requests = httpTester.match(deploymentDatabaseService.url);

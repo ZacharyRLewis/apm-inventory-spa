@@ -6,7 +6,7 @@ import {MulesoftApi, WinResponse} from '../../model';
 
 @Injectable()
 export class MulesoftApiService {
-  private _path = '/mulesoftApis';
+  private _path = '/mulesoft/apis';
   public url: string;
   private _options: {
     headers: HttpHeaders

@@ -264,17 +264,17 @@ describe('DeploymentComponent', () => {
     api.deploymentEnvironment = 'Sandbox';
     const apiUrl1: string = component.formatApiUrl(TestDomain.MULESOFT_API);
 
-    expect(apiUrl1).toEqual('https://devag1.winwholesale.com/' + deployment.contextName);
+    expect(apiUrl1).toEqual('https://devagint1.winwholesale.com/' + deployment.contextName);
 
     api.deploymentEnvironment = 'QA';
     const apiUrl2: string = component.formatApiUrl(TestDomain.MULESOFT_API);
 
-    expect(apiUrl2).toEqual('https://qaag1.winwholesale.com/' + deployment.contextName);
+    expect(apiUrl2).toEqual('https://qaagint1.winwholesale.com/' + deployment.contextName);
 
     api.deploymentEnvironment = 'PROD';
     const apiUrl3: string = component.formatApiUrl(TestDomain.MULESOFT_API);
 
-    expect(apiUrl3).toEqual('https://ag1.winwholesale.com/' + deployment.contextName);
+    expect(apiUrl3).toEqual('https://agint1.winwholesale.com/' + deployment.contextName);
   });
 
   it('should emit open deployment database modal event', () => {

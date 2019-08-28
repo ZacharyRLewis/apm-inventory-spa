@@ -1,0 +1,147 @@
+<div class="modal fade win-modal-big in" [id]="modalId">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header container">
+        <h2 class="modal-title" *ngIf="!passedWorkflow">Start Application Workflow</h2>
+        <h2 class="modal-title" *ngIf="passedWorkflow">Update Application Workflow</h2>
+        <button type="button" class="close" (click)="closeModal()">
+          <span><i class="fa fa-times"></i></span>
+        </button>
+      </div>
+      <div class="modal-body container">
+        <form id="applicationWorkflowForm" #applicationWorkflowForm="ngForm">
+          <p-panel header="Application Info" [toggleable]="true" [(collapsed)]="collapseGeneralInfoPanel">
+            <div class="apm-form-body">
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="applicationName">Application Name*</label>
+                <div class="apm-input-group">
+                  <input type="text" class="apm-input" id="applicationName" name="applicationName" required minlength="2"
+                         [(ngModel)]="model.application.name" #applicationName="ngModel"
+                         [class.invalid]="(applicationName.touched || applicationName.dirty) && applicationName.invalid">
+                </div>
+              </div>
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="workflowStatus">Workflow Status*</label>
+                <div class="apm-input-group">
+                  <select class="apm-input apm-select" id="workflowStatus" [(ngModel)]="model.workflowStatusId" name="workflowStatus"
+                          #workflowStatus="ngModel" required
+                          [class.invalid]="(workflowStatus.touched || workflowStatus.dirty) && workflowStatus.invalid">
+                    <option value=""></option>
+                    <option *ngFor="let workflowStatus of applicationWorkflowStatuses" value="{{workflowStatus.id}}">
+                      {{workflowStatus.description}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="applicationLayer">Application Layer*</label>
+                <div class="apm-input-group">
+                  <select class="apm-input apm-select" id="applicationLayer" [(ngModel)]="model.applicationLayer" name="applicationLayer"
+                          #applicationLayer="ngModel" required
+                          [class.invalid]="(applicationLayer.touched || applicationLayer.dirty) && applicationLayer.invalid">
+                    <option value=""></option>
+                    <option *ngFor="let layer of applicationLayers" value="{{layer}}">
+                      {{layer}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </p-panel>
+          <p-panel header="Source Code" [toggleable]="true" [(collapsed)]="collapseSourceCodePanel">
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="applicationName">Does a source code repository already exist for this application?</label>
+              <div class="apm-radio-group">
+                <input type="radio" class="apm-input" name="repoExists" required [(ngModel)]="questions.repoExists" value="Yes"> Yes
+                <input type="radio" class="apm-input" name="repoExists" required [(ngModel)]="questions.repoExists" value="No"> No
+              </div>
+            </div>
+            <div class="apm-form-body" *ngIf="questions.repoExists && questions.repoExists === 'Yes'">
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="applicationRepository">Repository</label>
+                <div class="apm-input-group">
+                  <input type="text" class="apm-input" id="applicationRepository" name="repository" required minlength="2"
+                         [(ngModel)]="model.application.repository">
+                </div>
+              </div>
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="applicationDefaultBranch">Default Branch</label>
+                <div class="apm-input-group">
+                  <input type="text" class="apm-input" id="applicationDefaultBranch" name="defaultBranch" required minlength="2"
+                         [(ngModel)]="model.application.defaultBranch">
+                </div>
+              </div>
+            </div>
+            <div *ngIf="questions.repoExists && questions.repoExists === 'No'">
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="applicationName">Do you need a GitHub repository to be created?</label>
+                <div class="apm-radio-group">
+                  <input type="radio" class="apm-input" name="needsRepo" required [(ngModel)]="questions.needsRepo" value="Yes"> Yes
+                  <input type="radio" class="apm-input" name="needsRepo" required [(ngModel)]="questions.needsRepo" value="No"> No
+                </div>
+              </div>
+              <div class="apm-form-body" *ngIf="questions.needsRepo && questions.needsRepo === 'Yes'">
+                <div class="apm-form-group">
+                  <label class="win-label apm-label" for="applicationDefaultBranch">Repository Name</label>
+                  <div class="apm-input-group">
+                    <input type="text" class="apm-input" id="repoName" name="repoName" [(ngModel)]="questions.repoName">
+                  </div>
+                </div>
+                <div class="apm-form-group">
+                  <label class="win-label apm-label" for="githubTeam">GitHub Team</label>
+                  <div class="apm-input-group">
+                    <select class="apm-input apm-select" id="githubTeam" [(ngModel)]="questions.githubTeam" name="githubTeam">
+                      <option value=""></option>
+                      <option *ngFor="let team of teams" [ngValue]="team">
+                        {{team.name}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <button type="button" class="win-button win-button-secondary btn left" (click)="createRepository()">
+                    <span>Add Repository</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </p-panel>
+          <p-panel header="Architecture" [toggleable]="true" [(collapsed)]="collapseArchitecturePanel">
+            <div class="apm-form-group">
+              <label class="win-label apm-label" for="applicationName">Has the Enterprise Architecture team been engaged to approve overall application design?</label>
+              <div class="apm-radio-group">
+                <input type="radio" class="apm-input" name="archEngaged" required [(ngModel)]="questions.archEngaged" value="Yes"> Yes
+                <input type="radio" class="apm-input" name="archEngaged" required [(ngModel)]="questions.archEngaged" value="No"> No
+              </div>
+            </div>
+            <div class="apm-form-body" *ngIf="questions.archEngaged && questions.archEngaged === 'Yes'">
+              <div class="apm-form-group">
+                <label class="win-label apm-label" for="architectRep">Architecture Representative</label>
+                <div class="apm-input-group">
+                  <input type="text" class="apm-input" id="architectRep" name="architectRep" required minlength="2"
+                         [(ngModel)]="questions.architectRep">
+                </div>
+              </div>
+            </div>
+            <div *ngIf="questions.archEngaged && questions.archEngaged === 'No'">
+              <div class="apm-form-body" *ngIf="questions.needsRepo && questions.needsRepo === 'Yes'">
+                <button type="button" class="win-button win-button-secondary btn left" (click)="createRepository()">
+                  <span>Email Enterprise Architecture</span>
+                </button>
+              </div>
+            </div>
+          </p-panel>
+        </form>
+      </div>
+      <div class="modal-footer container">
+        <button type="button" class="win-button win-button-secondary btn left" *ngIf="passedWorkflow">
+          <span>Delete Workflow</span>
+        </button>
+        <button type="button" class="win-button win-button-primary btn right"
+                [disabled]="(!applicationWorkflowForm || !applicationWorkflowForm.form.valid || !applicationWorkflowForm.form.dirty)">
+          <span>Save Workflow</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

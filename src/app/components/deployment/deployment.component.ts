@@ -224,11 +224,11 @@ export class DeploymentComponent implements OnInit {
     let host = '';
 
     switch (api.deploymentEnvironment) {
-      case 'Sandbox': host = 'https://devag1.winwholesale.com/';
+      case 'Sandbox': host = 'https://devagint1.winwholesale.com/';
         break;
-      case 'QA': host = 'https://qaag1.winwholesale.com/';
+      case 'QA': host = 'https://qaagint1.winwholesale.com/';
         break;
-      default: host = 'https://ag1.winwholesale.com/';
+      default: host = 'https://agint1.winwholesale.com/';
     }
 
     return host + this.model.contextName;

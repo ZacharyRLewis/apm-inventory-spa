@@ -61,7 +61,7 @@ describe('HostServerService', () => {
       hostServerService.findAll().subscribe();
       hostServerService.findAll()
         .subscribe(res => {
-          expect(res).toEqual(expected, 'should return expected heroes');
+          expect(res).toEqual(expected, 'should return expected hostServers');
         });
 
       const requests = httpTester.match(hostServerService.url);

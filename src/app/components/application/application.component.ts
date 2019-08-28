@@ -36,7 +36,6 @@ export class ApplicationComponent {
   public deptSuggestions: string[] = [];
   public temporaryTags: string[] = [];
   public showTagSuggestions = false;
-  public showDeptSuggestions = false;
   public tagsAdded = false;
   public deploymentsAdded = false;
   public dependenciesRefreshed = false;
@@ -75,12 +74,14 @@ export class ApplicationComponent {
     this.model.primaryContactEmail = '';
     this.model.primaryContactPhone = '';
     this.model.applicationTypeId = '';
+    this.model.workflowStatusId = '';
     this.model.tags = [];
     this.model.owners = [];
     this.model.deployments = [];
     this.model.dependencies = [];
     this.deployments = [];
     this.dependencies = [];
+    this.temporaryTags = [];
     this.deploymentsAdded = false;
     this.dependenciesRefreshed = false;
     this.collapseGeneralInfoPanel = false;

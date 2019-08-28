@@ -61,7 +61,7 @@ describe('MulesoftApiService', () => {
       mulesoftApiService.findAll().subscribe();
       mulesoftApiService.findAll()
         .subscribe(res => {
-          expect(res).toEqual(expected, 'should return expected heroes');
+          expect(res).toEqual(expected, 'should return expected mulesoft apis');
         });
 
       const requests = httpTester.match(mulesoftApiService.url);
